@@ -1,0 +1,19 @@
+{
+    "name": "frstf4ll/php-blog",
+    "description": "A php blog with login and article managment features.",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Frstf4ll\\PhpBlog\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "FrstF4ll",
+            "email": "hydralixe@gmail.com"
+        }
+    ],
+    "require-dev": {
+        "laravel/pint": "^1.29"
+    }
+}
