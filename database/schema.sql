@@ -12,7 +12,7 @@ create table if not exists posts
     title      text    not null,
     content    text    not null,
     image      text,
-    created_at datetime default current_timestamp,
+    created_at datetime default current_timestamp not null,
     user_id    integer not null,
     foreign key (user_id) references users (id)
 );
