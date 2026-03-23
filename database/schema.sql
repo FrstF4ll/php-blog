@@ -9,10 +9,10 @@ create table if not exists users
 create table if not exists posts
 (
     id         integer primary key autoincrement,
-    title      text not null,
-    content    text not null,
-    image      text not null,
-    created_at text not null,
+    title      text    not null,
+    content    text    not null,
+    image      text,
+    created_at datetime default current_timestamp,
     user_id    integer not null,
-    foreign key (user_id) references users(id)
+    foreign key (user_id) references users (id)
 );
