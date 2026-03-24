@@ -36,7 +36,7 @@ nav {
     display: flex;
 }
 
-#menu-nav > ul {
+nav > ul {
     display: flex;
     flex-direction: row;
     gap: 15px;

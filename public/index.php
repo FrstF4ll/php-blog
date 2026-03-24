@@ -53,7 +53,12 @@
     </section>
 </main>
 <footer>
-    <nav>Privacy | Contact</nav>
+    <nav>
+        <ul id="footer-menu">
+            <li>Privacy</li>
+            <li>Contact</li>
+        </ul>
+    </nav>
 </footer>
 </body>
 </html>
