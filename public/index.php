@@ -4,18 +4,18 @@
 
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="style.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="style.css">
     <title>My PHP blog</title>
 </head>
-<body>
-<header>
+<body class="grid grid-rows-3 min-h-full">
+<header class="flex flex-row row-start-1">
     <a href="index.php"><img src="" alt="Blog home"></a>
-    <nav id="menu-nav">
-        <ul>
+    <nav>
+        <ul class="flex flex-row">
             <li>Home</li>
             <li>Manage your posts</li>
             <li>Sign up / Log in</li>
@@ -23,38 +23,38 @@
     </nav>
 </header>
 
-<main>
-    <article id="main-article">
-        <img alt="Featured article cover" id="main-article-cover">
+<main class="grid grid-rows-2 grid-cols-3 row-start-2">
+    <article class="flex flex-col row-start-1">
+        <img alt="Featured article cover">
         <h2>Featured article title</h2>
-        <div class="post-meta">
-            <span class="author">By Author</span>
+        <div>
+            <span>By Author</span>
             <time datetime="2026-03-23">Mar 23, 2026</time>
         </div>
         <p>Short intro to the featured post.</p>
     </article>
 
-    <section id="highligts">
-        <a href="" class="highlighted-article">
+    <section class="flex flex-row row-start-2 col-span-full">
+        <a href="">
             <img src="" alt="Highlight cover">
             <h3>Highlight title 1</h3>
             <p>Quick summary.</p>
         </a>
-        <a href="" class="highlighted-article">
+        <a href="">
             <img src="" alt="Highlight cover">
             <h3>Highlight title 2</h3>
             <p>Quick summary.</p>
         </a>
-        <a href="" class="highlighted-article">
+        <a href="">
             <img src="" alt="Highlight cover">
             <h3>Highlight title 3</h3>
             <p>Quick summary.</p>
         </a>
     </section>
 </main>
-<footer>
+<footer class="row-start-3">
     <nav>
-        <ul id="footer-menu">
+        <ul class="flex flex-row">
             <li>Privacy</li>
             <li>Contact</li>
         </ul>
