@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="style.css">
-    <title>My PHP blog</title>
+    <title>php-blog - Home</title>
 </head>
 <body class="grid grid-rows-[auto_1fr_auto] min-h-full">
 <header class="flex flex-row row-start-1 justify-between pr-2 pl-2">
@@ -17,12 +17,11 @@
     <nav>
         <ul class="flex flex-row gap-1">
             <li>Home</li>
-            <li>Manage your posts</li>
+            <li><a href="create_post.php">Manage your posts</a></li>
             <li>Sign up / Log in</li>
         </ul>
     </nav>
 </header>
-
 <main class="grid grid-rows-2 grid-cols-3 row-start-2">
     <article class="flex flex-col row-start-1 col-span-full p-4">
         <img alt="Featured article cover">
