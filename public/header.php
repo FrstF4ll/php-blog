@@ -16,7 +16,7 @@
         <ul class="flex flex-row gap-1">
             <li><a href="index.php">Home</a></li>
             <li><a href="create_post.php">Manage your posts</a></li>
-            <li>Sign up / Log in</li>
+            <li><a href="login.php">Sign up / Log in</a></li>
         </ul>
     </nav>
 </header>
