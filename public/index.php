@@ -15,17 +15,17 @@
             <p>Short intro to the featured post.</p>
         </article>
         <section class="flex flex-row row-start-2 col-span-full justify-around self-center p-4">
-            <a href="" class="flex flex-col">
+            <a href="blog_post.php" class="flex flex-col">
                 <img src="" alt="Highlight cover">
                 <h3>Highlight title 1</h3>
                 <p>Quick summary.</p>
             </a>
-            <a href="" class="flex flex-col">
+            <a href="blog_post.php" class="flex flex-col">
                 <img src="" alt="Highlight cover">
                 <h3>Highlight title 2</h3>
                 <p>Quick summary.</p>
             </a>
-            <a href="" class="flex flex-col">
+            <a href="blog_post.php" class="flex flex-col">
                 <img src="" alt="Highlight cover">
                 <h3>Highlight title 3</h3>
                 <p>Quick summary.</p>
