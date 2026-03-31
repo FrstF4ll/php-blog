@@ -21,8 +21,6 @@ $link_state = [
                     <div class="flex space-x-4">
                         <a href="../pages/home.php" aria-current="page" class="<?= $base_link ?> <?= $link_state['active'] ?>">Home</a>
                         <a href="../pages/create_post.php" class="<?= $base_link ?> <?= $link_state['inactive'] ?>">Create your own</a>
-                        <a href="#" class="<?= $base_link ?> <?= $link_state['inactive'] ?>"></a>
-                        <a href="#" class="<?= $base_link ?> <?= $link_state['inactive'] ?>">Calendar</a>
                     </div>
                 </div>
             </div>
