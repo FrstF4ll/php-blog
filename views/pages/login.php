@@ -34,9 +34,11 @@
                             class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                         Sign in
                     </button>
-                    <a href="register.php"
-                            class="flex w-full justify-center rounded-md bg-white px-3 py-1.5 text-sm/6 font-semibold text-black shadow-xs hover:bg-gray-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
-                        Register
+                </div>
+                <div>
+                    <a href="?pages=register"
+                            class="flex w-full justify-center rounded-md border-2 border-gray-300 text-indigo-500 px-3 py-1.5 text-sm/6 font-semibold bg-white shadow-xs hover:bg-gray-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ">
+                        Create a new account ?
                     </a>
                 </div>
             </form>
