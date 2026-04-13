@@ -632,6 +632,9 @@
   .border-gray-300 {
     border-color: var(--color-gray-300);
   }
+  .border-gray-400 {
+    border-color: var(--color-gray-400);
+  }
   .border-gray-900 {
     border-color: var(--color-gray-900);
   }
@@ -652,6 +655,9 @@
   }
   .border-indigo-400 {
     border-color: var(--color-indigo-400);
+  }
+  .border-b-black {
+    border-bottom-color: var(--color-black);
   }
   .bg-blue-200 {
     background-color: var(--color-blue-200);
