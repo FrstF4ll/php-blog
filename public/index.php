@@ -3,9 +3,10 @@ $pages = [
         'home' => '../views/pages/home.php',
         'login' => '../views/pages/login.php',
         'register' => '../views/pages/register.php',
-    'create' => '../views/pages/create_post.php',
-    'edit' => '../views/pages/edit_post.php',
-    'post' => '../views/pages/blog_post.php',
+        'create' => '../views/pages/create_post.php',
+        'manage' => '../views/pages/manage_posts.php',
+        'edit' => '../views/pages/edit_post.php',
+        'post' => '../views/pages/blog_post.php',
 ];
 
 $request = $_GET['pages'] ?? 'home';

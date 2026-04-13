@@ -25,7 +25,7 @@ $link_state = [
                            class="<?= $base_link ?> <?= $link_state['active'] ?>">Home</a>
                         <a href="?pages=create" class="<?= $base_link ?> <?= $link_state['inactive'] ?>">Create your
                             own</a>
-                        <a href="?pages=edit" class="<?= $base_link ?> <?= $link_state['inactive'] ?>">Manage your
+                        <a href="?pages=manage" class="<?= $base_link ?> <?= $link_state['inactive'] ?>">Manage your
                             posts
                         </a>
                     </div>
