@@ -1,4 +1,5 @@
 <?php
+
 $pages = [
         'home' => '../views/pages/home.php',
         'login' => '../views/pages/login.php',
@@ -11,6 +12,14 @@ $pages = [
 
 $request = $_GET['pages'] ?? 'home';
 $templates = $pages[$request] ?? null;
+
+try {
+    $dbPath = __DIR__ . '/../database.db';
+    $pdo = new PDO('sqlite:' . $dbPath);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Connection failed : " . $e->getMessage());
+}
 ?>
 
 
