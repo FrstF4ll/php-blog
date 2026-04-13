@@ -1,0 +1,6 @@
+@source "../public/**/*.php";
+@import "tailwindcss";
+
+@theme {
+    --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+}
