@@ -35,7 +35,10 @@ $templates = $pages[$request] ?? null;
     <?php if ($templates): ?>
         <?php include $templates; ?>
     <?php else: ?>
-        <h1>404 - Not found</h1>
+        <?php http_response_code(404);
+        echo '<h1>404 - Not found</h1>';
+        echo '<p>The page you requested does not exist.</p>'
+        ?>
     <?php endif; ?>
 </main>
 
