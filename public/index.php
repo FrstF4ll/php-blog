@@ -2,8 +2,6 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Frstf4ll\PhpBlog\Controllers\BlogPost;
-
 $pages = [
         'home' => '../views/pages/home.php',
         'login' => '../views/pages/login.php',
@@ -18,6 +16,7 @@ $request = $_GET['pages'] ?? 'home';
 $templates = $pages[$request] ?? null;
 
 $pdo = require __DIR__ . '/../config/db.php';
+$error_message = null;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($_GET['pages'] === 'create') {
@@ -28,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $date = date('Y-m-d');
         $user_id = 1;
 
-        if (isset($title) && isset($content) && isset($user_id) && isset($date)) {
+        if (!empty($title) && !empty($content) && !empty($user_id) && !empty($date)) {
 
             $sql = "insert into posts(title, content, image, created_at, user_id) values(:title, :content, :image, :created_at, :user_id)";
             $stmt = $pdo->prepare($sql);
@@ -39,6 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     'created_at' => $date,
                     'user_id' => $user_id
             ]);
+        } else {
+            $error_message = 'Please fill in all the required fields.';
         }
     }
 }
@@ -62,6 +63,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body class="grid grid-rows-[auto_1fr_auto] min-h-full">
 <?php include "../views/components/navbar.php"; ?>
 <main>
+    <?php if (isset($error_message)): ?>
+        <div style="color: red; border: 1px solid red; padding: 10px; margin-bottom: 10px;">
+            <?php echo htmlspecialchars($error_message); ?>
+        </div>
+    <?php endif; ?>
 
     <?php if ($templates): ?>
         <?php include $templates; ?>
