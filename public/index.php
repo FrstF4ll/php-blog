@@ -27,9 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_GET['pages'] === 'create') {
         $uploadDir = __DIR__ . '/../public/uploads/';
         $fileName = time() . '_' . basename($_FILES['image']['name']);
 
-        if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadDir . $fileName)) {
-            $_SESSION['flash_message'] = 'File uploaded : ' . $fileName;
-        } else {
+        if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadDir . $fileName)) {
             $error_message = 'There was an error uploading your file.';
         }
     }
