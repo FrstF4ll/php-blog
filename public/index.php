@@ -32,45 +32,51 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $request === 'create') {
 
 // File validation
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-        $uploadDir = __DIR__ . '/../public/uploads/';
-        $fileName = time() . '_' . basename($_FILES['image']['name']);
-
-// Try to move files, if it fail, throw error
-        if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadDir . $fileName)) {
-            $error_message = 'There was an error uploading your file.';
-        }
         $allowedMimes = ['image/jpeg', 'image/png'];
         $finfo = new finfo(FILEINFO_MIME_TYPE);
         $detectedMime = $finfo->file($_FILES['image']['tmp_name']);
-        if(!in_array($detectedMime, $allowedMimes)) {
-            die("Invalid file type : " . $detectedMime);
+        
+        $allowedExtensions = ['jpg', 'jpeg', 'png'];
+        $fileExtension = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
+
+        if (!in_array($detectedMime, $allowedMimes)) {
+            $error_message = "Invalid file type : " . $detectedMime;
+        } elseif (!in_array($fileExtension, $allowedExtensions)) {
+            $error_message = "Invalid file extension : ." . $fileExtension;
+        } else {
+            $uploadDir = __DIR__ . '/../public/uploads/';
+            $fileName = time() . '_' . basename($_FILES['image']['name']);
+            if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadDir . $fileName)) {
+                $error_message = 'There was an error uploading your file.';
+            }
         }
     }
 
     // Check if title etc are empty, if not, insert datas
-    if (!empty(trim($title)) && !empty(trim($content)) && !empty($user_id) && !empty($date)) {
+    if (empty($error_message)) {
+        if (!empty(trim($title)) && !empty(trim($content)) && !empty($user_id) && !empty($date)) {
 
-        // Insertion following this pattern : request -> preparation -> execution
-        $sql = "insert into posts(title, content, image, created_at, user_id) values(:title, :content, :image, :created_at, :user_id)";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([
-                'title' => $title,
-                'content' => $content,
-                'image' => $fileName,
-                'created_at' => $date,
-                'user_id' => $user_id
-        ]);
+            // Insertion following this pattern : request -> preparation -> execution
+            $sql = "insert into posts(title, content, image, created_at, user_id) values(:title, :content, :image, :created_at, :user_id)";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([
+                    'title' => $title,
+                    'content' => $content,
+                    'image' => $fileName,
+                    'created_at' => $date,
+                    'user_id' => $user_id
+            ]);
 
-        // Go back to home once done
-        $_SESSION['notification'] = 'Post created !';
-        header('Location: ?pages=home');
-        exit;
-    } else {
-        // Error message
-        $error_message = 'Please fill in all the required fields.';
+            // Go back to home once done
+            $_SESSION['notification'] = 'Post created !';
+            header('Location: ?pages=home');
+            exit;
+        } else {
+            // Error message
+            $error_message = 'Please fill in all the required fields.';
+        }
     }
 }
-
 ?>
 
 

@@ -38,11 +38,11 @@
                                 <label for="image-upload"
                                        class="relative cursor-pointer rounded-md bg-transparent font-semibold text-indigo-600 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-indigo-600 hover:text-indigo-500">
                                     <span>Upload a file</span>
-                                    <input id="image-upload" type="file" name="image" accept="image/*" class="sr-only"/>
+                                    <input id="image-upload" type="file" name="image" accept="image/png, image/jpeg" class="sr-only"/>
                                 </label>
                                 <p class="pl-1">or drag and drop</p>
                             </div>
-                            <p class="text-xs/5 text-gray-600">PNG, JPG, GIF up to 10MB</p>
+                            <p class="text-xs/5 text-gray-600">PNG, JPG up to 10MB</p>
                         </div>
                     </div>
                 </div>
