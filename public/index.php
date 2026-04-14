@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 $pages = [
@@ -18,31 +20,40 @@ $templates = $pages[$request] ?? null;
 $pdo = require __DIR__ . '/../config/db.php';
 $error_message = null;
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if ($_GET['pages'] === 'create') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_GET['pages'] === 'create') {
+    $fileName = null;
 
-        $title = $_POST['title'];
-        $content = $_POST['content'];
-        $image = $_POST['image'];
-        $date = date('Y-m-d');
-        $user_id = 1;
+    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+        $uploadDir = __DIR__ . '/../public/uploads/';
+        $fileName = time() . '_' . basename($_FILES['image']['name']);
 
-        if (!empty($title) && !empty($content) && !empty($user_id) && !empty($date)) {
-
-            $sql = "insert into posts(title, content, image, created_at, user_id) values(:title, :content, :image, :created_at, :user_id)";
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute([
-                    'title' => $title,
-                    'content' => $content,
-                    'image' => $image,
-                    'created_at' => $date,
-                    'user_id' => $user_id
-            ]);
+        if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadDir . $fileName)) {
+            $_SESSION['flash_message'] = 'File uploaded : ' . $fileName;
         } else {
-            $error_message = 'Please fill in all the required fields.';
+            $error_message = 'There was an error uploading your file.';
         }
     }
+    $title = $_POST['title'];
+    $content = $_POST['content'];
+    $date = date('Y-m-d');
+    $user_id = 1;
+
+    if (!empty($title) && !empty($content) && !empty($user_id) && !empty($date)) {
+
+        $sql = "insert into posts(title, content, image, created_at, user_id) values(:title, :content, :image, :created_at, :user_id)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([
+                'title' => $title,
+                'content' => $content,
+                'image' => $fileName,
+                'created_at' => $date,
+                'user_id' => $user_id
+        ]);
+    } else {
+        $error_message = 'Please fill in all the required fields.';
+    }
 }
+
 ?>
 
 
