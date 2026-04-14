@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/../vendor/autoload.php';
+
 use Frstf4ll\PhpBlog\Controllers\BlogPost;
 
 $pages = [
@@ -15,10 +17,21 @@ $pages = [
 $request = $_GET['pages'] ?? 'home';
 $templates = $pages[$request] ?? null;
 
-try {
-$pdo = require_once '../config/db.php';
-} catch (PDOException $e) {
-    die("Connection failed : " . $e->getMessage());
+
+    $pdo = require __DIR__ . '/../config/db.php';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    $sql = "insert into posts(title, content, image, created_at, user_id) values(:title, :content, :image, :created_at, :user_id)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+            'title' => $_POST['title'],
+            'content' => $_POST['content'],
+            'image' => $_POST['image'],
+            'created_at' => date("Y-m-d"),
+            'user_id' => 1
+    ]);
+
 }
 ?>
 
