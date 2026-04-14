@@ -1,5 +1,7 @@
 <?php
 
+use Frstf4ll\PhpBlog\PostRepository;
+
 session_start();
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -23,19 +25,13 @@ $error_message = null;
 // Post
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && $request === 'create') {
 
-    $title = $_POST['title'];
-    $content = $_POST['content'];
-    $date = date('Y-m-d');
-    $user_id = 1;
     $fileName = null;
-
-
 // File validation
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
         $allowedMimes = ['image/jpeg', 'image/png'];
         $finfo = new finfo(FILEINFO_MIME_TYPE);
         $detectedMime = $finfo->file($_FILES['image']['tmp_name']);
-        
+
         $allowedExtensions = ['jpg', 'jpeg', 'png'];
         $fileExtension = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
 
@@ -52,20 +48,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $request === 'create') {
         }
     }
 
+    $title = $_POST['title'];
+    $content = $_POST['content'];
+    $date = date('Y-m-d');
+    $user_id = 1;
+
+
     // Check if title etc are empty, if not, insert datas
     if (empty($error_message)) {
         if (!empty(trim($title)) && !empty(trim($content)) && !empty($user_id) && !empty($date)) {
-
-            // Insertion following this pattern : request -> preparation -> execution
-            $sql = "insert into posts(title, content, image, created_at, user_id) values(:title, :content, :image, :created_at, :user_id)";
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute([
-                    'title' => $title,
-                    'content' => $content,
-                    'image' => $fileName,
-                    'created_at' => $date,
-                    'user_id' => $user_id
-            ]);
+            $postRepository = new PostRepository($pdo);
+            $postRepository->createPost($title, $content, $fileName, $date, $user_id);
 
             // Go back to home once done
             $_SESSION['notification'] = 'Post created !';
