@@ -47,6 +47,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_GET['pages'] === 'create') {
                 'created_at' => $date,
                 'user_id' => $user_id
         ]);
+        $_SESSION['notification'] = 'Post created !';
+        header('Location: ?page=home');
+        exit;
     } else {
         $error_message = 'Please fill in all the required fields.';
     }
@@ -71,12 +74,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_GET['pages'] === 'create') {
 </head>
 <body class="grid grid-rows-[auto_1fr_auto] min-h-full">
 <?php include "../views/components/navbar.php"; ?>
-<main>
-    <?php if (isset($error_message)): ?>
-        <div style="color: red; border: 1px solid red; padding: 10px; margin-bottom: 10px;">
-            <?php echo htmlspecialchars($error_message); ?>
-        </div>
-    <?php endif; ?>
+    <main>
+        <?php if (isset($_SESSION['notification'])): ?>
+            <div class='text-green-700 border border-green-500 bg-green-50 rounded-md p-2.5 mb-2.5'>
+                <?php echo $_SESSION['notification'];
+                unset($_SESSION['notification']); ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if (isset($error_message)) : ?>
+            <div class="text-red-700 border border-red-500 bg-red-50 rounded-md p-2.5 mb-2.5">
+                <?php echo htmlspecialchars($error_message); ?>
+            </div>
+        <?php endif; ?>
 
     <?php if ($templates): ?>
         <?php include $templates; ?>
