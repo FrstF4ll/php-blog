@@ -7,14 +7,11 @@
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
     --color-red-50: oklch(97.1% 0.013 17.38);
-    --color-red-100: oklch(93.6% 0.032 17.717);
     --color-red-500: oklch(63.7% 0.237 25.331);
     --color-red-700: oklch(50.5% 0.213 27.518);
     --color-green-50: oklch(98.2% 0.018 155.826);
-    --color-green-100: oklch(96.2% 0.044 156.743);
     --color-green-500: oklch(72.3% 0.219 149.579);
     --color-green-700: oklch(52.7% 0.154 150.069);
-    --color-indigo-50: oklch(96.2% 0.018 272.314);
     --color-indigo-100: oklch(93% 0.034 272.788);
     --color-indigo-200: oklch(87% 0.065 274.039);
     --color-indigo-400: oklch(67.3% 0.182 276.935);
@@ -870,18 +867,6 @@
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
     transition-duration: var(--tw-duration, var(--default-transition-duration));
   }
-  .text-shadow-green-50 {
-    --tw-text-shadow-color: oklch(98.2% 0.018 155.826);
-    @supports (color: color-mix(in lab, red, red)) {
-      --tw-text-shadow-color: color-mix(in oklab, var(--color-green-50) var(--tw-text-shadow-alpha), transparent);
-    }
-  }
-  .text-shadow-green-700 {
-    --tw-text-shadow-color: oklch(52.7% 0.154 150.069);
-    @supports (color: color-mix(in lab, red, red)) {
-      --tw-text-shadow-color: color-mix(in oklab, var(--color-green-700) var(--tw-text-shadow-alpha), transparent);
-    }
-  }
   .group-hover\:text-gray-600 {
     &:is(:where(.group):hover *) {
       @media (hover: hover) {
@@ -1457,15 +1442,6 @@
   syntax: "*";
   inherits: false;
 }
-@property --tw-text-shadow-color {
-  syntax: "*";
-  inherits: false;
-}
-@property --tw-text-shadow-alpha {
-  syntax: "<percentage>";
-  inherits: false;
-  initial-value: 100%;
-}
 @layer properties {
   @supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
     *, ::before, ::after, ::backdrop {
@@ -1510,8 +1486,6 @@
       --tw-drop-shadow-color: initial;
       --tw-drop-shadow-alpha: 100%;
       --tw-drop-shadow-size: initial;
-      --tw-text-shadow-color: initial;
-      --tw-text-shadow-alpha: 100%;
     }
   }
 }

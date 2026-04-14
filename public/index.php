@@ -20,24 +20,37 @@ $templates = $pages[$request] ?? null;
 $pdo = require __DIR__ . '/../config/db.php';
 $error_message = null;
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_GET['pages'] === 'create') {
-    $fileName = null;
+// Post
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && $request === 'create') {
 
-    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-        $uploadDir = __DIR__ . '/../public/uploads/';
-        $fileName = time() . '_' . basename($_FILES['image']['name']);
-
-        if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadDir . $fileName)) {
-            $error_message = 'There was an error uploading your file.';
-        }
-    }
     $title = $_POST['title'];
     $content = $_POST['content'];
     $date = date('Y-m-d');
     $user_id = 1;
+    $fileName = null;
 
-    if (!empty($title) && !empty($content) && !empty($user_id) && !empty($date)) {
 
+// File validation
+    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+        $uploadDir = __DIR__ . '/../public/uploads/';
+        $fileName = time() . '_' . basename($_FILES['image']['name']);
+
+// Try to move files, if it fail, throw error
+        if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadDir . $fileName)) {
+            $error_message = 'There was an error uploading your file.';
+        }
+        $allowedMimes = ['image/jpeg', 'image/png'];
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+        $detectedMime = $finfo->file($_FILES['image']['tmp_name']);
+        if(!in_array($detectedMime, $allowedMimes)) {
+            die("Invalid file type : " . $detectedMime);
+        }
+    }
+
+    // Check if title etc are empty, if not, insert datas
+    if (!empty(trim($title)) && !empty(trim($content)) && !empty($user_id) && !empty($date)) {
+
+        // Insertion following this pattern : request -> preparation -> execution
         $sql = "insert into posts(title, content, image, created_at, user_id) values(:title, :content, :image, :created_at, :user_id)";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
@@ -47,10 +60,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_GET['pages'] === 'create') {
                 'created_at' => $date,
                 'user_id' => $user_id
         ]);
+
+        // Go back to home once done
         $_SESSION['notification'] = 'Post created !';
-        header('Location: ?page=home');
+        header('Location: ?pages=home');
         exit;
     } else {
+        // Error message
         $error_message = 'Please fill in all the required fields.';
     }
 }
@@ -74,19 +90,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_GET['pages'] === 'create') {
 </head>
 <body class="grid grid-rows-[auto_1fr_auto] min-h-full">
 <?php include "../views/components/navbar.php"; ?>
-    <main>
-        <?php if (isset($_SESSION['notification'])): ?>
-            <div class='text-green-700 border border-green-500 bg-green-50 rounded-md p-2.5 mb-2.5'>
-                <?php echo $_SESSION['notification'];
-                unset($_SESSION['notification']); ?>
-            </div>
-        <?php endif; ?>
+<main>
+    <?php if (isset($_SESSION['notification'])): ?>
+        <div class='text-green-700 border border-green-500 bg-green-50 rounded-md p-2.5 mb-2.5'>
+            <?php echo $_SESSION['notification'];
+            unset($_SESSION['notification']); ?>
+        </div>
+    <?php endif; ?>
 
-        <?php if (isset($error_message)) : ?>
-            <div class="text-red-700 border border-red-500 bg-red-50 rounded-md p-2.5 mb-2.5">
-                <?php echo htmlspecialchars($error_message); ?>
-            </div>
-        <?php endif; ?>
+    <?php if (isset($error_message)) : ?>
+        <div class="text-red-700 border border-red-500 bg-red-50 rounded-md p-2.5 mb-2.5">
+            <?php echo htmlspecialchars($error_message); ?>
+        </div>
+    <?php endif; ?>
 
     <?php if ($templates): ?>
         <?php include $templates; ?>
