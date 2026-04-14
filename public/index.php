@@ -17,21 +17,28 @@ $pages = [
 $request = $_GET['pages'] ?? 'home';
 $templates = $pages[$request] ?? null;
 
-
-    $pdo = require __DIR__ . '/../config/db.php';
+$pdo = require __DIR__ . '/../config/db.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    $title = $_POST['title'];
+    $content = $_POST['content'];
+    $image = $_POST['image'];
+    $date = date('Y-m-d');
+    $user_id = 1;
+
+if(isset($title) && isset($content) && isset($user_id) && isset($date)) {
 
     $sql = "insert into posts(title, content, image, created_at, user_id) values(:title, :content, :image, :created_at, :user_id)";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
-            'title' => $_POST['title'],
-            'content' => $_POST['content'],
-            'image' => $_POST['image'],
-            'created_at' => date("Y-m-d"),
-            'user_id' => 1
+            'title' => $title,
+            'content' => $content,
+            'image' => $image,
+            'created_at' => $date,
+            'user_id' => $user_id
     ]);
-
+}
 }
 ?>
 
