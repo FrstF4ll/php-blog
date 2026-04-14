@@ -31,7 +31,7 @@
                         <div class="text-center">
                             <img src="/assets/layout.svg" class="mx-auto size-12 text-gray-300" alt="Layout icon">
                             <div class="mt-4 flex text-sm/6 text-gray-600">
-                                <label for="file-upload"
+                                <label for="image"
                                        class="relative cursor-pointer rounded-md bg-transparent font-semibold text-indigo-600 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-indigo-600 hover:text-indigo-500">
                                     <span>Upload a file</span>
                                     <input type="file" name="image" class="sr-only"/>
