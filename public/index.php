@@ -1,5 +1,6 @@
 <?php
 
+use Frstf4ll\PhpBlog\PostDTO;
 use Frstf4ll\PhpBlog\PostRepository;
 use Frstf4ll\PhpBlog\PostValidation;
 
@@ -30,7 +31,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $request === 'create') {
     $content = $_POST['content'];
     $date = date('Y-m-d');
     $user_id = 1;
-    $error_message = null;
     $fileName = null;
 
     $postValidation = new PostValidation();
@@ -43,8 +43,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $request === 'create') {
             move_uploaded_file($_FILES['image']['tmp_name'], $uploadDir . $fileName);
         }
 
+        var_dump($title, $content, $date, $user_id, $fileName);  // Debug
+
+        $requestDTO = new PostDTO($title, $content, $date, $user_id, $fileName);
         $postRepository = new PostRepository($pdo);
-        $postRepository->createPost($title, $content, $fileName, $date, $user_id);
+        $postRepository->createPost($requestDTO);
 
         $_SESSION['notification'] = 'Post created !';
         header('Location: ?pages=home');
