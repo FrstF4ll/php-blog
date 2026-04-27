@@ -2,7 +2,7 @@
 
 namespace Frstf4ll\PhpBlog;
 
-class fileUploader
+class FileUploader
 {
 
 }
