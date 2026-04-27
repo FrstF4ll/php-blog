@@ -6,11 +6,10 @@ use PDO;
 
 class PostRepository
 {
-    private PDO $pdo;
 
-    public function __construct($pdo)
+
+    public function __construct(private readonly PDO $pdo)
     {
-        $this->pdo = $pdo;
     }
 
     public function createPost(PostDTO $dto)

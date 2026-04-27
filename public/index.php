@@ -1,13 +1,12 @@
 <?php
 
-use Frstf4ll\PhpBlog\PostDTO;
 use Frstf4ll\PhpBlog\PostRepository;
 use Frstf4ll\PhpBlog\PostService;
 use Frstf4ll\PhpBlog\PostValidation;
 
+require_once __DIR__ . '/../vendor/autoload.php';
 session_start();
 
-require_once __DIR__ . '/../vendor/autoload.php';
 
 $pages = [
         'home' => '../views/pages/home.php',
