@@ -1,6 +1,7 @@
 <?php
 
 use Frstf4ll\PhpBlog\PostRepository;
+use Frstf4ll\PhpBlog\PostValidation;
 
 session_start();
 
@@ -25,49 +26,31 @@ $error_message = null;
 // Post
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && $request === 'create') {
 
-    $fileName = null;
-// File validation
-    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-        $allowedMimes = ['image/jpeg', 'image/png'];
-        $finfo = new finfo(FILEINFO_MIME_TYPE);
-        $detectedMime = $finfo->file($_FILES['image']['tmp_name']);
-
-        $allowedExtensions = ['jpg', 'jpeg', 'png'];
-        $fileExtension = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
-
-        if (!in_array($detectedMime, $allowedMimes)) {
-            $error_message = "Invalid file type : " . $detectedMime;
-        } elseif (!in_array($fileExtension, $allowedExtensions)) {
-            $error_message = "Invalid file extension : ." . $fileExtension;
-        } else {
-            $uploadDir = __DIR__ . '/../public/uploads/';
-            $fileName = time() . '_' . basename($_FILES['image']['name']);
-            if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadDir . $fileName)) {
-                $error_message = 'There was an error uploading your file.';
-            }
-        }
-    }
-
     $title = $_POST['title'];
     $content = $_POST['content'];
     $date = date('Y-m-d');
     $user_id = 1;
+    $error_message = null;
+    $fileName = null;
 
+    $postValidation = new PostValidation();
+    $validation = $postValidation->validation($title, $content, $user_id, $date, $_FILES['image'] ?? null);
 
-    // Check if title etc are empty, if not, insert datas
-    if (empty($error_message)) {
-        if (!empty(trim($title)) && !empty(trim($content)) && !empty($user_id) && !empty($date)) {
-            $postRepository = new PostRepository($pdo);
-            $postRepository->createPost($title, $content, $fileName, $date, $user_id);
-
-            // Go back to home once done
-            $_SESSION['notification'] = 'Post created !';
-            header('Location: ?pages=home');
-            exit;
-        } else {
-            // Error message
-            $error_message = 'Please fill in all the required fields.';
+    if ($validation['valid']) {
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $fileName = time() . '_' . basename($_FILES['image']['name']);
+            $uploadDir = __DIR__ . '/../public/uploads/';
+            move_uploaded_file($_FILES['image']['tmp_name'], $uploadDir . $fileName);
         }
+
+        $postRepository = new PostRepository($pdo);
+        $postRepository->createPost($title, $content, $fileName, $date, $user_id);
+
+        $_SESSION['notification'] = 'Post created !';
+        header('Location: ?pages=home');
+        exit;
+    } else {
+        $error_message = $validation['message'];
     }
 }
 ?>
