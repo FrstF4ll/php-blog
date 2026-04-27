@@ -16,6 +16,7 @@ class PostFileUploader
 
         $fileName = time() . '_' . basename($file['name']);
         $uploadPath = $this->uploadDir . '/' . $fileName;
+        if (!is_dir($uploadPath)) mkdir($uploadPath, 0755, true);
         if (move_uploaded_file($file['tmp_name'], $uploadPath)) {
             return ['success' => true, 'fileName' => $fileName];
         }
