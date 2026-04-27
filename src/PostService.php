@@ -27,7 +27,7 @@ class PostService
                 $fileName = $uploadResult['fileName'];
             }
         }
-        $uploadResult = $this->fileUploader->upload($_FILES['image'] ?? null);
+
         $requestDTO = new PostDTO($title, $content, $date, $user_id, $fileName);
         $this->repository->createPost($requestDTO);
 
