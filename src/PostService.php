@@ -5,8 +5,9 @@ namespace Frstf4ll\PhpBlog;
 class PostService
 {
     public function __construct(
-        private readonly PostValidation $validator,
-        private readonly PostRepository $repository
+        private readonly PostValidation   $validator,
+        private readonly PostRepository   $repository,
+        private readonly PostFileUploader $fileUploader
     )
     {
     }
@@ -20,12 +21,13 @@ class PostService
             return ['success' => false, 'error' => $validation['message']];
         }
 
-        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            $fileName = time() . '_' . basename($_FILES['image']['name']);
-            $uploadDir = __DIR__ . '/../public/uploads/';
-            move_uploaded_file($_FILES['image']['tmp_name'], $uploadDir . $fileName);
+        if (isset($_FILES['image'])) {
+            $uploadResult = $this->fileUploader->upload($_FILES['image']);
+            if ($uploadResult['success']) {
+                $fileName = $uploadResult['fileName'];
+            }
         }
-
+        $uploadResult = $this->fileUploader->upload($_FILES['image'] ?? null);
         $requestDTO = new PostDTO($title, $content, $date, $user_id, $fileName);
         $this->repository->createPost($requestDTO);
 

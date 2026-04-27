@@ -1,5 +1,6 @@
 <?php
 
+use Frstf4ll\PhpBlog\PostFileUploader;
 use Frstf4ll\PhpBlog\PostRepository;
 use Frstf4ll\PhpBlog\PostService;
 use Frstf4ll\PhpBlog\PostValidation;
@@ -34,7 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $request === 'create') {
 
     $repository = new PostRepository($pdo);
     $validator = new PostValidation();
-    $postService = new PostService($validator, $repository);
+    $uploader = new PostFileUploader();
+    $postService = new PostService($validator, $repository, $uploader);
     $result = $postService->create($title, $content, $user_id, $date);
 
     if ($result['success']) {
