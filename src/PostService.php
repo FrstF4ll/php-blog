@@ -4,14 +4,16 @@ namespace Frstf4ll\PhpBlog;
 
 class PostService
 {
-    public function __construct(PostValidation $validator, PostRepository $repository)
+    public function __construct(
+        private readonly PostValidation $validator,
+        private readonly PostRepository $repository
+    )
     {
-        $this->validator = $validator;
-        $this->repository = $repository;
     }
 
     public function create($title, $content, $user_id, $date)
     {
+        $fileName = null;
         $validation = $this->validator->validation($title, $content, $user_id, $date, $_FILES['image'] ?? null);
 
         if (!$validation['valid']) {
