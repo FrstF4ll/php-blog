@@ -2,6 +2,7 @@
 
 use Frstf4ll\PhpBlog\PostDTO;
 use Frstf4ll\PhpBlog\PostRepository;
+use Frstf4ll\PhpBlog\PostService;
 use Frstf4ll\PhpBlog\PostValidation;
 
 session_start();
@@ -31,29 +32,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $request === 'create') {
     $content = $_POST['content'];
     $date = date('Y-m-d');
     $user_id = 1;
-    $fileName = null;
 
-    $postValidation = new PostValidation();
-    $validation = $postValidation->validation($title, $content, $user_id, $date, $_FILES['image'] ?? null);
+    $repository = new PostRepository($pdo);
+    $validator = new PostValidation();
+    $postService = new PostService($validator, $repository);
+    $result = $postService->create($title, $content, $user_id, $date);
 
-    if ($validation['valid']) {
-        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            $fileName = time() . '_' . basename($_FILES['image']['name']);
-            $uploadDir = __DIR__ . '/../public/uploads/';
-            move_uploaded_file($_FILES['image']['tmp_name'], $uploadDir . $fileName);
-        }
-
-        var_dump($title, $content, $date, $user_id, $fileName);  // Debug
-
-        $requestDTO = new PostDTO($title, $content, $date, $user_id, $fileName);
-        $postRepository = new PostRepository($pdo);
-        $postRepository->createPost($requestDTO);
-
-        $_SESSION['notification'] = 'Post created !';
+    if ($result['success']) {
+        $_SESSION['notification'] = $result['message'];
         header('Location: ?pages=home');
         exit;
     } else {
-        $error_message = $validation['message'];
+        $error_message = $result['error'];
     }
 }
 ?>
@@ -83,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $request === 'create') {
         </div>
     <?php endif; ?>
 
-    <?php if (isset($error_message)) : ?>
+    <?php if ($error_message !== null) : ?>
         <div class="text-red-700 border border-red-500 bg-red-50 rounded-md p-2.5 mb-2.5">
             <?php echo htmlspecialchars($error_message); ?>
         </div>
