@@ -14,6 +14,13 @@ class PageController
         'post' => __DIR__ . '/../../views/pages/blog_post.php',
     ];
 
+    private array $viewData = [];
+
+    public function setViewData(array $data): void
+    {
+        $this->viewData = $data;
+    }
+
     private function render(string $page): void
     {
         $path = $this->pages[$page] ?? null;
@@ -24,6 +31,7 @@ class PageController
             return;
         }
 
+        extract($this->viewData);
         include $path;
     }
 

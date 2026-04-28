@@ -1,6 +1,7 @@
 <?php
 
 use Frstf4ll\PhpBlog\Controller\PageController;
+use Frstf4ll\PhpBlog\Controller\PostController;
 use Frstf4ll\PhpBlog\PostFileUploader;
 use Frstf4ll\PhpBlog\PostRepository;
 use Frstf4ll\PhpBlog\PostService;
@@ -9,11 +10,22 @@ use Frstf4ll\PhpBlog\PostValidation;
 require_once __DIR__ . '/../vendor/autoload.php';
 session_start();
 
-$controller = new PageController();
+$pageController = new PageController();
+
 $page = $_GET['pages'] ?? 'home';
+$error_message = null;
+
+
+$validator = new PostValidation();
+$uploader = new PostFileUploader();
 
 $pdo = require __DIR__ . '/../config/db.php';
-$error_message = null;
+$repository = new PostRepository($pdo);
+$postService = new PostService($validator, $repository, $uploader);
+
+$postController = new PostController($postService);
+$posts = $postController->list();
+$pageController->setViewData(['posts' => $posts]);
 
 // Post
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && $page === 'create') {
@@ -23,12 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $page === 'create') {
     $date = date('Y-m-d');
     $user_id = 1;
 
-    $repository = new PostRepository($pdo);
-    $validator = new PostValidation();
-    $uploader = new PostFileUploader();
-    $postService = new PostService($validator, $repository, $uploader);
-    $result = $postService->create($title, $content, $user_id, $date);
 
+    $result = $postService->create($title, $content, $user_id, $date);
     if ($result['success']) {
         $_SESSION['notification'] = $result['message'];
         header('Location: ?pages=home');
@@ -71,8 +79,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $page === 'create') {
     <?php endif; ?>
 
     <?php
-    if (method_exists($controller, $page)) {
-        $controller->$page();
+    if (method_exists($pageController, $page)) {
+        $pageController->$page();
     } else {
         http_response_code(404);
         echo '<h1>404 - Not found</h1>';
