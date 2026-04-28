@@ -17,7 +17,7 @@
 
     <div class="flex items-center justify-between w-full mt-4 p-1">
         <div class="flex items-center gap-x-4 text-xs">
-            <time datetime="2020-03-16" class="text-gray-500">Mar 16, 2020</time>
+            <time datetime="<?= $post['created_at'] ?>" class="text-gray-500"><?= $post['created_at'] ?></time>
             <p class="relative z-10 rounded-full bg-gray-100 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-200 text-indigo-600 hover:text-indigo-700">
                 Dev</p>
         </div>
