@@ -13,6 +13,9 @@
             "email": "hydralixe@gmail.com"
         }
     ],
+    "require" : {
+        "ext-fileinfo" : "*"
+    },
     "require-dev": {
         "laravel/pint": "^1.29"
     }

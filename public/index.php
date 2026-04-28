@@ -1,4 +1,14 @@
 <?php
+
+use Frstf4ll\PhpBlog\PostFileUploader;
+use Frstf4ll\PhpBlog\PostRepository;
+use Frstf4ll\PhpBlog\PostService;
+use Frstf4ll\PhpBlog\PostValidation;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+session_start();
+
+
 $pages = [
         'home' => '../views/pages/home.php',
         'login' => '../views/pages/login.php',
@@ -11,6 +21,32 @@ $pages = [
 
 $request = $_GET['pages'] ?? 'home';
 $templates = $pages[$request] ?? null;
+
+$pdo = require __DIR__ . '/../config/db.php';
+$error_message = null;
+
+// Post
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && $request === 'create') {
+
+    $title = $_POST['title'];
+    $content = $_POST['content'];
+    $date = date('Y-m-d');
+    $user_id = 1;
+
+    $repository = new PostRepository($pdo);
+    $validator = new PostValidation();
+    $uploader = new PostFileUploader();
+    $postService = new PostService($validator, $repository, $uploader);
+    $result = $postService->create($title, $content, $user_id, $date);
+
+    if ($result['success']) {
+        $_SESSION['notification'] = $result['message'];
+        header('Location: ?pages=home');
+        exit;
+    } else {
+        $error_message = $result['error'];
+    }
+}
 ?>
 
 
@@ -31,6 +67,18 @@ $templates = $pages[$request] ?? null;
 <body class="grid grid-rows-[auto_1fr_auto] min-h-full">
 <?php include "../views/components/navbar.php"; ?>
 <main>
+    <?php if (isset($_SESSION['notification'])): ?>
+        <div class='text-green-700 border border-green-500 bg-green-50 rounded-md p-2.5 mb-2.5'>
+            <?php echo $_SESSION['notification'];
+            unset($_SESSION['notification']); ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if ($error_message !== null) : ?>
+        <div class="text-red-700 border border-red-500 bg-red-50 rounded-md p-2.5 mb-2.5">
+            <?php echo htmlspecialchars($error_message); ?>
+        </div>
+    <?php endif; ?>
 
     <?php if ($templates): ?>
         <?php include $templates; ?>

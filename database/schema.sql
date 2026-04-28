@@ -1,3 +1,7 @@
+drop table if exists users;
+drop table if exists posts;
+
+
 create table if not exists users
 (
     id       integer primary key autoincrement,
