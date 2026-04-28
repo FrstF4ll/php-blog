@@ -1,6 +1,7 @@
 <?php
 
-
+$placeholder = "/assets/placeholder.png";
+$postImagePath = !empty($post['image']) ? "uploads/" . $post['image'] : $placeholder;
 ?>
 
 <article class="flex max-w-xl flex-col items-start justify-between relative shadow-lg rounded-2xl p-4 bg-white">
@@ -13,7 +14,7 @@
             </a>
         </div>
     <?php endif; ?>
-    <img class="rounded-lg w-full object-cover" src="uploads/<?= $post['image'] ?>" alt="workflow">
+    <img class="rounded-lg w-full object-cover" src="<?= $postImagePath ?>" alt="workflow">
 
     <div class="flex items-center justify-between w-full mt-4 p-1">
         <div class="flex items-center gap-x-4 text-xs">
