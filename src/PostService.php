@@ -34,7 +34,7 @@ class PostService
         return ['success' => true, 'message' => 'Post created!'];
     }
 
-    public function get($title, $content, $date, $user_id, $fileName)
+    public function get()
     {
         return $this->repository->getAllPosts();
     }
