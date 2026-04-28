@@ -33,11 +33,18 @@ class PostValidation
             return $this->failure("File upload error : " . $file['error']);
         }
 
+        $detectedExtension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        $allowedExtensions = ['jpg', 'jpeg', 'png'];
+
+        if(!in_array($detectedExtension, $allowedExtensions)) {
+            return $this->failure("Unsupported file extension : " . $detectedExtension);
+        }
+
         $finfo = new \finfo(FILEINFO_MIME_TYPE);
         $detectedMime = $finfo->file($file['tmp_name']);
         $allowedMimes = ['image/jpeg', 'image/png'];
         if (!in_array($detectedMime, $allowedMimes)) {
-            return $this->failure("Invalid file type : " . $detectedMime);
+            return $this->failure("Unsupported file type : " . $detectedMime);
         }
         return $this->success();
     }
