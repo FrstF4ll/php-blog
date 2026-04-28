@@ -36,6 +36,6 @@ class PostService
 
     public function get($title, $content, $date, $user_id, $fileName)
     {
-        $this->repository->getAllPosts();
+        return $this->repository->getAllPosts();
     }
 }
