@@ -1,5 +1,6 @@
 <?php
 
+use Frstf4ll\PhpBlog\Controller\PageController;
 use Frstf4ll\PhpBlog\PostFileUploader;
 use Frstf4ll\PhpBlog\PostRepository;
 use Frstf4ll\PhpBlog\PostService;
@@ -8,25 +9,14 @@ use Frstf4ll\PhpBlog\PostValidation;
 require_once __DIR__ . '/../vendor/autoload.php';
 session_start();
 
-
-$pages = [
-        'home' => '../views/pages/home.php',
-        'login' => '../views/pages/login.php',
-        'register' => '../views/pages/register.php',
-        'create' => '../views/pages/create_post.php',
-        'manage' => '../views/pages/manage_posts.php',
-        'edit' => '../views/pages/edit_post.php',
-        'post' => '../views/pages/blog_post.php',
-];
-
-$request = $_GET['pages'] ?? 'home';
-$templates = $pages[$request] ?? null;
+$controller = new PageController();
+$page = $_GET['pages'] ?? 'home';
 
 $pdo = require __DIR__ . '/../config/db.php';
 $error_message = null;
 
 // Post
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && $request === 'create') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && $page === 'create') {
 
     $title = $_POST['title'];
     $content = $_POST['content'];
@@ -80,14 +70,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $request === 'create') {
         </div>
     <?php endif; ?>
 
-    <?php if ($templates): ?>
-        <?php include $templates; ?>
-    <?php else: ?>
-        <?php http_response_code(404);
+    <?php
+    if (method_exists($controller, $page)) {
+        $controller->$page();
+    } else {
+        http_response_code(404);
         echo '<h1>404 - Not found</h1>';
-        echo '<p>The page you requested does not exist.</p>'
-        ?>
-    <?php endif; ?>
+        echo '<p>The page you requested does not exist.</p>';
+    }
+    ?>
 </main>
 
 <?php include "../views/components/footer.php"; ?>
