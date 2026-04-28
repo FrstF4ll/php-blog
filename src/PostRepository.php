@@ -27,4 +27,9 @@ values(:title, :content, :image, :date, :user_id)";
         ]);
     }
 
+    public function getAllPosts(): array
+    {
+        $stmt = $this->pdo->query('select * from posts order by created_at desc');
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
