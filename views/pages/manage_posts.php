@@ -13,7 +13,8 @@
 
     <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
         <?php $show_edit_icon = true; ?>
-
-        <?php include __DIR__ . '/../components/previews.php'; ?>
+        <?php foreach (array_reverse($posts) as $post): ?>
+            <?php include "../views/components/previews.php"; ?>
+        <?php endforeach; ?>
     </div>
 </div>
