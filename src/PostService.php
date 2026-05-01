@@ -34,8 +34,13 @@ class PostService
         return ['success' => true, 'message' => 'Post created!'];
     }
 
-    public function get()
+    public function getAll()
     {
         return $this->repository->getAllPosts();
+
+    }
+
+    public function getSingle($postId){
+        return $this->repository->getSinglePost($postId);
     }
 }

@@ -12,8 +12,14 @@ class PostController
 
     public function list(): array
     {
-        $posts = $this->postService->get();
+        $posts = $this->postService->getAll() ;
         return $this->formatPosts($posts);
+    }
+
+    public function show(int $id)
+    {
+        $post = $this->postService->getSingle($id);
+        return $this->formatPosts($post);
     }
 
     private function formatPosts(array $posts): array

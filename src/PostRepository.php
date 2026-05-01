@@ -29,7 +29,26 @@ values(:title, :content, :image, :date, :user_id)";
 
     public function getAllPosts(): array
     {
-        $stmt = $this->pdo->query('select * from posts order by created_at desc');
+        $stmt = $this->pdo->query('select * from posts order by created_at asc');
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getSinglePost(int $postId): ?PostDTO {
+        $query = "select * from posts where id = :id";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['id' => $postId]);
+
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        if(!$data){
+            return null;
+        }
+        return new PostDTO(
+            title: $data['title'],
+            content: $data['content'],
+            date: $data['created_at'],
+            userId: (int)$data['user_id'],
+            fileName: $data['image_path'], // Optional field
+            postId: (int)$data['id']        // Now we have the ID!
+        );
     }
 }
