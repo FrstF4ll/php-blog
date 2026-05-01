@@ -9,6 +9,7 @@ readonly class PostDTO
         public string $content,
         public string $date,
         public int $userId,
-        public ?string $fileName = null
+        public ?string $fileName = null,
+        public ?int $postId = null
     ) {}
 }
