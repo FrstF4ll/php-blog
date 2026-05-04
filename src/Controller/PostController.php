@@ -29,4 +29,13 @@ class PostController
             return $post;
         }, $posts);
     }
+    public function createPost(array $postData, array $files): array
+    {
+        $title = $postData['title'];
+        $content = $postData['content'];
+        $date = date('Y-m-d');
+        $user_id = 1;
+
+        return $this->postService->create($title, $content, $user_id, $date);
+    }
 }
