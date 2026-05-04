@@ -4,7 +4,8 @@ $placeholder = "/assets/placeholder.png";
 $postImagePath = !empty($post['image']) ? "uploads/" . $post['image'] : $placeholder;
 ?>
 
-<article class="flex max-w-xl flex-col items-start justify-between relative shadow-lg rounded-2xl p-4 bg-white">
+<article id="<?= $post['id'] ?>"
+         class="flex max-w-xl flex-col items-start justify-between relative shadow-lg rounded-2xl p-4 bg-white">
     <?php if (isset($show_edit_icon) && $show_edit_icon === true): ?>
         <div class="w-full flex justify-end mb-2">
             <a href="?pages=edit" class="relative z-10">
@@ -25,8 +26,9 @@ $postImagePath = !empty($post['image']) ? "uploads/" . $post['image'] : $placeho
     </div>
     <div class="group relative grow p-2">
         <h3 class="mt-3 text-lg/6 font-semibold text-gray-900 group-hover:text-gray-600">
-                <span class="absolute inset-0"></span>
+            <a href="?pages=post&id=<?= $post['id'] ?>">
                 <?= $post['title'] ?>
+            </a>
         </h3>
         <p class="mt-5 line-clamp-3 text-sm/6 text-gray-600"><?= $post['content'] ?></p>
     </div>

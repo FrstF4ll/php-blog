@@ -25,8 +25,13 @@ $postService = new PostService($validator, $repository, $uploader);
 
 $postController = new PostController($postService);
 $posts = $postController->list();
-$pageController->setViewData(['posts' => $posts]);
 
+$postId = $_GET['id'];
+if($postId){
+$post = $postController->show($postId);
+}
+
+$pageController->setViewData(['posts' => $posts, 'post' => $post]);
 // Post
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && $page === 'create') {
 

@@ -21,7 +21,7 @@ values(:title, :content, :image, :date, :user_id)";
         $stmt->execute([
             'title' => $dto->title,
             'content' => $dto->content,
-            'image' => $dto->fileName,
+            'image' => $dto->image,
             'date' => $dto->date,
             'user_id' => $dto->userId
         ]);
@@ -47,8 +47,8 @@ values(:title, :content, :image, :date, :user_id)";
             content: $data['content'],
             date: $data['created_at'],
             userId: (int)$data['user_id'],
-            fileName: $data['image_path'], // Optional field
-            postId: (int)$data['id']        // Now we have the ID!
+            image: $data['image'],
+            postId: (int)$data['id']
         );
     }
 }

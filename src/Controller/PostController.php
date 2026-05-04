@@ -2,6 +2,7 @@
 
 namespace Frstf4ll\PhpBlog\Controller;
 
+use Frstf4ll\PhpBlog\PostDTO;
 use Frstf4ll\PhpBlog\PostService;
 
 class PostController
@@ -12,14 +13,13 @@ class PostController
 
     public function list(): array
     {
-        $posts = $this->postService->getAll() ;
+        $posts = $this->postService->getAll();
         return $this->formatPosts($posts);
     }
 
-    public function show(int $id)
+    public function show(int $id): ?PostDTO
     {
-        $post = $this->postService->getSingle($id);
-        return $this->formatPosts($post);
+        return $this->postService->getSingle($id);
     }
 
     private function formatPosts(array $posts): array
