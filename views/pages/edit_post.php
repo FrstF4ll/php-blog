@@ -1,13 +1,37 @@
 <?php
+use Frstf4ll\PhpBlog\PostDTO;
 
-if(!$post){
+$container = require dirname(__DIR__, 2) . '/config/bootstrap.php';
+
+$pageController = $container['PageController'];
+$postController = $container['PostController'];
+
+if (!$post) {
     $pageController->not_found();
     return;
 }
 
-$title = htmlspecialchars($post->title);
-$content = htmlspecialchars($post->content);
-$image = $post->image;
+$data = new PostDTO(
+        $title = $_POST['title'] ?? $post->title,
+        $content = $_POST['content'] ?? $post->content,
+        $created_at = $post->created_at,
+        $user_id = $post->user_id,
+        $image = $_POST['image'] ?? $post->image,
+        $id = $post->id,
+);
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $result = $postController->editPost($data);
+    if ($result) {
+        $_SESSION['notification'] = $result['message'];
+        header('Location: ?pages=manage');
+        exit;
+    }
+}
+
+$title = htmlspecialchars($data->title);
+$content = htmlspecialchars($data->content);
+$image = $data->image;
 $placeholder = "/assets/placeholder.png";
 $postImagePath = !empty($image) ? "uploads/" . $image : $placeholder;
 ?>
@@ -30,7 +54,7 @@ $postImagePath = !empty($image) ? "uploads/" . $image : $placeholder;
                 <div class="col-span-full">
                     <label for="about" class=" text-sm/6 font-medium">Content</label>
                     <div class="mt-2">
-                        <textarea id="about" name="about" rows="8"
+                        <textarea id="contet" name="content" rows="8"
                                   class="w-full rounded-md px-3 py-1.5  outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"><?= $content ?>
                         </textarea>
                     </div>

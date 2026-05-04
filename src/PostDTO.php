@@ -15,10 +15,10 @@ readonly class PostDTO
     {
     }
 
-    public function toPayload()
+    public function getFields()
     {
         $data = get_object_vars($this);
         unset($data['id']);
-        return array_filter($data, fn($key) => $key !== null);
+        return array_filter($data, fn($value) => $value !== null);
     }
 }

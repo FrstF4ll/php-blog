@@ -52,7 +52,7 @@ values(:title, :content, :image, :date, :user_id)";
         );
     }
     public function updatePost(PostDTO $dto): bool{
-        $data = $dto->toPayload();
+        $data = $dto->getFields();
 
         if (empty($data)){
             return false;
@@ -61,9 +61,10 @@ values(:title, :content, :image, :date, :user_id)";
         $keys = array_keys($data);
         $mapped = array_map(fn($key) => "$key = :$key", $keys);
         $fields = implode(', ', $mapped);
+
         $query = "update posts set $fields where id = :id";
         $stmt = $this->pdo->prepare($query);
-        $payload = array_merge($data, ['id' => $dto->postId]);
+        $payload = array_merge($data, ['id' => $dto->id]);
         return $stmt->execute($payload);
     }
 }
