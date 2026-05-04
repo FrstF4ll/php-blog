@@ -38,4 +38,9 @@ class PostController
 
         return $this->postService->create($title, $content, $user_id, $date);
     }
+
+    public function editPost(PostDTO $dto): bool
+    {
+        return $this->postService->update($dto);
+    }
 }

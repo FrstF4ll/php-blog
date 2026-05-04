@@ -43,4 +43,8 @@ class PostService
     public function getSingle($postId){
         return $this->repository->getSinglePost($postId);
     }
+
+    public function update(PostDTO $dto){
+        return $this->repository->updatePost($dto);
+    }
 }
