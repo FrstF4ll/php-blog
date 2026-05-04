@@ -1,21 +1,18 @@
 <?php
 
-use Frstf4ll\PhpBlog\Controller\PageController;
-$pageController = new PageController();
 if(!$post){
     $pageController->not_found();
     return;
 }
+
 $title = htmlspecialchars($post->title);
 $content = htmlspecialchars($post->content);
 $image = $post->image;
-
 $placeholder = "/assets/placeholder.png";
 $postImagePath = !empty($image) ? "uploads/" . $image : $placeholder;
-
 ?>
 
-<form class="flex flex-col p-8 text-gray-900 ">
+<form method="POST" class="flex flex-col p-8 text-gray-900 ">
     <div class="space-y-12">
         <div class="border-b border-gray-900/10 pb-12">
             <h2 class="text-3xl font-semibold text-center">Edit your article</h2>
@@ -25,7 +22,7 @@ $postImagePath = !empty($image) ? "uploads/" . $image : $placeholder;
                     <div class="mt-2">
                         <div class="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
                             <input type="text" name="title" placeholder="Your Article..." value="<?= $title ?>"
-                                   class=" min-w-0 w-full grow bg-white py-1.5 pr-3 pl-1 text-base placeholder:text-gray-400 focus:outline-none sm:text-sm/6"/>
+                                   class="w-full grow bg-white py-1.5 pr-3 pl-1 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"/>
                         </div>
                     </div>
                 </div>
@@ -34,7 +31,7 @@ $postImagePath = !empty($image) ? "uploads/" . $image : $placeholder;
                     <label for="about" class=" text-sm/6 font-medium">Content</label>
                     <div class="mt-2">
                         <textarea id="about" name="about" rows="8"
-                                  class="w-full rounded-md  outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"><?= $content ?>
+                                  class="w-full rounded-md px-3 py-1.5  outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"><?= $content ?>
                         </textarea>
                     </div>
                 </div>
