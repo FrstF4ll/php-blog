@@ -1,5 +1,16 @@
 <?php
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $result = $postController->createPost($_POST, $_FILES);
+    if ($result['success']) {
+        $_SESSION['notification'] = $result['message'];
+        header('Location: ?pages=home');
+        exit;
+    } else {
+        $error_message = $result['error'];
+    }
+}
+
 ?>
 
 <form method="POST" enctype="multipart/form-data" class="flex flex-col p-8">

@@ -1,24 +1,18 @@
 <?php
 
-use Frstf4ll\PhpBlog\Controller\PageController;
-use Frstf4ll\PhpBlog\Controller\PostController;
-use Frstf4ll\PhpBlog\PostFileUploader;
-use Frstf4ll\PhpBlog\PostRepository;
-use Frstf4ll\PhpBlog\PostService;
-use Frstf4ll\PhpBlog\PostValidation;
-
 require_once __DIR__ . '/../vendor/autoload.php';
+
 session_start();
 
-$pageController = new PageController();
-$allowedPages = ['home', 'login', 'register', 'create', 'manage', 'edit', 'post'];
-$page = $_GET['pages'] ?? 'home';
-$error_message = null;
-
-$pdo = require __DIR__ . '/../config/db.php';
 $container = require __DIR__ . '/../config/bootstrap.php';
 
+$error_message = null;
+
+$pageController = $container['PageController'];
 $postController = $container['PostController'];
+
+$allowedPages = ['home', 'login', 'register', 'create', 'manage', 'edit', 'post'];
+$page = $_GET['pages'] ?? 'home';
 
 $posts = in_array($page, ['home', 'manage']) ? $postController->list() : [];
 $postId = $_GET['id'] ?? null;
@@ -26,11 +20,9 @@ $post = null;
 if ($postId) {
     $post = $postController->show((int)$postId);
 }
-if ($_SERVER['REQUEST_METHOD'] == 'PATCH' && $page === 'edit') {
 
-
-}
 $pageController->setViewData(['posts' => $posts, 'post' => $post]);
+
 // Post
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && $page === 'create') {
     $result = $postController->createPost($_POST, $_FILES);
