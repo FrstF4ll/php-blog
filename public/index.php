@@ -26,9 +26,10 @@ $postService = new PostService($validator, $repository, $uploader);
 $postController = new PostController($postService);
 $posts = $postController->list();
 
-$postId = $_GET['id'];
+$postId = $_GET['id'] ?? null;
+$post = null;
 if($postId){
-$post = $postController->show($postId);
+$post = $postController->show((int)$postId);
 }
 
 $pageController->setViewData(['posts' => $posts, 'post' => $post]);
