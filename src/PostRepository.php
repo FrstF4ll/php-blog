@@ -30,7 +30,7 @@ values(:title, :content, :image, :date, :user_id)";
     public function getAllPosts(): array
     {
         $stmt = $this->pdo->query('select * from posts order by created_at asc');
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll();
     }
 
     public function getSinglePost(int $postId): ?PostDTO {
@@ -38,7 +38,7 @@ values(:title, :content, :image, :date, :user_id)";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['id' => $postId]);
 
-        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        $data = $stmt->fetch();
         if(!$data){
             return null;
         }
