@@ -12,6 +12,7 @@ session_start();
 
 $pageController = new PageController();
 
+$allowedPages = ['home', 'login', 'register', 'create', 'manage', 'edit', 'post'];
 $page = $_GET['pages'] ?? 'home';
 $error_message = null;
 
@@ -28,8 +29,8 @@ $posts = $postController->list();
 
 $postId = $_GET['id'] ?? null;
 $post = null;
-if($postId){
-$post = $postController->show((int)$postId);
+if ($postId) {
+    $post = $postController->show((int)$postId);
 }
 
 $pageController->setViewData(['posts' => $posts, 'post' => $post]);
@@ -85,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $page === 'create') {
     <?php endif; ?>
 
     <?php
-    if (method_exists($pageController, $page)) {
+    if (in_array($page, $allowedPages) && method_exists($pageController, $page)) {
         $pageController->$page();
     } else {
         http_response_code(404);
