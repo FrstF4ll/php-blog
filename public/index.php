@@ -11,27 +11,25 @@ require_once __DIR__ . '/../vendor/autoload.php';
 session_start();
 
 $pageController = new PageController();
-
 $allowedPages = ['home', 'login', 'register', 'create', 'manage', 'edit', 'post'];
 $page = $_GET['pages'] ?? 'home';
 $error_message = null;
 
-
-$validator = new PostValidation();
-$uploader = new PostFileUploader();
-
 $pdo = require __DIR__ . '/../config/db.php';
-$repository = new PostRepository($pdo);
-$postService = new PostService($validator, $repository, $uploader);
+$container = require __DIR__ . '/../config/bootstrap.php';
 
-$postController = new PostController($postService);
+$postController = $container['PostController'];
+
 $posts = in_array($page, ['home', 'manage']) ? $postController->list() : [];
 $postId = $_GET['id'] ?? null;
 $post = null;
 if ($postId) {
     $post = $postController->show((int)$postId);
 }
+if ($_SERVER['REQUEST_METHOD'] == 'PATCH' && $page === 'edit') {
 
+
+}
 $pageController->setViewData(['posts' => $posts, 'post' => $post]);
 // Post
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && $page === 'create') {
