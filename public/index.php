@@ -25,8 +25,7 @@ $repository = new PostRepository($pdo);
 $postService = new PostService($validator, $repository, $uploader);
 
 $postController = new PostController($postService);
-$posts = $postController->list();
-
+$posts = in_array($page, ['home', 'manage']) ? $postController->list() : [];
 $postId = $_GET['id'] ?? null;
 $post = null;
 if ($postId) {
