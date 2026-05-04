@@ -2,6 +2,9 @@
 
 $placeholder = "/assets/placeholder.png";
 $postImagePath = !empty($post['image']) ? "uploads/" . $post['image'] : $placeholder;
+
+$title = htmlspecialchars($post['title']);
+$content = htmlspecialchars($post['content']);
 ?>
 
 <article id="<?= $post['id'] ?>"
@@ -27,10 +30,10 @@ $postImagePath = !empty($post['image']) ? "uploads/" . $post['image'] : $placeho
     <div class="group relative grow p-2">
         <h3 class="mt-3 text-lg/6 font-semibold text-gray-900 group-hover:text-gray-600">
             <a href="?pages=post&id=<?= $post['id'] ?>">
-                <?= $post['title'] ?>
+                <?= $title ?>
             </a>
         </h3>
-        <p class="mt-5 line-clamp-3 text-sm/6 text-gray-600"><?= $post['content'] ?></p>
+        <p class="mt-5 line-clamp-3 text-sm/6 text-gray-600"><?= $content ?></p>
     </div>
     <div class="relative mt-8 flex items-center gap-x-4 justify-self-end p-2">
         <img src="assets/profile.svg" alt="profile picture" class="h-10 w-10 rounded-full bg-gray-200">
