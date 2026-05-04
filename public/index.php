@@ -89,9 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $page === 'create') {
     if (in_array($page, $allowedPages) && method_exists($pageController, $page)) {
         $pageController->$page();
     } else {
-        http_response_code(404);
-        echo '<h1>404 - Not found</h1>';
-        echo '<p>The page you requested does not exist.</p>';
+        $pageController->not_found();
     }
     ?>
 </main>

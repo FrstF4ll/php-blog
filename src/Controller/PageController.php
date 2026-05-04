@@ -12,6 +12,7 @@ class PageController
         'manage' => __DIR__ . '/../../views/pages/manage_posts.php',
         'edit' => __DIR__ . '/../../views/pages/edit_post.php',
         'post' => __DIR__ . '/../../views/pages/post.php',
+        'not_found' => __DIR__ . '/../../views/pages/not_found.php'
     ];
 
     private array $viewData = [];
@@ -68,5 +69,10 @@ class PageController
     public function post(): void
     {
         $this->render('post');
+    }
+
+    public function not_found(): void
+    {
+        $this->render('not_found');
     }
 }

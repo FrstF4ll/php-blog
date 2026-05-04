@@ -1,4 +1,11 @@
 <?php
+
+use Frstf4ll\PhpBlog\Controller\PageController;
+
+$pageController = new PageController();
+if(!$post){
+$pageController->not_found();
+}
 $title = htmlspecialchars($post->title);
 $content = htmlspecialchars($post->content);
 ?>
