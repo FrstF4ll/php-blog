@@ -22,8 +22,8 @@ values(:title, :content, :image, :date, :user_id)";
             'title' => $dto->title,
             'content' => $dto->content,
             'image' => $dto->image,
-            'date' => $dto->date,
-            'user_id' => $dto->userId
+            'date' => $dto->created_at,
+            'user_id' => $dto->user_id
         ]);
     }
 
@@ -45,10 +45,10 @@ values(:title, :content, :image, :date, :user_id)";
         return new PostDTO(
             title: $data['title'],
             content: $data['content'],
-            date: $data['created_at'],
-            userId: (int)$data['user_id'],
+            created_at: $data['created_at'],
+            user_id: (int)$data['user_id'],
             image: $data['image'],
-            postId: (int)$data['id']
+            id: (int)$data['id']
         );
     }
     public function updatePost(PostDTO $dto): bool{
