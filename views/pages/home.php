@@ -6,9 +6,9 @@
             <p class="mt-2 text-lg/8 text-gray-600">Learn how to grow your business with our expert advice.</p>
         </div>
         <div class="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-            <?php include "../views/components/previews.php"; ?>
-            <?php include "../views/components/previews.php"; ?>
-            <?php include "../views/components/previews.php"; ?>
+            <?php foreach (array_reverse($posts) as $post): ?>
+                <?php include "../views/components/previews.php"; ?>
+            <?php endforeach; ?>
         </div>
     </div>
 </div>
