@@ -1,5 +1,8 @@
 <?php
 
+$container = require dirname(__DIR__, 2) . '/config/bootstrap.php';
+$postController = $container['PostController'];
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $result = $postController->createPost($_POST, $_FILES);
     if ($result['success']) {

@@ -1,4 +1,5 @@
 <?php
+
 use Frstf4ll\PhpBlog\PostDTO;
 
 $container = require dirname(__DIR__, 2) . '/config/bootstrap.php';
@@ -57,6 +58,24 @@ $postImagePath = !empty($image) ? "uploads/" . $image : $placeholder;
                         <textarea id="contet" name="content" rows="8"
                                   class="w-full rounded-md px-3 py-1.5  outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"><?= $content ?>
                         </textarea>
+                    </div>
+                </div>
+                <div class="col-span-full">
+                    <label for="cover-photo" class="block text-sm/6 font-medium text-gray-900">Cover photo</label>
+                    <div class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+                        <div class="text-center">
+                            <img src="/assets/layout.svg" class="mx-auto size-12 text-gray-300" alt="Layout icon">
+                            <div class="mt-4 flex text-sm/6 text-gray-600">
+                                <label for="image-upload"
+                                       class="relative cursor-pointer rounded-md bg-transparent font-semibold text-indigo-600 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-indigo-600 hover:text-indigo-500">
+                                    <span>Upload a file</span>
+                                    <input id="image-upload" type="file" name="image" accept="image/png, image/jpeg"
+                                           class="sr-only"/>
+                                </label>
+                                <p class="pl-1">or drag and drop</p>
+                            </div>
+                            <p class="text-xs/5 text-gray-600">PNG, JPG up to 10MB</p>
+                        </div>
                     </div>
                 </div>
             </div>

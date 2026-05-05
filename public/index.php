@@ -4,7 +4,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 session_start();
 
-$container = require __DIR__ . '/../config/bootstrap.php';
+$container = require dirname(__DIR__, 1) . '/config/bootstrap.php';
 
 $error_message = null;
 
