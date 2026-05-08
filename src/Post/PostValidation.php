@@ -1,6 +1,6 @@
 <?php
 
-namespace Frstf4ll\PhpBlog;
+namespace Frstf4ll\PhpBlog\Post;
 
 class PostValidation
 {

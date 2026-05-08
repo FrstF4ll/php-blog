@@ -1,12 +1,12 @@
 <?php
 $pdo = require __DIR__ . '/../config/db.php';
 
-use Frstf4ll\PhpBlog\Controller\PageController;
-use Frstf4ll\PhpBlog\PostValidation;
-use Frstf4ll\PhpBlog\PostFileUploader;
-use Frstf4ll\PhpBlog\PostRepository;
-use Frstf4ll\PhpBlog\PostService;
-use Frstf4ll\PhpBlog\Controller\PostController;
+use Frstf4ll\PhpBlog\PageController;
+use Frstf4ll\PhpBlog\Post\PostController;
+use Frstf4ll\PhpBlog\Post\PostFileUploader;
+use Frstf4ll\PhpBlog\Post\PostRepository;
+use Frstf4ll\PhpBlog\Post\PostService;
+use Frstf4ll\PhpBlog\Post\PostValidation;
 
 $validator = new PostValidation();
 $uploader = new PostFileUploader();

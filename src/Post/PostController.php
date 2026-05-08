@@ -1,9 +1,6 @@
 <?php
 
-namespace Frstf4ll\PhpBlog\Controller;
-
-use Frstf4ll\PhpBlog\PostDTO;
-use Frstf4ll\PhpBlog\PostService;
+namespace Frstf4ll\PhpBlog\Post;
 
 class PostController
 {

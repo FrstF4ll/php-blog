@@ -1,7 +1,6 @@
 <?php
 
-use Frstf4ll\PhpBlog\Controller\PageController;
-
+use Frstf4ll\PhpBlog\PageController;
 
 
 $pageController = new PageController();

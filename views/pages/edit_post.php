@@ -1,6 +1,6 @@
 <?php
 
-use Frstf4ll\PhpBlog\PostDTO;
+use Frstf4ll\PhpBlog\Post\PostDTO;
 
 $container = require dirname(__DIR__, 2) . '/config/bootstrap.php';
 
