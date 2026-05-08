@@ -20,5 +20,4 @@ $pageController = new PageController();
 return [
     'PageController' => $pageController,
     'PostController' => $postController
-]
-?>
+];

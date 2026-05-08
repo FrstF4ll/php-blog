@@ -13,12 +13,12 @@ if (!$post) {
 }
 
 $data = new PostDTO(
-        $title = $_POST['title'] ?? $post->title,
-        $content = $_POST['content'] ?? $post->content,
-        $created_at = $post->created_at,
-        $user_id = $post->user_id,
-        $image = $post->image,
-        $id = $post->id,
+        title: $_POST['title'] ?? $post->title,
+        content: $_POST['content'] ?? $post->content,
+        created_at: $post->created_at,
+        user_id: $post->user_id,
+        image: $post->image,
+        id: $post->id
 );
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
