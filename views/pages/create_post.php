@@ -4,7 +4,7 @@ $container = require dirname(__DIR__, 2) . '/config/bootstrap.php';
 $postController = $container['PostController'];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $result = $postController->createPost($_POST, $_FILES);
+    $result = $postController->createPost($_POST);
     if ($result['success']) {
         $_SESSION['notification'] = $result['message'];
         header('Location: ?pages=home');

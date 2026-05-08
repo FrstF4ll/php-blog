@@ -25,7 +25,7 @@ $pageController->setViewData(['posts' => $posts, 'post' => $post]);
 
 // Post
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && $page === 'create') {
-    $result = $postController->createPost($_POST, $_FILES);
+    $result = $postController->createPost($_POST);
     if ($result['success']) {
         $_SESSION['notification'] = $result['message'];
         header('Location: ?pages=home');

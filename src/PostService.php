@@ -50,6 +50,12 @@ class PostService
     {
         $fileName = $dto->image;
 
+        $validation = $this->validator->validation($dto->title, $dto->content, $dto->user_id, $dto->created_at, $fileName);
+
+        if (!$validation['valid']) {
+            return ['success' => false, 'error' => $validation['message']];
+        }
+
         if ($file && $file['error'] !== UPLOAD_ERR_NO_FILE) {
             $upload = $this->fileUploader->upload($file);
             if ($upload['success']) {
