@@ -29,7 +29,7 @@ class PostController
             return $post;
         }, $posts);
     }
-    public function createPost(array $postData, array $files): array
+    public function createPost(array $postData): array
     {
         $title = $postData['title'];
         $content = $postData['content'];
@@ -39,8 +39,8 @@ class PostController
         return $this->postService->create($title, $content, $user_id, $date);
     }
 
-    public function editPost(PostDTO $dto): bool
+    public function editPost(PostDTO $dto, $file): array
     {
-        return $this->postService->update($dto);
+        return $this->postService->update($dto, $file);
     }
 }

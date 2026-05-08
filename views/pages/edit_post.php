@@ -17,12 +17,12 @@ $data = new PostDTO(
         $content = $_POST['content'] ?? $post->content,
         $created_at = $post->created_at,
         $user_id = $post->user_id,
-        $image = $_POST['image'] ?? $post->image,
+        $image = $post->image,
         $id = $post->id,
 );
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $result = $postController->editPost($data);
+    $result = $postController->editPost($data, $_FILES['image']);
     if ($result) {
         $_SESSION['notification'] = $result['message'];
         header('Location: ?pages=manage');
@@ -37,7 +37,7 @@ $placeholder = "/assets/placeholder.png";
 $postImagePath = !empty($image) ? "uploads/" . $image : $placeholder;
 ?>
 
-<form method="POST" class="flex flex-col p-8 text-gray-900 ">
+<form method="POST" enctype="multipart/form-data" class="flex flex-col p-8 text-gray-900 ">
     <div class="space-y-12">
         <div class="border-b border-gray-900/10 pb-12">
             <h2 class="text-3xl font-semibold text-center">Edit your article</h2>
