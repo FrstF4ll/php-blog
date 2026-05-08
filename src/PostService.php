@@ -21,6 +21,7 @@ class PostService
             return ['success' => false, 'error' => $validation['message']];
         }
 
+
         if (isset($_FILES['image'])) {
             $uploadResult = $this->fileUploader->upload($_FILES['image']);
             if ($uploadResult['success']) {
@@ -34,13 +35,45 @@ class PostService
         return ['success' => true, 'message' => 'Post created!'];
     }
 
+    public function update(PostDTO $dto, $file)
+    {
+        $fileName = $dto->image;
+
+        $validation = $this->validator->validation(
+            $dto->title,
+            $dto->content,
+            $dto->user_id,
+            $dto->created_at,
+            $file
+        );
+
+        if (!$validation['valid']) {
+            return ['success' => false, 'error' => $validation['message']];
+        }
+
+        if ($file && $file['error'] !== UPLOAD_ERR_NO_FILE) {
+            $upload = $this->fileUploader->upload($file);
+            if ($upload['success']) {
+                $fileName = $upload['fileName'];
+            }
+        }
+
+        $updated = new PostDTO(title: $dto->title, content: $dto->content, created_at: $dto->created_at, user_id: $dto->user_id, image: $fileName, id: $dto->id);
+        $this->repository->updatePost($updated);
+
+        return ['success' => true, 'message' => 'Post updated!'];
+    }
+
     public function getAll()
     {
         return $this->repository->getAllPosts();
 
     }
 
-    public function getSingle($postId){
+    public function getSingle($postId)
+    {
         return $this->repository->getSinglePost($postId);
     }
+
+
 }
