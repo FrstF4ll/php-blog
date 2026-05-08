@@ -20,20 +20,7 @@ $post = null;
 if ($postId) {
     $post = $postController->show((int)$postId);
 }
-
 $pageController->setViewData(['posts' => $posts, 'post' => $post]);
-
-// Post
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && $page === 'create') {
-    $result = $postController->createPost($_POST);
-    if ($result['success']) {
-        $_SESSION['notification'] = $result['message'];
-        header('Location: ?pages=home');
-        exit;
-    } else {
-        $error_message = $result['error'];
-    }
-}
 ?>
 
 

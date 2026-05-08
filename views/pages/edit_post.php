@@ -21,13 +21,9 @@ $data = new PostDTO(
         $id = $post->id,
 );
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $result = $postController->editPost($data, $_FILES['image']);
-    if ($result) {
-        $_SESSION['notification'] = $result['message'];
-        header('Location: ?pages=manage');
-        exit;
-    }
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $result = $postController->editPost($data, $_FILES['image'] ?? null);
+    $error_message = $postController->handleResultRedirect($result, '?pages=manage');
 }
 
 $title = htmlspecialchars($data->title);

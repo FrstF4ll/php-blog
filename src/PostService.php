@@ -35,22 +35,17 @@ class PostService
         return ['success' => true, 'message' => 'Post created!'];
     }
 
-    public function getAll()
-    {
-        return $this->repository->getAllPosts();
-
-    }
-
-    public function getSingle($postId)
-    {
-        return $this->repository->getSinglePost($postId);
-    }
-
     public function update(PostDTO $dto, $file)
     {
         $fileName = $dto->image;
 
-        $validation = $this->validator->validation($dto->title, $dto->content, $dto->user_id, $dto->created_at, $fileName);
+        $validation = $this->validator->validation(
+            $dto->title,
+            $dto->content,
+            $dto->user_id,
+            $dto->created_at,
+            $file
+        );
 
         if (!$validation['valid']) {
             return ['success' => false, 'error' => $validation['message']];
@@ -68,4 +63,17 @@ class PostService
 
         return ['success' => true, 'message' => 'Post updated!'];
     }
+
+    public function getAll()
+    {
+        return $this->repository->getAllPosts();
+
+    }
+
+    public function getSingle($postId)
+    {
+        return $this->repository->getSinglePost($postId);
+    }
+
+
 }
