@@ -36,7 +36,7 @@ class PostValidation
         $detectedExtension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
         $allowedExtensions = ['jpg', 'jpeg', 'png'];
 
-        if(!in_array($detectedExtension, $allowedExtensions)) {
+        if (!in_array($detectedExtension, $allowedExtensions)) {
             return $this->failure("Unsupported file extension : " . $detectedExtension);
         }
 

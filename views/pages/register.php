@@ -30,7 +30,7 @@ $register_fields = [
 
                 <div class="mt-8 flex flex-col gap-4">
                     <button type="submit"
-                       class="flex w-full justify-center rounded-md border-2 border-indigo-400 text-black px-3 py-1.5 text-sm/6 font-semibold bg-white shadow-xs hover:bg-gray-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ">
+                            class="flex w-full justify-center rounded-md border-2 border-indigo-400 text-black px-3 py-1.5 text-sm/6 font-semibold bg-white shadow-xs hover:bg-gray-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ">
                         Register
                     </button>
                 </div>
