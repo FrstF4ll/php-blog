@@ -51,9 +51,8 @@ $postImagePath = !empty($image) ? "uploads/" . $image : $placeholder;
                 <div class="col-span-full">
                     <label for="about" class=" text-sm/6 font-medium">Content</label>
                     <div class="mt-2">
-                        <textarea id="contet" name="content" rows="8"
-                                  class="w-full rounded-md px-3 py-1.5  outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"><?= $content ?>
-                        </textarea>
+                        <textarea id="content" name="content" rows="8"
+                                  class="w-full rounded-md px-3 py-1.5  outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"><?= trim($content) ?></textarea>
                     </div>
                 </div>
                 <div class="col-span-full">
