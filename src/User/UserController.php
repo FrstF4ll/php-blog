@@ -21,12 +21,13 @@ class UserController
         exit;
     }
 
-    public function store(array $postData): array
+    public function store(array $userData): array
     {
-        $name = $postData['name'];
-        $email = $postData['email'];
-        $password = $postData['password'];
+        $name = $userData['name'];
+        $email = $userData['email'];
+        $password = $userData['password'];
+        $confirmPassword = $userData['password_confirm'];
 
-        return $this->userService->register($name, $email, $password);
+        return $this->userService->register($name, $email, $password, $confirmPassword);
     }
 }

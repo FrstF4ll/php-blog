@@ -13,8 +13,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $result = $userController->store($_POST);
     $error_message = $userController->handleResultRedirect($result, '?pages=login');
 }
-
-
 ?>
 <?php if ($_SESSION['error_message']) : ?>
     <div class="text-red-700 border border-red-500 bg-red-50 rounded-md p-2.5 mb-2.5">

@@ -15,7 +15,7 @@ class UserService
         return ['success' => false, 'message' => $message];
     }
 
-    private function validation($email, $password)
+    private function validation($email, $password, $confirmPassword)
     {
         if ($this->repository->emailExists($email)) {
             return $this->failure('Email already exists');
@@ -29,12 +29,15 @@ class UserService
             return $this->failure('Password needs a mix of uppercase, lowercase, and numbers.');
         }
 
+        if ($password != $confirmPassword) {
+            return $this->failure('Confirmed password does not match');
+        }
         return ['success' => true, 'message' => 'Account created'];
     }
 
-    public function register($name, $email, $password)
+    public function register($name, $email, $password, $confirmPassword)
     {
-        $validation = $this->validation($email, $password);
+        $validation = $this->validation($email, $password, $confirmPassword);
 
         if (!$validation['success']) {
             return $validation;
