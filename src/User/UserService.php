@@ -10,14 +10,22 @@ class UserService
     {
     }
 
+    private function validation($email)
+    {
+        $this->repository->emailExists($email);
+        if ($this->repository->emailExists($email)) {
+            return ['valid' => false, 'message' => 'Email already taken'];
+        }
+        return ['valid' => true, 'message' => null];
+    }
+
     public function register($name, $email, $password)
     {
-        //     $fileName = null;
-//        $validation = $this->validator->validation($title, $content, $user_id, $date, $_FILES['image'] ?? null);
+        $validation = $this->validation($email);
 
-        /*      if (!$validation['valid']) {
-                  return ['success' => false, 'error' => $validation['message']];
-              } */
+        if (!$validation['valid']) {
+            return ['success' => false, 'error' => $validation['message']];
+        }
 
         $password = password_hash($password, PASSWORD_DEFAULT);
         $requestDTO = new UserDTO($name, $email, $password);
@@ -25,5 +33,4 @@ class UserService
 
         return ['success' => true, 'message' => 'Account created successfully, please, log in'];
     }
-
 }

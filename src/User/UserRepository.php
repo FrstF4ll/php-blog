@@ -21,4 +21,12 @@ class UserRepository
             'password' => $dto->password,
         ]);
     }
+
+    public function emailExists(string $email){
+        $query = "select email from users where email = :email";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['email' => $email]);
+
+        return (bool) $stmt->fetchColumn();
+    }
 }

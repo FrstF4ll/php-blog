@@ -11,13 +11,14 @@ class UserController
     public function handleResultRedirect($result, $redirect)
     {
 
-        if ($result['success']) {
-            $_SESSION['notification'] = $result['message'];
-            header("Location: $redirect");
-            exit;
+        if (!$result['success']) {
+            $_SESSION['error_message'] = $result['error'];
+            return null;
         }
 
-        return $result['error'] ?? null;
+        $_SESSION['notification'] = $result['message'];
+        header("Location: $redirect");
+        exit;
     }
 
     public function store(array $postData): array
