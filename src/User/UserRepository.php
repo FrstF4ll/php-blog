@@ -22,7 +22,7 @@ class UserRepository
         ]);
     }
 
-    public function emailExists(string $email){
+    public function emailExists(string $email): bool{
         $query = "select email from users where email = :email";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['email' => $email]);

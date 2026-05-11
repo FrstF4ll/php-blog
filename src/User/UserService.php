@@ -2,8 +2,6 @@
 
 namespace Frstf4ll\PhpBlog\User;
 
-use Frstf4ll\PhpBlog\Post\PostRepository;
-
 class UserService
 {
     public function __construct(private readonly UserRepository $repository)
@@ -15,11 +13,20 @@ class UserService
         return ['success' => false, 'message' => $message];
     }
 
-    private function validation($email, $password, $confirmPassword)
+    private function validation($name, $email, $password, $confirmPassword)
     {
+        if(empty($name) || empty($email) || empty($password)) {
+            return $this->failure('Please fill all the required fields');
+        }
+
+        if(empty($confirmPassword)) {
+            return $this->failure('Please confirm your password');
+        }
+
         if ($this->repository->emailExists($email)) {
             return $this->failure('Email already exists');
         }
+
         if (strlen($password) < 8) {
             return $this->failure('Password must be at least 8 characters');
         }
@@ -37,7 +44,7 @@ class UserService
 
     public function register($name, $email, $password, $confirmPassword)
     {
-        $validation = $this->validation($email, $password, $confirmPassword);
+        $validation = $this->validation($name, $email, $password, $confirmPassword);
 
         if (!$validation['success']) {
             return $validation;
