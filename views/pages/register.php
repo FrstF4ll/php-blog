@@ -4,11 +4,12 @@ $register_fields = [
         ['id' => 'username', 'label' => 'Username', 'type' => 'text', 'name' => 'name'],
         ['id' => 'email', 'label' => 'Email address', 'type' => 'email', 'name' => 'email'],
         ['id' => 'password', 'label' => 'Password', 'type' => 'password', 'name' => 'password'],
-        ['id' => 'password_confirm', 'label' => 'Confirm Password', 'type' => 'password'],
+        ['id' => 'password_confirm', 'label' => 'Confirm Password', 'type' => 'password', 'name' => 'password_confirm'],
 ];
 
 $container = require dirname(__DIR__, 2) . '/config/bootstrap.php';
 $userController = $container['UserController'];
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $result = $userController->store($_POST);
     if ($result['success']) {

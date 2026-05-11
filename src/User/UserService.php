@@ -8,12 +8,12 @@ class UserService
     {
     }
 
-    private function failure($message)
+    private function failure($message): array
     {
         return ['success' => false, 'message' => $message];
     }
 
-    private function validation($name, $email, $password, $confirmPassword)
+    private function validation(string $name,string $email, string $password, string $confirmPassword)
     {
         if (empty(trim($name)) || empty(trim($email)) || empty(trim($password))) {
             return $this->failure('Please fill all the required fields');
