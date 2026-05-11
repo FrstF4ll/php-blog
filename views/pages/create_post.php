@@ -46,7 +46,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <label for="image-upload"
                                        class="relative cursor-pointer rounded-md bg-transparent font-semibold text-indigo-600 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-indigo-600 hover:text-indigo-500">
                                     <span>Upload a file</span>
-                                    <input id="image-upload" type="file" name="image" accept="image/png, image/jpeg" class="sr-only"/>
+                                    <input id="image-upload" type="file" name="image" accept="image/png, image/jpeg"
+                                           class="sr-only"/>
                                 </label>
                                 <p class="pl-1">or drag and drop</p>
                             </div>

@@ -1,6 +1,6 @@
 <?php
 
-namespace Frstf4ll\PhpBlog;
+namespace Frstf4ll\PhpBlog\Post;
 
 use PDO;
 
@@ -33,13 +33,14 @@ values(:title, :content, :image, :date, :user_id)";
         return $stmt->fetchAll();
     }
 
-    public function getSinglePost(int $postId): ?PostDTO {
+    public function getSinglePost(int $postId): ?PostDTO
+    {
         $query = "select * from posts where id = :id";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['id' => $postId]);
 
         $data = $stmt->fetch();
-        if(!$data){
+        if (!$data) {
             return null;
         }
         return new PostDTO(
@@ -51,10 +52,12 @@ values(:title, :content, :image, :date, :user_id)";
             id: (int)$data['id']
         );
     }
-    public function updatePost(PostDTO $dto): bool{
+
+    public function updatePost(PostDTO $dto): bool
+    {
         $data = $dto->getFields();
 
-        if (empty($data)){
+        if (empty($data)) {
             return false;
         }
 

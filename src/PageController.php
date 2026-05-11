@@ -1,18 +1,18 @@
 <?php
 
-namespace Frstf4ll\PhpBlog\Controller;
+namespace Frstf4ll\PhpBlog;
 
 class PageController
 {
     private array $pages = [
-        'home' => __DIR__ . '/../../views/pages/home.php',
-        'login' => __DIR__ . '/../../views/pages/login.php',
-        'register' => __DIR__ . '/../../views/pages/register.php',
-        'create' => __DIR__ . '/../../views/pages/create_post.php',
-        'manage' => __DIR__ . '/../../views/pages/manage_posts.php',
-        'edit' => __DIR__ . '/../../views/pages/edit_post.php',
-        'post' => __DIR__ . '/../../views/pages/post.php',
-        'not_found' => __DIR__ . '/../../views/pages/not_found.php'
+        'home' => __DIR__ . '/../views/pages/home.php',
+        'login' => __DIR__ . '/../views/pages/login.php',
+        'register' => __DIR__ . '/../views/pages/register.php',
+        'create' => __DIR__ . '/../views/pages/create_post.php',
+        'manage' => __DIR__ . '/../views/pages/manage_posts.php',
+        'edit' => __DIR__ . '/../views/pages/edit_post.php',
+        'post' => __DIR__ . '/../views/pages/post.php',
+        'not_found' => __DIR__ . '/../views/pages/not_found.php'
     ];
 
     private array $viewData = [];

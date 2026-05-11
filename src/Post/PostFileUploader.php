@@ -1,10 +1,10 @@
 <?php
 
-namespace Frstf4ll\PhpBlog;
+namespace Frstf4ll\PhpBlog\Post;
 
 class PostFileUploader
 {
-    public function __construct(public string $uploadDir = __DIR__ . '/../public/uploads')
+    public function __construct(public string $uploadDir = __DIR__ . '/../../public/uploads')
     {
     }
 

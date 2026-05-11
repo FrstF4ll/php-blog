@@ -11,7 +11,7 @@ $content = htmlspecialchars($post['content']);
          class="flex max-w-xl flex-col items-start justify-between relative shadow-lg rounded-2xl p-4 bg-white">
     <?php if (isset($show_edit_icon) && $show_edit_icon === true): ?>
         <div class="w-full flex justify-end mb-2">
-            <a href="?pages=edit&id=<?=$post['id'] ?>" class="relative z-10">
+            <a href="?pages=edit&id=<?= $post['id'] ?>" class="relative z-10">
                 <span class="sr-only">Edit post</span>
                 <img src="assets/pen.svg" alt="pen"
                      class="h-7 w-7 transition-colors p-1 bg-gray-100 hover:bg-gray-200 rounded-full">
