@@ -10,17 +10,24 @@ class UserService
     {
     }
 
-    private function validation($email)
+    private function validation($email, $password)
     {
         if ($this->repository->emailExists($email)) {
             return ['success' => false, 'message' => 'Email already exists'];;
         }
+
+        $pattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/';
+        error_log($password);
+        if (!preg_match($pattern, $password)) {
+            return ['success' => false, 'message' => 'Password needs 8+ chars, a number, and an uppercase letter.'];;
+        }
+
         return ['success' => true, 'message' => 'Account created'];
     }
 
     public function register($name, $email, $password)
     {
-        $validation = $this->validation($email);
+        $validation = $this->validation($email, $password);
 
         if (!$validation['success']) {
             return $validation;
