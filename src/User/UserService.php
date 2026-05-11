@@ -22,7 +22,7 @@ class UserService
         $requestDTO = new UserDTO($name, $email, $password,);
         $this->repository->createUser($requestDTO);
 
-        return ['success' => true, 'message' => 'Post created!'];
+        return ['success' => true, 'message' => 'Account created successfully, please, log in'];
     }
 
 }
