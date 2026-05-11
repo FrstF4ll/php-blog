@@ -1,6 +1,7 @@
 <?php
 
 namespace Frstf4ll\PhpBlog\User;
+
 use PDO;
 
 class UserRepository
