@@ -12,25 +12,24 @@ class UserService
 
     private function validation($email)
     {
-        $this->repository->emailExists($email);
         if ($this->repository->emailExists($email)) {
-            return ['valid' => false, 'message' => 'Email already taken'];
+            return ['success' => false, 'message' => 'Email already exists'];;
         }
-        return ['valid' => true, 'message' => null];
+        return ['success' => true, 'message' => 'Account created'];
     }
 
     public function register($name, $email, $password)
     {
         $validation = $this->validation($email);
 
-        if (!$validation['valid']) {
-            return ['success' => false, 'error' => $validation['message']];
+        if (!$validation['success']) {
+            return $validation;
         }
 
         $password = password_hash($password, PASSWORD_DEFAULT);
         $requestDTO = new UserDTO($name, $email, $password);
         $this->repository->createUser($requestDTO);
 
-        return ['success' => true, 'message' => 'Account created successfully, please, log in'];
+        return $validation;
     }
 }

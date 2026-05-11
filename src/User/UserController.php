@@ -12,7 +12,7 @@ class UserController
     {
 
         if (!$result['success']) {
-            $_SESSION['error_message'] = $result['error'];
+            $_SESSION['error_message'] = $result['message'];
             return null;
         }
 

@@ -12,12 +12,15 @@ $userController = $container['UserController'];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $result = $userController->store($_POST);
     $error_message = $userController->handleResultRedirect($result, '?pages=login');
-
 }
 
 
 ?>
-
+<?php if ($_SESSION['error_message']) : ?>
+    <div class="text-red-700 border border-red-500 bg-red-50 rounded-md p-2.5 mb-2.5">
+        <?php echo htmlspecialchars($_SESSION['error_message']); ?>
+    </div>
+<?php endif; ?>
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
         <img src="assets/favicon.svg" alt="Logo"
