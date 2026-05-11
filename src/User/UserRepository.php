@@ -10,7 +10,7 @@ class UserRepository
     {
     }
 
-    public function createUser(UserDTO $dto)
+    public function createUser(UserDTO $dto): void
     {
         $query = "insert into users(name, email, password) values(:name, :email, :password)";
 
@@ -22,7 +22,8 @@ class UserRepository
         ]);
     }
 
-    public function emailExists(string $email): bool{
+    public function emailExists(string $email): bool
+    {
         $query = "select email from users where email = :email";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['email' => $email]);

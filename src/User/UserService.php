@@ -40,13 +40,13 @@ class UserService
             return $this->failure('Password needs a mix of uppercase, lowercase, and numbers.');
         }
 
-        if ($password != $confirmPassword) {
+        if ($password !== $confirmPassword) {
             return $this->failure('Confirmed password does not match');
         }
-        return ['success' => true, 'message' => 'Account created'];
+        return ['success' => true];
     }
 
-    public function register($name, $email, $password, $confirmPassword)
+    public function register(string $name, string $email, string $password, string $confirmPassword): array
     {
         $validation = $this->validation($name, $email, $password, $confirmPassword);
 
@@ -58,6 +58,6 @@ class UserService
         $requestDTO = new UserDTO($name, $email, $password);
         $this->repository->createUser($requestDTO);
 
-        return $validation;
+        return ['success' => true, 'message' => 'Account created successfully, you can now login'];
     }
 }
