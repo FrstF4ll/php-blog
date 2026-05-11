@@ -15,8 +15,12 @@ class UserService
 
     private function validation($name, $email, $password, $confirmPassword)
     {
-        if(empty($name) || empty($email) || empty($password)) {
+        if (empty(trim($name)) || empty(trim($email)) || empty(trim($password))) {
             return $this->failure('Please fill all the required fields');
+        }
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return $this->failure('Please provide a valid email address');
         }
 
         if(empty($confirmPassword)) {
