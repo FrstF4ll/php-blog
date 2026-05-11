@@ -1,11 +1,18 @@
 <?php
 
 $register_fields = [
-        ['id' => 'username', 'label' => 'Username', 'type' => 'text'],
-        ['id' => 'email', 'label' => 'Email address', 'type' => 'email'],
-        ['id' => 'password', 'label' => 'Password', 'type' => 'password'],
-        ['id' => 'password_confirm', 'label' => 'Confirm Password', 'type' => 'password']
+        ['id' => 'username', 'label' => 'Username', 'type' => 'text', 'name' => 'name'],
+        ['id' => 'email', 'label' => 'Email address', 'type' => 'email', 'name' => 'email'],
+        ['id' => 'password', 'label' => 'Password', 'type' => 'password', 'name' => 'password'],
+        ['id' => 'password_confirm', 'label' => 'Confirm Password', 'type' => 'password'],
 ];
+
+$container = require dirname(__DIR__, 2) . '/config/bootstrap.php';
+$userController = $container['UserController'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $result = $userController->store($_POST);
+}
+
 
 ?>
 
@@ -16,13 +23,14 @@ $register_fields = [
         <h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Create a new account </h2>
     </div>
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form action="#" method="POST" class="space-y-6">
+        <form method="POST" enctype="application/x-www-form-urlencoded" class="space-y-6">
             <div class="space-y-4">
                 <?php foreach ($register_fields as $field): ?>
                     <?php
                     $input_id = $field['id'];
                     $input_label = $field['label'];
                     $input_type = $field['type'];
+                    $input_name = $field['name'];
 
                     include __DIR__ . "/../components/input_field.php";
                     ?>

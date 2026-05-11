@@ -16,9 +16,9 @@ class UserRepository
 
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([
-            'title' => $dto->name,
-            'content' => $dto->email,
-            'image' => $dto->password,
+            'name' => $dto->name,
+            'email' => $dto->email,
+            'password' => $dto->password,
         ]);
     }
 }
