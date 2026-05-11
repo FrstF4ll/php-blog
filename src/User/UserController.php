@@ -8,19 +8,6 @@ class UserController
     {
     }
 
-    public function handleResultRedirect($result, $redirect)
-    {
-
-        if (!$result['success']) {
-            $_SESSION['error_message'] = $result['message'];
-            return null;
-        }
-
-        $_SESSION['notification'] = $result['message'];
-        header("Location: $redirect");
-        exit;
-    }
-
     public function store(array $userData): array
     {
         $name = $userData['name'];

@@ -11,7 +11,12 @@ $container = require dirname(__DIR__, 2) . '/config/bootstrap.php';
 $userController = $container['UserController'];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $result = $userController->store($_POST);
-    $error_message = $userController->handleResultRedirect($result, '?pages=login');
+    if ($result['success']) {
+        $_SESSION['notification'] = $result['message'];
+        header("Location: ?pages=login");
+        exit;
+    }
+    $_SESSION['error_message'] = $result['message'];
 }
 ?>
 <?php if (!empty($_SESSION['error_message'])) : ?>
