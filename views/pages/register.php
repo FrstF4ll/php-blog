@@ -18,7 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <?php if ($_SESSION['error_message']) : ?>
     <div class="text-red-700 border border-red-500 bg-red-50 rounded-md p-2.5 mb-2.5">
-        <?php echo htmlspecialchars($_SESSION['error_message']); ?>
+        <?php echo htmlspecialchars($_SESSION['error_message']);
+        unset($_SESSION['error_message']); ?>
     </div>
 <?php endif; ?>
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
