@@ -19,7 +19,8 @@ class UserService
                   return ['success' => false, 'error' => $validation['message']];
               } */
 
-        $requestDTO = new UserDTO($name, $email, $password,);
+        $password = password_hash($password, PASSWORD_DEFAULT);
+        $requestDTO = new UserDTO($name, $email, $password);
         $this->repository->createUser($requestDTO);
 
         return ['success' => true, 'message' => 'Account created successfully, please, log in'];
