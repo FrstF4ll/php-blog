@@ -61,11 +61,12 @@ class UserService
         return ['success' => true, 'message' => 'Account created successfully, you can now login'];
     }
 
-    public function login(string $email){
+    public function login(string $email)
+    {
         $user = $this->repository->getUser($email);
-        if (!$user) {
-        return $this->failure('No account found with this email, please try registering');
+        if ($user && password_verify($_POST['password'], $user['password'])) {
+            return ['success' => true, 'message' => 'Login successful !'];
         }
-        return ['success' => true, 'message' => 'Login successful !'];
+        return $this->failure('Wrong credentials, register or retry.');
     }
 }
