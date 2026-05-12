@@ -19,7 +19,8 @@ class UserController
     }
 
     public function authenticateSession(array $userData): array {
-        $email = $userData['email'];
-        return $this->userService->login($email);
+        $email = $userData['email'] ?? '';
+        $password = $userData['password'] ?? '';
+        return $this->userService->login($email, $password);
     }
 }

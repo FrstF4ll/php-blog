@@ -61,10 +61,10 @@ class UserService
         return ['success' => true, 'message' => 'Account created successfully, you can now login'];
     }
 
-    public function login(string $email)
+    public function login(string $email, string $password): array
     {
         $user = $this->repository->getUser($email);
-        if ($user && password_verify($_POST['password'], $user['password'])) {
+        if ($user && password_verify($password, $user['password'])) {
             $_SESSION['id'] = $user['id'];
             $_SESSION['name'] = $user['name'];
             return ['success' => true, 'message' => 'Login successful !'];
