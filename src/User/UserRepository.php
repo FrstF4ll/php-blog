@@ -33,7 +33,7 @@ class UserRepository
 
     public function getUser(string $email): ?array
     {
-        $query = "select id, password from users where email = :email";
+        $query = "select id, name, password from users where email = :email";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['email' => $email]);
         $data = $stmt->fetch(PDO::FETCH_ASSOC);

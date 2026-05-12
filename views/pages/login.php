@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $result = $userController->authenticateSession($_POST);
     if ($result['success']) {
         $_SESSION['notification'] = $result['message'];
-        header("Location: ?pages=login");
+        header("Location: ?pages=home");
         exit;
     }
     $_SESSION['error_message'] = $result['message'];
