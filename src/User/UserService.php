@@ -13,7 +13,7 @@ class UserService
         return ['success' => false, 'message' => $message];
     }
 
-    private function validation(string $name,string $email, string $password, string $confirmPassword)
+    private function validation(string $name, string $email, string $password, string $confirmPassword)
     {
         if (empty(trim($name)) || empty(trim($email)) || empty(trim($password))) {
             return $this->failure('Please fill all the required fields');
@@ -23,7 +23,7 @@ class UserService
             return $this->failure('Please provide a valid email address');
         }
 
-        if(empty($confirmPassword)) {
+        if (empty($confirmPassword)) {
             return $this->failure('Please confirm your password');
         }
 
@@ -59,5 +59,13 @@ class UserService
         $this->repository->createUser($requestDTO);
 
         return ['success' => true, 'message' => 'Account created successfully, you can now login'];
+    }
+
+    public function login(string $email){
+        $user = $this->repository->getUser($email);
+        if (!$user) {
+        return $this->failure('No account found with this email, please try registering');
+        }
+        return ['success' => true, 'message' => 'Login successful !'];
     }
 }

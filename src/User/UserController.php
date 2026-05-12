@@ -17,4 +17,9 @@ class UserController
 
         return $this->userService->register($name, $email, $password, $confirmPassword);
     }
+
+    public function authenticateSession(array $userData): array {
+        $email = $userData['email'];
+        return $this->userService->login($email);
+    }
 }
