@@ -13,7 +13,7 @@ class UserService
         return ['success' => false, 'message' => $message];
     }
 
-    private function validation(string $name, string $email, string $password, string $confirmPassword)
+    private function validation(string $name, string $email, string $password, string $confirmPassword): array
     {
         if (empty(trim($name)) || empty(trim($email)) || empty(trim($password))) {
             return $this->failure('Please fill all the required fields');
