@@ -25,6 +25,7 @@ $userController = $container['UserController'];
     </div>
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form method="POST" enctype="application/x-www-form-urlencoded" class="space-y-6">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>">
             <div class="space-y-4">
                 <?php foreach ($register_fields as $field): ?>
                     <?php

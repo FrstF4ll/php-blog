@@ -20,14 +20,16 @@ $userController = $container['UserController'];
 $allowedPages = ['home', 'login', 'register', 'create', 'manage', 'edit', 'post'];
 $page = $_GET['pages'] ?? 'home';
 
+if (($page === 'login' || $page === 'register') && empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 $posts = in_array($page, ['home', 'manage']) ? $postController->list() : [];
 $postId = $_GET['id'] ?? null;
 $post = null;
 if ($postId) {
     $post = $postController->show((int)$postId);
 }
-
-
 
 $home = '?pages=home';
 
@@ -45,15 +47,20 @@ $actions = [
                 'direction' => $home,
         ],
         'edit' => [
-                'callback' => fn() => $postController->editPost($post ,$_FILES['image'] ?? null),
+                'callback' => fn() => $postController->editPost($post, $_FILES['image'] ?? null),
                 'direction' => '?pages=manage',
         ]
 ];
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($actions[$page])) {
-    $action = $actions[$page];
-    $pageService->redirect($action['callback'], $action['direction']);
+    if (empty($_POST['csrf_token']) || empty($_SESSION['csrf_token']) ||
+            !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+        $_SESSION['error_message'] = 'Mismatched session token, try again.';
+    } else {
+        $action = $actions[$page];
+        $pageService->redirect($action['callback'], $action['direction']);
+    }
 }
 
 $pageController->setViewData(['posts' => $posts, 'post' => $post]);
