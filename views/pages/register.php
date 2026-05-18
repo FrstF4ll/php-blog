@@ -10,15 +10,6 @@ $register_fields = [
 $container = require dirname(__DIR__, 2) . '/config/bootstrap.php';
 $userController = $container['UserController'];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $result = $userController->store($_POST);
-    if ($result['success']) {
-        $_SESSION['notification'] = $result['message'];
-        header("Location: ?pages=login");
-        exit;
-    }
-    $_SESSION['error_message'] = $result['message'];
-}
 ?>
 <?php if (!empty($_SESSION['error_message'])) : ?>
     <div class="text-red-700 border border-red-500 bg-red-50 rounded-md p-2.5 mb-2.5">

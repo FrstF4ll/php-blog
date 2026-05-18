@@ -2,6 +2,7 @@
 $pdo = require __DIR__ . '/../config/db.php';
 
 use Frstf4ll\PhpBlog\PageController;
+use Frstf4ll\PhpBlog\PageService;
 use Frstf4ll\PhpBlog\Post\PostController;
 use Frstf4ll\PhpBlog\Post\PostFileUploader;
 use Frstf4ll\PhpBlog\Post\PostRepository;
@@ -23,9 +24,11 @@ $pageController = new PageController();
 $userRepository = new UserRepository($pdo);
 $userService = new UserService($userRepository);
 $userController = new UserController($userService);
+$pageService = new PageService();
 
 return [
     'PageController' => $pageController,
     'PostController' => $postController,
-    'UserController' => $userController
+    'PageService' => $pageService,
+    'UserController' => $userController,
 ];

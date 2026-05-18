@@ -9,7 +9,9 @@ $container = require dirname(__DIR__, 1) . '/config/bootstrap.php';
 $error_message = null;
 
 $pageController = $container['PageController'];
+$pageService = $container['PageService'];
 $postController = $container['PostController'];
+$userController = $container['UserController'];
 
 $allowedPages = ['home', 'login', 'register', 'create', 'manage', 'edit', 'post'];
 $page = $_GET['pages'] ?? 'home';
@@ -20,6 +22,23 @@ $post = null;
 if ($postId) {
     $post = $postController->show((int)$postId);
 }
+$actions = [
+        'login' => [
+                'callback' => fn() => $userController->authenticateSession($_POST),
+                'direction' => '?pages=home',
+        ],
+        'register' => [
+                'callback' => fn() => $userController->store($_POST),
+                'direction' => '?pages=login',
+        ],
+];
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($actions[$page])) {
+    $action = $actions[$page];
+    $pageService->redirect($action['callback'], $action['direction']);
+}
+
 $pageController->setViewData(['posts' => $posts, 'post' => $post]);
 ?>
 
