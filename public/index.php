@@ -22,15 +22,26 @@ $post = null;
 if ($postId) {
     $post = $postController->show((int)$postId);
 }
+
+$home = '?pages=home';
+
 $actions = [
         'login' => [
                 'callback' => fn() => $userController->authenticateSession($_POST),
-                'direction' => '?pages=home',
+                'direction' => $home,
         ],
         'register' => [
                 'callback' => fn() => $userController->store($_POST),
                 'direction' => '?pages=login',
         ],
+        'create' => [
+                'callback' => fn() => $postController->createPost($_POST),
+                'direction' => $home,
+        ],
+        'edit' => [
+                'callback' => fn() => $postController->editPost($post ,$_FILES['image'] ?? null),
+                'direction' => '?pages=manage',
+        ]
 ];
 
 

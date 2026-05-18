@@ -1,13 +1,5 @@
 <?php
 
-$container = require dirname(__DIR__, 2) . '/config/bootstrap.php';
-$postController = $container['PostController'];
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $result = $postController->createPost($_POST);
-    $error_message = $postController->handleResultRedirect($result, '?pages=home');
-}
-
 ?>
 
 <form method="POST" enctype="multipart/form-data" class="flex flex-col p-8">
