@@ -42,6 +42,10 @@ $actions = [
                 'callback' => fn() => $userController->store($_POST),
                 'direction' => '?pages=login',
         ],
+        'logout' => [
+                'callback' => fn() => $pageService->disconnect(),
+                'direction' => '?pages=logout',
+        ],
         'create' => [
                 'callback' => fn() => $postController->createPost($_POST),
                 'direction' => $home,

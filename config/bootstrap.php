@@ -19,12 +19,12 @@ $repository = new PostRepository($pdo);
 $postService = new PostService($validator, $repository, $uploader);
 $postController = new PostController($postService);
 
-$pageController = new PageController();
+$pageService = new PageService();
+$pageController = new PageController($pageService);
 
 $userRepository = new UserRepository($pdo);
 $userService = new UserService($userRepository);
 $userController = new UserController($userService);
-$pageService = new PageService();
 
 return [
     'PageController' => $pageController,

@@ -2,6 +2,7 @@
 
 namespace Frstf4ll\PhpBlog;
 
+
 class PageController
 {
     private array $pages = [
@@ -18,6 +19,7 @@ class PageController
 
     private array $viewData = [];
 
+    public function __construct(private PageService $pageService){}
     public function setViewData(array $data): void
     {
         $this->viewData = $data;

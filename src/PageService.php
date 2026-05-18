@@ -24,4 +24,10 @@ class PageService
         }
         return true;
     }
+
+    public function disconnect(): void
+    {
+        $_SESSION = [];
+        session_destroy();
+    }
 }
