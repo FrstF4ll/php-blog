@@ -2,7 +2,6 @@
 
 namespace Frstf4ll\PhpBlog;
 
-
 class PageController
 {
     private array $pages = [
@@ -27,7 +26,6 @@ class PageController
     {
         $this->viewData = $data;
     }
-
 
     private function render(string $page): void
     {
