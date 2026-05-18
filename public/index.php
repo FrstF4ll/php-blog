@@ -56,7 +56,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($actions[$page])) {
     $pageService->redirect($action['callback'], $action['direction']);
 }
 
-error_log(print_r($_SESSION, true));
 $pageController->setViewData(['posts' => $posts, 'post' => $post]);
 ?>
 

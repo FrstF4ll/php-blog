@@ -65,9 +65,7 @@ class UserService
     {
         $user = $this->repository->getUser($email);
         if ($user && password_verify($password, $user['password'])) {
-            $_SESSION['id'] = $user['id'];
-            $_SESSION['name'] = $user['name'];
-            return ['success' => true, 'message' => 'Login successful !'];
+            return ['success' => true, 'message' => 'Login successful !', 'id' => $user['id'], 'name' => $user['name']];
         }
         return $this->failure('Wrong credentials, register or retry.');
     }
