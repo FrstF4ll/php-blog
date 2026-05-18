@@ -8,20 +8,7 @@ class PostController
     {
     }
 
-    public function handleResultRedirect($result, $redirect)
-    {
-
-        if ($result['success']) {
-            $_SESSION['notification'] = $result['message'];
-            header("Location: $redirect");
-            exit;
-        }
-
-        return $result['error'] ?? null;
-    }
-
-    public
-    function list(): array
+    public function list(): array
     {
         $posts = $this->postService->getAll();
         return $this->formatPosts($posts);
@@ -50,8 +37,17 @@ class PostController
         return $this->postService->create($title, $content, $user_id, $date);
     }
 
-    public function editPost(PostDTO $dto, $file): array
+    public function editPost(PostDTO $post, ?array $file): array
     {
-        return $this->postService->update($dto, $file);
+        $data = new PostDTO(
+            title: $_POST['title'] ?? $post->title,
+            content: $_POST['content'] ?? $post->content,
+            created_at: $post->created_at,
+            user_id: $post->user_id,
+            image: $post->image,
+            id: $post->id
+        );
+
+        return $this->postService->update($data, $file);
     }
 }

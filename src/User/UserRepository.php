@@ -24,10 +24,19 @@ class UserRepository
 
     public function emailExists(string $email): bool
     {
-        $query = "select email from users where email = :email";
+        $query = "select 1 from users where email = :email limit 1";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['email' => $email]);
 
         return (bool) $stmt->fetchColumn();
+    }
+
+    public function getUser(string $email): ?array
+    {
+        $query = "select id, name, password from users where email = :email";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['email' => $email]);
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $data ?: null;
     }
 }

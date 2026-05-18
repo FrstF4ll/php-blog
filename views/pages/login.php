@@ -1,13 +1,21 @@
-<?php ?>
+<?php
+
+?>
+<?php if (!empty($_SESSION['error_message'])) : ?>
+    <div class="text-red-700 border border-red-500 bg-red-50 rounded-md p-2.5 mb-2.5">
+        <?php echo htmlspecialchars($_SESSION['error_message']);
+        unset($_SESSION['error_message']); ?>
+    </div>
+<?php endif; ?>
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
         <img src="assets/favicon.svg" alt="Logo"
              class="mx-auto h-10 w-auto"/>
         <h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Sign in to your account</h2>
     </div>
-
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form action="#" method="POST" class="space-y-6">
+        <form enctype="application/x-www-form-urlencoded" method="POST" class="space-y-6">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>">
             <div>
                 <label for="email" class="block text-sm/6 font-medium text-gray-900">Email address</label>
                 <div class="mt-2">

@@ -2,17 +2,27 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-session_start();
-
+session_start([
+        'cookie_lifetime' => 0,
+        'cookie_secure' => true,
+        'cookie_httponly' => true,
+        'cookie_samesite' => 'Lax'
+]);
 $container = require dirname(__DIR__, 1) . '/config/bootstrap.php';
 
 $error_message = null;
 
 $pageController = $container['PageController'];
+$pageService = $container['PageService'];
 $postController = $container['PostController'];
+$userController = $container['UserController'];
 
-$allowedPages = ['home', 'login', 'register', 'create', 'manage', 'edit', 'post'];
+$allowedPages = ['home', 'login', 'register', 'create', 'manage', 'edit', 'post', 'logout'];
 $page = $_GET['pages'] ?? 'home';
+
+if (($page === 'login' || $page === 'register') && empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
 
 $posts = in_array($page, ['home', 'manage']) ? $postController->list() : [];
 $postId = $_GET['id'] ?? null;
@@ -20,6 +30,40 @@ $post = null;
 if ($postId) {
     $post = $postController->show((int)$postId);
 }
+
+$home = '?pages=home';
+
+$actions = [
+        'login' => [
+                'callback' => fn() => $userController->authenticateSession($_POST),
+                'direction' => $home,
+        ],
+        'register' => [
+                'callback' => fn() => $userController->store($_POST),
+                'direction' => '?pages=login',
+        ],
+        'logout' => [
+                'callback' => fn() => $pageService->disconnect(),
+                'direction' => '?pages=logout',
+        ],
+        'create' => [
+                'callback' => fn() => $postController->createPost($_POST),
+                'direction' => $home,
+        ],
+        'edit' => [
+                'callback' => fn() => $postController->editPost($post, $_FILES['image'] ?? null),
+                'direction' => '?pages=manage',
+        ]
+];
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($actions[$page])) {
+    if($pageService->isTokenValid()){
+        $action = $actions[$page];
+        $pageService->redirect($action['callback'], $action['direction']);
+    }
+}
+
 $pageController->setViewData(['posts' => $posts, 'post' => $post]);
 ?>
 
