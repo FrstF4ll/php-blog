@@ -7,6 +7,7 @@ class PageController
     private array $pages = [
         'home' => __DIR__ . '/../views/pages/home.php',
         'login' => __DIR__ . '/../views/pages/login.php',
+        'logout' => __DIR__ . '/../views/pages/logout.php',
         'register' => __DIR__ . '/../views/pages/register.php',
         'create' => __DIR__ . '/../views/pages/create_post.php',
         'manage' => __DIR__ . '/../views/pages/manage_posts.php',
@@ -44,6 +45,11 @@ class PageController
     public function login(): void
     {
         $this->render('login');
+    }
+
+    public function logout(): void
+    {
+        $this->render('logout');
     }
 
     public function register(): void

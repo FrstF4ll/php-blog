@@ -17,7 +17,7 @@ $pageService = $container['PageService'];
 $postController = $container['PostController'];
 $userController = $container['UserController'];
 
-$allowedPages = ['home', 'login', 'register', 'create', 'manage', 'edit', 'post'];
+$allowedPages = ['home', 'login', 'register', 'create', 'manage', 'edit', 'post', 'logout'];
 $page = $_GET['pages'] ?? 'home';
 
 if (($page === 'login' || $page === 'register') && empty($_SESSION['csrf_token'])) {
