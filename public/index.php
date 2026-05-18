@@ -2,8 +2,12 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-session_start();
-
+session_start([
+        'cookie_lifetime' => 0,
+        'cookie_secure' => true,
+        'cookie_httponly' => true,
+        'cookie_samesite' => 'Lax'
+]);
 $container = require dirname(__DIR__, 1) . '/config/bootstrap.php';
 
 $error_message = null;
@@ -22,6 +26,8 @@ $post = null;
 if ($postId) {
     $post = $postController->show((int)$postId);
 }
+
+
 
 $home = '?pages=home';
 
@@ -50,6 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($actions[$page])) {
     $pageService->redirect($action['callback'], $action['direction']);
 }
 
+error_log(print_r($_SESSION, true));
 $pageController->setViewData(['posts' => $posts, 'post' => $post]);
 ?>
 

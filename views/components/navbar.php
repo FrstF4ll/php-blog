@@ -4,6 +4,8 @@ $link_state = [
         'inactive' => "text-gray-300 hover:bg-white/5 hover:text-white",
         'active' => "bg-gray-900 text-white",
 ];
+
+
 ?>
 
 
@@ -31,15 +33,22 @@ $link_state = [
                     </div>
                 </div>
             </div>
-            <div class="absolute inset-y-0 right-0 flex items-center gap-3 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <a href="?pages=login"
-                   class="text-sm font-medium text-slate-200 hover:text-white px-3.5 py-2 transition-colors">
-                    Log in
-                </a>
-                <a href="?pages=register"
-                   class="text-sm font-medium text-indigo-800 bg-indigo-200 hover:bg-indigo-100 px-4 py-2 rounded-lg transition-colors">
-                    Sign up
-                </a>
-            </div>
+            <?php if (!empty($_SESSION['id'])): ?>
+                <div class="text-white right-0 flex items-center gap-3 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                    <p><?= $_SESSION['name'] ?></p>
+                    <p class="text-sm font-medium text-red-800 bg-red-200 hover:bg-red-100 px-4 py-2 rounded-lg transition-colors">Log out</p>
+                </div>
+            <?php else: ?>
+                <div class="absolute inset-y-0 right-0 flex items-center gap-3 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                    <a href="?pages=login"
+                       class="text-sm font-medium text-slate-200 hover:text-white px-3.5 py-2 transition-colors">
+                        Log in
+                    </a>
+                    <a href="?pages=register"
+                       class="text-sm font-medium text-indigo-800 bg-indigo-200 hover:bg-indigo-100 px-4 py-2 rounded-lg transition-colors">
+                        Sign up
+                    </a>
+                </div>
+            <?php endif; ?>
         </div>
 </nav>
