@@ -54,10 +54,7 @@ $actions = [
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($actions[$page])) {
-    if (empty($_POST['csrf_token']) || empty($_SESSION['csrf_token']) ||
-            !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
-        $_SESSION['error_message'] = 'Mismatched session token, try again.';
-    } else {
+    if($pageService->isTokenValid()){
         $action = $actions[$page];
         $pageService->redirect($action['callback'], $action['direction']);
     }
