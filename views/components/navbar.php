@@ -36,7 +36,7 @@ $link_state = [
             <?php if (!empty($_SESSION['id'])): ?>
                 <div class="text-white right-0 flex items-center gap-3 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                     <p><?= $_SESSION['name'] ?></p>
-                    <p class="text-sm font-medium text-red-800 bg-red-200 hover:bg-red-100 px-4 py-2 rounded-lg transition-colors">Log out</p>
+                    <button class="text-sm font-medium text-red-800 bg-red-200 hover:bg-red-100 px-4 py-2 rounded-lg transition-colors">Log out</button>
                 </div>
             <?php else: ?>
                 <div class="absolute inset-y-0 right-0 flex items-center gap-3 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
