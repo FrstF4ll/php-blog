@@ -23,7 +23,7 @@ $link_state = [
                     <div class="flex space-x-4">
                         <a href="?pages=home" aria-current="page"
                            class="<?= $base_link ?> <?= $link_state['active'] ?>">Home</a>
-                        <a href=<?= empty($_SESSION['id']) ? "?pages=login" : "?pages=create" ?> class="<?= $base_link ?> <?= $link_state['inactive'] ?>
+                        <a href="<?= empty($_SESSION['id']) ? "?pages=login" : "?pages=create" ?>" class="<?= $base_link ?> <?= $link_state['inactive'] ?>
                         ">Create your
                         own</a>
                         <?php if (!empty($_SESSION['id'])): ?>

@@ -17,7 +17,7 @@ $pageService = $container['PageService'];
 $postController = $container['PostController'];
 $userController = $container['UserController'];
 
-$allowedPages = ['home', 'login', 'register', 'create', 'manage', 'edit', 'post'];
+$allowedPages = ['home', 'login', 'register', 'create', 'manage', 'edit', 'post', 'logout'];
 $tokenPages = ['login', 'register', 'create', 'edit'];
 
 $page = $_GET['pages'] ?? 'home';
@@ -27,6 +27,7 @@ if ((in_array($page, $tokenPages)) && empty($_SESSION['csrf_token'])) {
 }
 
 $posts = in_array($page, ['home', 'manage']) ? $postController->list() : [];
+
 $postId = $_GET['id'] ?? null;
 $post = null;
 if ($postId) {

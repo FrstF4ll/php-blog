@@ -39,4 +39,16 @@ class UserRepository
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
         return $data ?: null;
     }
+
+    public function joinUser(int $id)
+    {
+        $query = "SELECT posts.id, posts.title, posts.content, users.name as author_name 
+              FROM posts
+              INNER JOIN users ON users.id = posts.user_id
+              WHERE posts.id = :id";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['id' => $id]);
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $data ?: null;
+    }
 }

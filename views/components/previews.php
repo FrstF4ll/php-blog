@@ -41,7 +41,7 @@ $content = htmlspecialchars($post['content']);
             <p class="font-semibold text-gray-900">
                 <a href="#">
                     <span class="absolute inset-0"></span>
-                    <?= 'Admin' ?>
+                    <?= $user['author_name'] ?? 'Deleted user' ?>
                 </a>
             </p>
         </div>
