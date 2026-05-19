@@ -32,7 +32,7 @@ class PostController
         $title = $postData['title'];
         $content = $postData['content'];
         $date = date('Y-m-d');
-        $user_id = 1;
+        $user_id = $_SESSION['id'];
 
         return $this->postService->create($title, $content, $user_id, $date);
     }
