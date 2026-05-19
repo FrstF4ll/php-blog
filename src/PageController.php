@@ -19,11 +19,15 @@ class PageController
 
     private array $viewData = [];
 
-    public function __construct(private PageService $pageService){}
+    public function __construct(private PageService $pageService)
+    {
+    }
+
     public function setViewData(array $data): void
     {
         $this->viewData = $data;
     }
+
 
     private function render(string $page): void
     {
@@ -39,6 +43,11 @@ class PageController
         include $path;
     }
 
+    private function guestRender($page): void
+    {
+        empty($_SESSION['id']) ?   $this->render('login') : $this->render($page);
+    }
+
     public function home(): void
     {
         $this->render('home');
@@ -51,7 +60,7 @@ class PageController
 
     public function logout(): void
     {
-        $this->render('logout');
+        $this->guestRender('logout');
     }
 
     public function register(): void
@@ -61,17 +70,17 @@ class PageController
 
     public function create(): void
     {
-        $this->render('create');
+        $this->guestRender('create');
     }
 
     public function manage(): void
     {
-        $this->render('manage');
+        $this->guestRender('manage');
     }
 
     public function edit(): void
     {
-        $this->render('edit');
+        $this->guestRender('edit');
     }
 
     public function post(): void
