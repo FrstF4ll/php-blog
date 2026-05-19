@@ -20,6 +20,8 @@ $postImagePath = !empty($image) ? "uploads/" . $image : $placeholder;
 ?>
 
 <form method="POST" enctype="multipart/form-data" class="flex flex-col p-8 text-gray-900 ">
+    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>">
+
     <div class="space-y-12">
         <div class="border-b border-gray-900/10 pb-12">
             <h2 class="text-3xl font-semibold text-center">Edit your article</h2>

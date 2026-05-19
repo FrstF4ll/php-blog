@@ -3,8 +3,8 @@
 ?>
 
 <form method="POST" enctype="multipart/form-data" class="flex flex-col p-8">
+    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>">
     <div class="space-y-12">
-
         <div class="border-b border-gray-900/10 pb-12">
             <h2 class="text-3xl font-semibold text-gray-900 text-center">Create your article</h2>
             <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">

@@ -17,10 +17,12 @@ $pageService = $container['PageService'];
 $postController = $container['PostController'];
 $userController = $container['UserController'];
 
-$allowedPages = ['home', 'login', 'register', 'create', 'manage', 'edit', 'post', 'logout'];
+$allowedPages = ['home', 'login', 'register', 'create', 'manage', 'edit', 'post'];
+$tokenPages = ['login', 'register', 'create', 'edit'];
+
 $page = $_GET['pages'] ?? 'home';
 
-if (($page === 'login' || $page === 'register') && empty($_SESSION['csrf_token'])) {
+if ((in_array($page, $tokenPages)) && empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
@@ -42,10 +44,6 @@ $actions = [
                 'callback' => fn() => $userController->store($_POST),
                 'direction' => '?pages=login',
         ],
-        'logout' => [
-                'callback' => fn() => $pageService->disconnect(),
-                'direction' => '?pages=logout',
-        ],
         'create' => [
                 'callback' => fn() => $postController->createPost($_POST),
                 'direction' => $home,
@@ -58,7 +56,10 @@ $actions = [
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($actions[$page])) {
-    if($pageService->isTokenValid()){
+    if (empty($_POST['csrf_token']) || empty($_SESSION['csrf_token']) ||
+            !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+        $_SESSION['error_message'] = 'Mismatched session token, try again.';
+    } else {
         $action = $actions[$page];
         $pageService->redirect($action['callback'], $action['direction']);
     }

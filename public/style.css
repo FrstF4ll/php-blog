@@ -597,9 +597,6 @@
   .bg-red-200 {
     background-color: var(--color-red-200);
   }
-  .bg-red-400 {
-    background-color: var(--color-red-400);
-  }
   .bg-transparent {
     background-color: transparent;
   }
