@@ -24,7 +24,7 @@ $content = htmlspecialchars($post['content']);
         <div class="flex items-center gap-x-4 text-xs">
             <time datetime="<?= $post['created_at'] ?>" class="text-gray-500"><?= $post['created_at'] ?></time>
             <p class="relative z-10 rounded-full bg-gray-100 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-200 text-indigo-600 hover:text-indigo-700">
-                Dev</p>
+                <?= 'Empty category' ?></p>
         </div>
     </div>
     <div class="group relative grow p-2">
@@ -41,10 +41,9 @@ $content = htmlspecialchars($post['content']);
             <p class="font-semibold text-gray-900">
                 <a href="#">
                     <span class="absolute inset-0"></span>
-                    Michael Foster
+                    <?= 'Admin' ?>
                 </a>
             </p>
-            <p class=" text-indigo-400">Co-Founder / CTO</p>
         </div>
     </div>
 </article>

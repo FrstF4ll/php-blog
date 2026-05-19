@@ -12,7 +12,7 @@ class PostRepository
     {
     }
 
-    public function createPost(PostDTO $dto)
+    public function insertPost(PostDTO $dto)
     {
         $query = "insert into posts(title, content, image, created_at, user_id ) 
 values(:title, :content, :image, :date, :user_id)";

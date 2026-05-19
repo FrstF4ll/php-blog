@@ -30,7 +30,7 @@ class PostService
         }
 
         $requestDTO = new PostDTO($title, $content, $date, $user_id, $fileName);
-        $this->repository->createPost($requestDTO);
+        $this->repository->insertPost($requestDTO);
 
         return ['success' => true, 'message' => 'Post created!'];
     }
