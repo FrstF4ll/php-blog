@@ -17,7 +17,7 @@ $pageService = $container['PageService'];
 $postController = $container['PostController'];
 $userController = $container['UserController'];
 
-$allowedPages = ['home', 'login', 'register', 'create', 'manage', 'edit', 'post', 'logout'];
+$allowedPages = ['home', 'login', 'register', 'create', 'manage', 'edit', 'post', 'logout', 'forbidden'];
 $tokenPages = ['login', 'register', 'create', 'edit'];
 
 $page = $_GET['pages'] ?? 'home';

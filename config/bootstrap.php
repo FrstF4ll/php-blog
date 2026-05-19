@@ -20,7 +20,7 @@ $postService = new PostService($validator, $repository, $uploader);
 $postController = new PostController($postService);
 
 $pageService = new PageService();
-$pageController = new PageController($pageService);
+$pageController = new PageController();
 
 $userRepository = new UserRepository($pdo);
 $userService = new UserService($userRepository);

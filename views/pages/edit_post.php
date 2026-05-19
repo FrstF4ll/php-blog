@@ -12,6 +12,11 @@ if (!$post) {
     return;
 }
 
+if ($post->user_id !== $_SESSION['id']){
+    $pageController->forbidden();
+    return;
+}
+
 $title = htmlspecialchars($post->title);
 $content = htmlspecialchars($post->content);
 $image = $post->image;

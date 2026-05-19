@@ -33,7 +33,7 @@ values(:title, :content, :image, :date, :user_id)";
         return $stmt->fetchAll();
     }
 
-    public function getSinglePost(int $postId): ?PostDTO
+    public function selectSinglePost(int $postId): ?PostDTO
     {
         $query = "select * from posts where id = :id";
         $stmt = $this->pdo->prepare($query);

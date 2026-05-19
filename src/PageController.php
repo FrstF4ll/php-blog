@@ -13,14 +13,10 @@ class PageController
         'manage' => __DIR__ . '/../views/pages/manage_posts.php',
         'edit' => __DIR__ . '/../views/pages/edit_post.php',
         'post' => __DIR__ . '/../views/pages/post.php',
-        'not_found' => __DIR__ . '/../views/pages/not_found.php'
+        'not_found' => __DIR__ . '/../views/pages/not_found.php',
     ];
 
     private array $viewData = [];
-
-    public function __construct(private PageService $pageService)
-    {
-    }
 
     public function setViewData(array $data): void
     {
@@ -41,10 +37,30 @@ class PageController
         include $path;
     }
 
-    private function guestRender($page): void
+    public function not_found(): void
     {
-        empty($_SESSION['id']) ?   $this->render('login') : $this->render($page);
+        $this->render('not_found');
     }
+
+    public function forbidden(): void
+    {
+        $this->render('forbidden');
+    }
+
+    private function guestRender(string $page, ?array $post = null): void
+    {
+        if (empty($_SESSION['id'])) {
+            $this->render('login');
+            return;
+        }
+        if ($post && $post['user_id'] !== $_SESSION['id']){
+            $this->forbidden();
+            return;
+        }
+
+        $this->render($page);
+    }
+
 
     public function home(): void
     {
@@ -86,8 +102,4 @@ class PageController
         $this->render('post');
     }
 
-    public function not_found(): void
-    {
-        $this->render('not_found');
-    }
 }

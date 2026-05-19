@@ -70,9 +70,9 @@ class PostService
 
     }
 
-    public function getSingle($postId)
+    public function getSingle($postId): PostDTO
     {
-        return $this->repository->getSinglePost($postId);
+        return $this->repository->selectSinglePost($postId);
     }
 
 
