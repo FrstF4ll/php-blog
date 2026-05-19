@@ -58,7 +58,7 @@ class PageController
 
     public function logout(): void
     {
-        $this->guestRender('logout');
+        $this->render('logout');
     }
 
     public function register(): void
