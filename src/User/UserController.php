@@ -29,4 +29,9 @@ class UserController
         }
         return $result;
     }
+
+    public function renderUser(int $id)
+    {
+        return $this->userService->findWithAuthor($id);
+    }
 }

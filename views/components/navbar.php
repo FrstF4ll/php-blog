@@ -4,8 +4,6 @@ $link_state = [
         'inactive' => "text-gray-300 hover:bg-white/5 hover:text-white",
         'active' => "bg-gray-900 text-white",
 ];
-
-
 ?>
 
 
@@ -16,14 +14,16 @@ $link_state = [
             </div>
             <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div class="flex shrink-0 items-center">
-                    <a href="?pages=home"><img src="assets/logo.svg" alt="Your Company" class="h-8 w-auto"/>
+                    <a href="?pages=home"><img
+                                src="assets/logo.svg"
+                                alt="Your Company" class="h-8 w-auto"/>
                     </a>
                 </div>
                 <div class="hidden sm:ml-6 sm:block">
                     <div class="flex space-x-4">
                         <a href="?pages=home" aria-current="page"
                            class="<?= $base_link ?> <?= $link_state['active'] ?>">Home</a>
-                        <a href=<?= empty($_SESSION['id']) ? "?pages=login" : "?pages=create" ?> class="<?= $base_link ?> <?= $link_state['inactive'] ?>
+                        <a href="<?= empty($_SESSION['id']) ? "?pages=login" : "?pages=create" ?>" class="<?= $base_link ?> <?= $link_state['inactive'] ?>
                         ">Create your
                         own</a>
                         <?php if (!empty($_SESSION['id'])): ?>

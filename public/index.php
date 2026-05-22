@@ -17,10 +17,12 @@ $pageService = $container['PageService'];
 $postController = $container['PostController'];
 $userController = $container['UserController'];
 
-$allowedPages = ['home', 'login', 'register', 'create', 'manage', 'edit', 'post', 'logout'];
+$allowedPages = ['home', 'login', 'register', 'create', 'manage', 'edit', 'post', 'logout', 'forbidden'];
+$tokenPages = ['login', 'register', 'create', 'edit'];
+
 $page = $_GET['pages'] ?? 'home';
 
-if (($page === 'login' || $page === 'register') && empty($_SESSION['csrf_token'])) {
+if ((in_array($page, $tokenPages)) && empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
@@ -58,7 +60,7 @@ $actions = [
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($actions[$page])) {
-    if($pageService->isTokenValid()){
+    if ($pageService->isTokenValid()) {
         $action = $actions[$page];
         $pageService->redirect($action['callback'], $action['direction']);
     }
@@ -100,7 +102,11 @@ $pageController->setViewData(['posts' => $posts, 'post' => $post]);
 
     <?php
     if (in_array($page, $allowedPages) && method_exists($pageController, $page)) {
-        $pageController->$page();
+        if ($page === 'edit') {
+            $pageController->edit($post);
+        } else {
+            $pageController->$page();
+        }
     } else {
         $pageController->not_found();
     }

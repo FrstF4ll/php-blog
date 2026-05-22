@@ -1,8 +1,7 @@
 <?php
 
 namespace Frstf4ll\PhpBlog;
-
-
+use Frstf4ll\PhpBlog\Post\PostDTO;
 class PageController
 {
     private array $pages = [
@@ -14,12 +13,11 @@ class PageController
         'manage' => __DIR__ . '/../views/pages/manage_posts.php',
         'edit' => __DIR__ . '/../views/pages/edit_post.php',
         'post' => __DIR__ . '/../views/pages/post.php',
-        'not_found' => __DIR__ . '/../views/pages/not_found.php'
+        'not_found' => __DIR__ . '/../views/pages/not_found.php',
     ];
 
     private array $viewData = [];
 
-    public function __construct(private PageService $pageService){}
     public function setViewData(array $data): void
     {
         $this->viewData = $data;
@@ -38,6 +36,31 @@ class PageController
         extract($this->viewData);
         include $path;
     }
+
+    public function not_found(): void
+    {
+        $this->render('not_found');
+    }
+
+    public function forbidden(): void
+    {
+        $this->render('forbidden');
+    }
+
+    private function guestRender(string $page, ?PostDTO $post = null): void
+    {
+        if (empty($_SESSION['id'])) {
+            $this->render('login');
+            return;
+        }
+        if ($post && $post->user_id !== $_SESSION['id']){
+            $this->forbidden();
+            return;
+        }
+
+        $this->render($page);
+    }
+
 
     public function home(): void
     {
@@ -61,17 +84,17 @@ class PageController
 
     public function create(): void
     {
-        $this->render('create');
+        $this->guestRender('create');
     }
 
     public function manage(): void
     {
-        $this->render('manage');
+        $this->guestRender('manage');
     }
 
-    public function edit(): void
+    public function edit(?PostDTO $post = null): void
     {
-        $this->render('edit');
+        $this->guestRender('edit', $post);
     }
 
     public function post(): void
@@ -79,8 +102,4 @@ class PageController
         $this->render('post');
     }
 
-    public function not_found(): void
-    {
-        $this->render('not_found');
-    }
 }

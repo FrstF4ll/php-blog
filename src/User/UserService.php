@@ -69,4 +69,8 @@ class UserService
         }
         return $this->failure('Wrong credentials, register or retry.');
     }
+
+    public function findWithAuthor(int $id){
+        return $this->repository->joinUser($id);
+    }
 }

@@ -12,7 +12,7 @@ class PostRepository
     {
     }
 
-    public function createPost(PostDTO $dto)
+    public function insertPost(PostDTO $dto)
     {
         $query = "insert into posts(title, content, image, created_at, user_id ) 
 values(:title, :content, :image, :date, :user_id)";
@@ -29,11 +29,13 @@ values(:title, :content, :image, :date, :user_id)";
 
     public function getAllPosts(): array
     {
-        $stmt = $this->pdo->query('select * from posts order by created_at asc');
+        $stmt = $this->pdo->query('select posts.*, posts.id as post_id, u.name as author_name from posts 
+         left join users u on posts.user_id = u.id
+          order by created_at asc');
         return $stmt->fetchAll();
     }
 
-    public function getSinglePost(int $postId): ?PostDTO
+    public function selectSinglePost(int $postId): ?PostDTO
     {
         $query = "select * from posts where id = :id";
         $stmt = $this->pdo->prepare($query);
