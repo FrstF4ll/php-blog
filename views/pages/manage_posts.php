@@ -1,6 +1,4 @@
 <?php
-$container = require dirname(__DIR__, 1) . '/../config/bootstrap.php';
-$userController = $container['UserController'];
 ?>
 
 <div class="px-6 py-12 lg:px-8 max-w-7xl mx-auto">
@@ -16,7 +14,6 @@ $userController = $container['UserController'];
         <?php $show_edit_icon = true; ?>
         <?php foreach (array_reverse($posts) as $post): ?>
             <?php if ((int)$post['user_id'] === (int)$_SESSION['id']): ?>
-                <?php $user = $userController->renderUser($post['id']); ?>
                 <?php include "../views/components/previews.php"; ?>
             <?php endif; ?>
         <?php endforeach; ?>

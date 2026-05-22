@@ -29,7 +29,9 @@ values(:title, :content, :image, :date, :user_id)";
 
     public function getAllPosts(): array
     {
-        $stmt = $this->pdo->query('select * from posts order by created_at asc');
+        $stmt = $this->pdo->query('select *, u.name as author_name from posts 
+         join users u on posts.user_id = u.id
+          order by created_at asc');
         return $stmt->fetchAll();
     }
 
