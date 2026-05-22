@@ -44,39 +44,6 @@ $actions = [
                 'callback' => fn() => $userController->store($_POST),
                 'direction' => '?pages=login',
         ],
-        'create' => [
-                'callback' => fn() => $postController->createPost($_POST),
-                'direction' => $home,
-        ],
-        'edit' => [
-                'callback' => fn() => $postController->editPost($post, $_FILES['image'] ?? null),
-                'direction' => '?pages=manage',
-        ]
-];
-
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($actions[$page])) {
-    if (empty($_POST['csrf_token']) || empty($_SESSION['csrf_token']) ||
-            !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
-        $_SESSION['error_message'] = 'Mismatched session token, try again.';
-    } else {
-        $action = $actions[$page];
-        $pageService->redirect($action['callback'], $action['direction']);
-    }
-}
-
-
-$home = '?pages=home';
-
-$actions = [
-        'login' => [
-                'callback' => fn() => $userController->authenticateSession($_POST),
-                'direction' => $home,
-        ],
-        'register' => [
-                'callback' => fn() => $userController->store($_POST),
-                'direction' => '?pages=login',
-        ],
         'logout' => [
                 'callback' => fn() => $pageService->disconnect(),
                 'direction' => '?pages=logout',
