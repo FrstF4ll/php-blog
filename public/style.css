@@ -791,6 +791,9 @@
   .text-green-700 {
     color: var(--color-green-700);
   }
+  .text-indigo-400 {
+    color: var(--color-indigo-400);
+  }
   .text-indigo-500 {
     color: var(--color-indigo-500);
   }

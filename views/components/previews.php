@@ -29,7 +29,7 @@ $content = htmlspecialchars($post['content']);
     </div>
     <div class="group relative grow p-2">
         <h3 class="mt-3 text-lg/6 font-semibold text-gray-900 group-hover:text-gray-600">
-            <a href="?pages=post&id=<?= $post['id'] ?>">
+            <a href="?pages=post&id=<?= $post['post_id'] ?>">
                 <?= $title ?>
             </a>
         </h3>
