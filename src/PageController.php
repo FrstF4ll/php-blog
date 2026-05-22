@@ -1,7 +1,7 @@
 <?php
 
 namespace Frstf4ll\PhpBlog;
-
+use Frstf4ll\PhpBlog\Post\PostDTO;
 class PageController
 {
     private array $pages = [
@@ -47,13 +47,13 @@ class PageController
         $this->render('forbidden');
     }
 
-    private function guestRender(string $page, ?array $post = null): void
+    private function guestRender(string $page, ?PostDTO $post = null): void
     {
         if (empty($_SESSION['id'])) {
             $this->render('login');
             return;
         }
-        if ($post && $post['user_id'] !== $_SESSION['id']){
+        if ($post && $post->user_id !== $_SESSION['id']){
             $this->forbidden();
             return;
         }
@@ -92,9 +92,9 @@ class PageController
         $this->guestRender('manage');
     }
 
-    public function edit(): void
+    public function edit(?PostDTO $post = null): void
     {
-        $this->guestRender('edit');
+        $this->guestRender('edit', $post);
     }
 
     public function post(): void

@@ -60,7 +60,7 @@ $actions = [
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($actions[$page])) {
-    if($pageService->isTokenValid()){
+    if ($pageService->isTokenValid()) {
         $action = $actions[$page];
         $pageService->redirect($action['callback'], $action['direction']);
     }
@@ -102,7 +102,11 @@ $pageController->setViewData(['posts' => $posts, 'post' => $post]);
 
     <?php
     if (in_array($page, $allowedPages) && method_exists($pageController, $page)) {
-        $pageController->$page();
+        if ($page === 'edit') {
+            $pageController->edit($post);
+        } else {
+            $pageController->$page();
+        }
     } else {
         $pageController->not_found();
     }
