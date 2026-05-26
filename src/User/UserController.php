@@ -32,6 +32,7 @@ class UserController extends BaseController
         $password = $userData['password'] ?? '';
         try {
             $result = $this->userService->login($email, $password);
+            session_regenerate_id(true);
             $_SESSION['id'] = $result['id'];
             $_SESSION['name'] = $result['name'];
             $this->flashAndRedirect('success', 'Login successful.','?pages=home');

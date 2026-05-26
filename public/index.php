@@ -96,8 +96,8 @@ $pageController->setViewData(['posts' => $posts, 'post' => $post]);
         $isSuccess = ($flash['type'] === 'success');
         $colors = $isSuccess ? $success_color : $error_color;
         ?>
-        <div class='<?= $colors ?>rounded-md p-2.5 mb-2.5'>
-            <?= $flash['message'] ?>
+        <div class='<?= $colors ?> rounded-md p-2.5 mb-2.5'>
+            <?= htmlspecialchars($flash['message']) ?>
         </div>
     <?php endif; ?>
     <?php
