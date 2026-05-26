@@ -61,4 +61,10 @@ class UserService
     public function findWithAuthor(int $id){
         return $this->repository->joinUser($id);
     }
+
+    public function getSingleUser(int $id): ?UserDTO
+    {
+        return $this->repository->selectSingleUser($id);
+    }
+
 }

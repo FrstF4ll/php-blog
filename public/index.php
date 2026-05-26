@@ -17,6 +17,8 @@ $pageService = $container['PageService'];
 $postController = $container['PostController'];
 $userController = $container['UserController'];
 
+$user = $userController->getConnectedUser($_SESSION['id']);
+
 $allowedPages = ['home', 'login', 'register', 'create', 'manage', 'edit', 'post', 'logout', 'forbidden', 'profile'];
 $tokenPages = ['login', 'register', 'create', 'edit'];
 
@@ -49,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($actions[$page])) {
     }
 }
 
-$pageController->setViewData(['posts' => $posts, 'post' => $post]);
+$pageController->setViewData(['posts' => $posts, 'post' => $post, 'user' => $user]);
 ?>
 
 

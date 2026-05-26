@@ -51,4 +51,22 @@ class UserRepository
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
         return $data ?: null;
     }
+
+    public function selectSingleUser(int $userId): ?UserDTO
+    {
+        $query = "select * from users where id = :id";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['id' => $userId]);
+
+        $data = $stmt->fetch();
+        if (!$data) {
+            return null;
+        }
+        return new UserDTO(
+            name: $data['name'],
+            email: $data['email'],
+            password: $data['password'],
+            id: (int)$data['id']
+        );
+    }
 }

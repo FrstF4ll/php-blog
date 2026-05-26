@@ -46,4 +46,9 @@ class UserController extends BaseController
     {
         return $this->userService->findWithAuthor($id);
     }
+
+    public function getConnectedUser(int $id): ?UserDTO
+    {
+        return $this->userService->getSingleUser($id);
+    }
 }
