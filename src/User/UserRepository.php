@@ -68,5 +68,23 @@ class UserRepository
             password: $data['password'],
             id: (int)$data['id']
         );
+}
+        public function updateUser(UserDTO $dto): bool
+    {
+        $data = $dto->getFields();
+
+        if (empty($data)) {
+            return false;
+        }
+
+        $keys = array_keys($data);
+        $mapped = array_map(fn($key) => "$key = :$key", $keys);
+        $fields = implode(', ', $mapped);
+
+        $query = "update users set $fields where id = :id";
+        $stmt = $this->pdo->prepare($query);
+        $payload = array_merge($data, ['id' => $dto->id]);
+        return $stmt->execute($payload);
     }
+
 }

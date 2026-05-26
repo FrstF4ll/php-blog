@@ -39,7 +39,7 @@ $link_state = [
                       class="text-white right-0 flex items-center gap-3 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                     <input type="hidden" name="csrf_token"
                            value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>">
-                    <a href="?pages=profile"><?= $_SESSION['name'] ?></a>
+                    <a href="?pages=profile"><?= $user->name ?></a>
                     <button type="submit"
                             class="text-sm font-medium text-red-800 bg-red-200 hover:bg-red-100 px-4 py-2 rounded-lg transition-colors">
                         Log out

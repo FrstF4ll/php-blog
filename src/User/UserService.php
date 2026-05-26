@@ -1,6 +1,7 @@
 <?php
 
 namespace Frstf4ll\PhpBlog\User;
+
 use Frstf4ll\PhpBlog\ServiceException;
 
 class UserService
@@ -9,7 +10,7 @@ class UserService
     {
     }
 
-    private function validation(string $name, string $email, string $password, string $confirmPassword): void
+    private function validation(string $name, string $email, string $password): void
     {
         if (empty(trim($name)) || empty(trim($email)) || empty(trim($password))) {
             throw new ServiceException('Please fill all the required fields');
@@ -17,10 +18,6 @@ class UserService
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new ServiceException('Please provide a valid email address');
-        }
-
-        if (empty($confirmPassword)) {
-            throw new ServiceException('Please confirm your password');
         }
 
         if ($this->repository->emailExists($email)) {
@@ -36,14 +33,22 @@ class UserService
             throw new ServiceException('Password needs a mix of uppercase, lowercase, and numbers.');
         }
 
-        if ($password !== $confirmPassword) {
-            throw new ServiceException('Confirmed password does not match');
-        }
+
     }
 
     public function register(string $name, string $email, string $password, string $confirmPassword): void
     {
-        $this->validation($name, $email, $password, $confirmPassword);
+        $this->validation($name, $email, $password);
+
+        if (empty($confirmPassword)) {
+            throw new ServiceException('Please confirm your password');
+        }
+
+        if ($password !== $confirmPassword) {
+            throw new ServiceException('Confirmed password does not match');
+        }
+
+
         $password = password_hash($password, PASSWORD_DEFAULT);
         $requestDTO = new UserDTO($name, $email, $password);
         $this->repository->createUser($requestDTO);
@@ -58,8 +63,15 @@ class UserService
         throw new ServiceException('Wrong credentials, register or retry.');
     }
 
-    public function findWithAuthor(int $id){
+    public function findWithAuthor(int $id)
+    {
         return $this->repository->joinUser($id);
+    }
+
+    public function update(UserDTO $dto)
+    {
+        $updated = new UserDTO(name: $dto->name, email: $dto->email, password: $dto->password, id: $dto->id);
+        $this->repository->updateUser($updated);
     }
 
     public function getSingleUser(int $id): ?UserDTO

@@ -17,7 +17,11 @@ $pageService = $container['PageService'];
 $postController = $container['PostController'];
 $userController = $container['UserController'];
 
+$userId = $_SESSION['id'] ?? null;
+$user = null;
+if($userId){
 $user = $userController->getConnectedUser($_SESSION['id']);
+}
 
 $allowedPages = ['home', 'login', 'register', 'create', 'manage', 'edit', 'post', 'logout', 'forbidden', 'profile'];
 $tokenPages = ['login', 'register', 'create', 'edit'];
@@ -41,7 +45,8 @@ $actions = [
         'register' => fn() => $userController->store($_POST),
         'logout'   => fn() => $pageService->disconnect(),
         'create'   => fn() => $postController->createPost($_POST),
-        'edit'     => fn() => $postController->editPost($post, $_FILES['image'] ?? null)
+        'edit'     => fn() => $postController->editPost($post, $_FILES['image'] ?? null),
+        'profile' => fn() => $userController->editUserProfile($user)
 ];
 
 

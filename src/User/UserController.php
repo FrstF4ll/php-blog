@@ -51,4 +51,21 @@ class UserController extends BaseController
     {
         return $this->userService->getSingleUser($id);
     }
+
+    public function editUserProfile(UserDTO $user): void
+    {
+        $data = new UserDTO(
+            name: $_POST['name'] ?? $user->name,
+            email: $_POST['email'] ?? $user->email,
+            password: $user->password,
+            id: $user->id
+        );
+        try {
+            $this->userService->update($data);
+            $_SESSION['name'] = $user->name;
+            $this->flashAndRedirect('success', 'Profile updated !', '?pages=manage');
+        } catch (ServiceException $e) {
+            $this->flashAndRedirect('error',$e->getMessage(),'?pages=home');
+        }
+    }
 }
