@@ -1,6 +1,7 @@
 <?php
 
 namespace Frstf4ll\PhpBlog\User;
+use Frstf4ll\PhpBlog\ServiceException;
 
 class UserService
 {
@@ -8,66 +9,53 @@ class UserService
     {
     }
 
-    private function failure($message): array
-    {
-        return ['success' => false, 'message' => $message];
-    }
-
-    private function validation(string $name, string $email, string $password, string $confirmPassword): array
+    private function validation(string $name, string $email, string $password, string $confirmPassword): void
     {
         if (empty(trim($name)) || empty(trim($email)) || empty(trim($password))) {
-            return $this->failure('Please fill all the required fields');
+            throw new ServiceException('Please fill all the required fields');
         }
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            return $this->failure('Please provide a valid email address');
+            throw new ServiceException('Please provide a valid email address');
         }
 
         if (empty($confirmPassword)) {
-            return $this->failure('Please confirm your password');
+            throw new ServiceException('Please confirm your password');
         }
 
         if ($this->repository->emailExists($email)) {
-            return $this->failure('Email already exists');
+            throw new ServiceException('Email already exists');
         }
 
         if (strlen($password) < 8) {
-            return $this->failure('Password must be at least 8 characters');
+            throw new ServiceException('Password must be at least 8 characters');
         }
 
         $pattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/';
         if (!preg_match($pattern, $password)) {
-            return $this->failure('Password needs a mix of uppercase, lowercase, and numbers.');
+            throw new ServiceException('Password needs a mix of uppercase, lowercase, and numbers.');
         }
 
         if ($password !== $confirmPassword) {
-            return $this->failure('Confirmed password does not match');
+            throw new ServiceException('Confirmed password does not match');
         }
-        return ['success' => true];
     }
 
-    public function register(string $name, string $email, string $password, string $confirmPassword): array
+    public function register(string $name, string $email, string $password, string $confirmPassword): void
     {
-        $validation = $this->validation($name, $email, $password, $confirmPassword);
-
-        if (!$validation['success']) {
-            return $validation;
-        }
-
+        $this->validation($name, $email, $password, $confirmPassword);
         $password = password_hash($password, PASSWORD_DEFAULT);
         $requestDTO = new UserDTO($name, $email, $password);
         $this->repository->createUser($requestDTO);
-
-        return ['success' => true, 'message' => 'Account created successfully, you can now login'];
     }
 
     public function login(string $email, string $password): array
     {
         $user = $this->repository->getUser($email);
         if ($user && password_verify($password, $user['password'])) {
-            return ['success' => true, 'message' => 'Login successful !', 'id' => $user['id'], 'name' => $user['name']];
+            return ['id' => $user['id'], 'name' => $user['name']];
         }
-        return $this->failure('Wrong credentials, register or retry.');
+        throw new ServiceException('Wrong credentials, register or retry.');
     }
 
     public function findWithAuthor(int $id){

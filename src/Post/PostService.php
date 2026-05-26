@@ -2,6 +2,8 @@
 
 namespace Frstf4ll\PhpBlog\Post;
 
+use Frstf4ll\PhpBlog\ServiceException;
+
 class PostService
 {
     public function __construct(
@@ -12,34 +14,29 @@ class PostService
     {
     }
 
+
     public function create($title, $content, $user_id, $date)
     {
         $fileName = null;
-        $validation = $this->validator->validation($title, $content, $user_id, $date, $_FILES['image'] ?? null);
-
-        if (!$validation['valid']) {
-            return ['success' => false, 'error' => $validation['message']];
-        }
+        $this->validator->validation($title, $content, $user_id, $date, $_FILES['image'] ?? null);
 
 
         if (isset($_FILES['image'])) {
-            $uploadResult = $this->fileUploader->upload($_FILES['image']);
-            if ($uploadResult['success']) {
-                $fileName = $uploadResult['fileName'];
+            $file = $this->fileUploader->upload($_FILES['image']);
+            if ($file) {
+                $fileName = $file;
             }
         }
 
         $requestDTO = new PostDTO($title, $content, $date, $user_id, $fileName);
         $this->repository->insertPost($requestDTO);
-
-        return ['success' => true, 'message' => 'Post created!'];
     }
 
     public function update(PostDTO $dto, $file)
     {
         $fileName = $dto->image;
 
-        $validation = $this->validator->validation(
+        $this->validator->validation(
             $dto->title,
             $dto->content,
             $dto->user_id,
@@ -47,21 +44,15 @@ class PostService
             $file
         );
 
-        if (!$validation['valid']) {
-            return ['success' => false, 'error' => $validation['message']];
-        }
-
         if ($file && $file['error'] !== UPLOAD_ERR_NO_FILE) {
-            $upload = $this->fileUploader->upload($file);
-            if ($upload['success']) {
-                $fileName = $upload['fileName'];
+            $file = $this->fileUploader->upload($file);
+            if ($file) {
+                $fileName = $file;
             }
         }
 
         $updated = new PostDTO(title: $dto->title, content: $dto->content, created_at: $dto->created_at, user_id: $dto->user_id, image: $fileName, id: $dto->id);
         $this->repository->updatePost($updated);
-
-        return ['success' => true, 'message' => 'Post updated!'];
     }
 
     public function getAll()

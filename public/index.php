@@ -34,35 +34,18 @@ if ($postId) {
 }
 
 $home = '?pages=home';
-
 $actions = [
-        'login' => [
-                'callback' => fn() => $userController->authenticateSession($_POST),
-                'direction' => $home,
-        ],
-        'register' => [
-                'callback' => fn() => $userController->store($_POST),
-                'direction' => '?pages=login',
-        ],
-        'logout' => [
-                'callback' => fn() => $pageService->disconnect(),
-                'direction' => '?pages=logout',
-        ],
-        'create' => [
-                'callback' => fn() => $postController->createPost($_POST),
-                'direction' => $home,
-        ],
-        'edit' => [
-                'callback' => fn() => $postController->editPost($post, $_FILES['image'] ?? null),
-                'direction' => '?pages=manage',
-        ]
+        'login'    => fn() => $userController->authenticateSession($_POST),
+        'register' => fn() => $userController->store($_POST),
+        'logout'   => fn() => $pageService->disconnect(),
+        'create'   => fn() => $postController->createPost($_POST),
+        'edit'     => fn() => $postController->editPost($post, $_FILES['image'] ?? null)
 ];
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($actions[$page])) {
     if ($pageService->isTokenValid()) {
-        $action = $actions[$page];
-        $pageService->redirect($action['callback'], $action['direction']);
+        $actions[$page]();
     }
 }
 
@@ -86,20 +69,20 @@ $pageController->setViewData(['posts' => $posts, 'post' => $post]);
 </head>
 <body class="grid grid-rows-[auto_1fr_auto] min-h-full">
 <?php include "../views/components/navbar.php"; ?>
-<main>
-    <?php if (isset($_SESSION['notification'])): ?>
-        <div class='text-green-700 border border-green-500 bg-green-50 rounded-md p-2.5 mb-2.5'>
-            <?php echo $_SESSION['notification'];
-            unset($_SESSION['notification']); ?>
+<main> <?php if (isset($_SESSION['flash'])):
+        $flash = $_SESSION['flash'];
+        unset($_SESSION['flash']);
+
+        $error_color = 'text-red-700 border border-red-500 bg-red-50';
+        $success_color = 'text-green-700 border border-green-500 bg-green-50';
+
+        $isSuccess = ($flash['type'] === 'success');
+        $colors = $isSuccess ? $success_color : $error_color;
+        ?>
+        <div class='<?= $colors ?> rounded-md p-2.5 mb-2.5'>
+            <?= htmlspecialchars($flash['message']) ?>
         </div>
     <?php endif; ?>
-
-    <?php if ($error_message !== null) : ?>
-        <div class="text-red-700 border border-red-500 bg-red-50 rounded-md p-2.5 mb-2.5">
-            <?php echo htmlspecialchars($error_message); ?>
-        </div>
-    <?php endif; ?>
-
     <?php
     if (in_array($page, $allowedPages) && method_exists($pageController, $page)) {
         if ($page === 'edit') {
