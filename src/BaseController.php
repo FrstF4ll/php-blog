@@ -5,21 +5,27 @@ namespace Frstf4ll\PhpBlog;
 abstract class BaseController
 
 {
-    protected function flash(string $type, string $message): void
+    private function flash(string $type, string $message): void
     {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
 
         $_SESSION['flash'] = [
-            'type'    => $type,
+            'type' => $type,
             'message' => $message
         ];
     }
 
-    protected function redirect(string $url): void
+    private function redirect(string $url): void
     {
         header("Location: $url");
         exit;
+    }
+
+    protected function flashAndRedirect(string $type, string $message, string $url): void
+    {
+        $this->flash($type, $message);
+        $this->redirect($url);
     }
 }

@@ -39,11 +39,9 @@ class PostController extends BaseController
         try {
             $this->postService->create($title, $content, $user_id, $date);
 
-            $this->flash('success', 'Post created !');
-            $this->redirect('?pages=home');
+            $this->flashAndRedirect('success', 'Post created !','?pages=home');
         } catch (ServiceException $e) {
-            $this->flash('error', $e->getMessage());
-            $this->redirect('?pages=home');
+            $this->flashAndRedirect('error', $e->getMessage(),'?pages=home');
         }
     }
 
@@ -59,12 +57,9 @@ class PostController extends BaseController
         );
         try {
             $this->postService->update($data, $file);
-
-            $this->flash('success', 'Successfully updated post');
-            $this->redirect('?pages=manage');
+            $this->flashAndRedirect('success', 'Successfully updated post', '?pages=manage');
         } catch (ServiceException $e) {
-            $this->flash('error', $e->getMessage());
-            $this->redirect('?pages=home');
+            $this->flashAndRedirect('error',$e->getMessage(),'?pages=home');
         }
     }
 }

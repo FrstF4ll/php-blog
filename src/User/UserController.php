@@ -19,12 +19,10 @@ class UserController extends BaseController
         $confirmPassword = $userData['password_confirm'];
         try {
             $this->userService->register($name, $email, $password, $confirmPassword);
-            $this->flash('success', 'Registration successful, you can now log in.');
-            $this->redirect('?pages=login');
+            $this->flashAndRedirect('success', 'Registration successful, you can now log in.','?pages=login');
 
         } catch (ServiceException $e) {
-            $this->flash('error', $e->getMessage());
-            $this->redirect('?pages=register');
+            $this->flashAndRedirect('error', $e->getMessage(), '?pages=register');
         }
     }
 
@@ -36,12 +34,10 @@ class UserController extends BaseController
             $result = $this->userService->login($email, $password);
             $_SESSION['id'] = $result['id'];
             $_SESSION['name'] = $result['name'];
-            $this->flash('success', 'Login successful.');
-            $this->redirect('?pages=home');
+            $this->flashAndRedirect('success', 'Login successful.','?pages=home');
 
         } catch (ServiceException $e) {
-            $this->flash('error', $e->getMessage());
-            $this->redirect('?pages=login');
+            $this->flashAndRedirect('error', $e->getMessage(),'?pages=login');
         }
     }
 
