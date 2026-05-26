@@ -86,20 +86,20 @@ $pageController->setViewData(['posts' => $posts, 'post' => $post]);
 </head>
 <body class="grid grid-rows-[auto_1fr_auto] min-h-full">
 <?php include "../views/components/navbar.php"; ?>
-<main>
-    <?php if (isset($_SESSION['notification'])): ?>
-        <div class='text-green-700 border border-green-500 bg-green-50 rounded-md p-2.5 mb-2.5'>
-            <?php echo $_SESSION['notification'];
-            unset($_SESSION['notification']); ?>
+<main> <?php if (isset($_SESSION['flash'])):
+        $flash = $_SESSION['flash'];
+        unset($_SESSION['flash']);
+
+        $error_color = 'text-red-700 border border-red-500 bg-red-50';
+        $success_color = 'text-green-700 border border-green-500 bg-green-50';
+
+        $isSuccess = ($flash['type'] === 'success');
+        $colors = $isSuccess ? $success_color : $error_color;
+        ?>
+        <div class='<?= $colors ?>rounded-md p-2.5 mb-2.5'>
+            <?= $flash['message'] ?>
         </div>
     <?php endif; ?>
-
-    <?php if ($error_message !== null) : ?>
-        <div class="text-red-700 border border-red-500 bg-red-50 rounded-md p-2.5 mb-2.5">
-            <?php echo htmlspecialchars($error_message); ?>
-        </div>
-    <?php endif; ?>
-
     <?php
     if (in_array($page, $allowedPages) && method_exists($pageController, $page)) {
         if ($page === 'edit') {
