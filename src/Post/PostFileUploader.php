@@ -20,7 +20,7 @@ class PostFileUploader
             throw new ServiceException("Upload failed with error code: " . $file['error']);
         }
 
-        $fileName = time() . '_' . basename($file['name']);
+        $fileName = bin2hex(random_bytes(8)) . '_' . basename($file['name']);
         $uploadPath = $this->uploadDir . '/' . $fileName;
         if (!is_dir($this->uploadDir)) mkdir($this->uploadDir, 0755, true);
         if (move_uploaded_file($file['tmp_name'], $uploadPath)) {
