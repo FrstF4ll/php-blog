@@ -12,6 +12,7 @@ class PageController
         'create' => __DIR__ . '/../views/pages/create_post.php',
         'manage' => __DIR__ . '/../views/pages/manage_posts.php',
         'edit' => __DIR__ . '/../views/pages/edit_post.php',
+        'profile' => __DIR__ . '/../views/pages/profile.php',
         'post' => __DIR__ . '/../views/pages/post.php',
         'not_found' => __DIR__ . '/../views/pages/not_found.php',
     ];
@@ -100,6 +101,11 @@ class PageController
     public function post(): void
     {
         $this->render('post');
+    }
+
+    public function profile(): void
+    {
+        $this->render('profile');
     }
 
 }
