@@ -64,7 +64,7 @@ class PostController extends BaseController
         );
         try {
             $this->postService->update($data, $file);
-            $this->flashAndRedirect('success', 'Successfully updated post', '?pages=manage');
+            $this->flashAndRedirect('success', 'Post updated !', '?pages=manage');
         } catch (ServiceException $e) {
             $this->flashAndRedirect('error',$e->getMessage(),'?pages=home');
         }
