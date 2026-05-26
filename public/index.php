@@ -34,35 +34,18 @@ if ($postId) {
 }
 
 $home = '?pages=home';
-
 $actions = [
-        'login' => [
-                'callback' => fn() => $userController->authenticateSession($_POST),
-                'direction' => $home,
-        ],
-        'register' => [
-                'callback' => fn() => $userController->store($_POST),
-                'direction' => '?pages=login',
-        ],
-        'logout' => [
-                'callback' => fn() => $pageService->disconnect(),
-                'direction' => '?pages=logout',
-        ],
-        'create' => [
-                'callback' => fn() => $postController->createPost($_POST),
-                'direction' => $home,
-        ],
-        'edit' => [
-                'callback' => fn() => $postController->editPost($post, $_FILES['image'] ?? null),
-                'direction' => '?pages=manage',
-        ]
+        'login'    => fn() => $userController->authenticateSession($_POST),
+        'register' => fn() => $userController->store($_POST),
+        'logout'   => fn() => $pageService->disconnect(),
+        'create'   => fn() => $postController->createPost($_POST),
+        'edit'     => fn() => $postController->editPost($post, $_FILES['image'] ?? null)
 ];
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($actions[$page])) {
     if ($pageService->isTokenValid()) {
-        $action = $actions[$page];
-        $pageService->redirect($action['callback'], $action['direction']);
+        $actions[$page]();
     }
 }
 
