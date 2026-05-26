@@ -32,10 +32,17 @@ class PostController extends BaseController
 
     public function createPost(array $postData): void
     {
-        $title = $postData['title'];
-        $content = $postData['content'];
+        $title = $postData['title'] ?? '';
+        $content = $postData['content'] ?? '';
         $date = date('Y-m-d');
         $user_id = $_SESSION['id'];
+
+        if(empty($user_id))
+        {
+            $this->flashAndRedirect('error', "Error : Can't identify user", "?pages=create");
+            return;
+        }
+
         try {
             $this->postService->create($title, $content, $user_id, $date);
 

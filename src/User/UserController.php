@@ -13,10 +13,10 @@ class UserController extends BaseController
 
     public function store(array $userData): void
     {
-        $name = $userData['name'];
-        $email = $userData['email'];
-        $password = $userData['password'];
-        $confirmPassword = $userData['password_confirm'];
+        $name = $userData['name'] ?? '';
+        $email = $userData['email'] ?? '';
+        $password = $userData['password'] ?? '';
+        $confirmPassword = $userData['password_confirm'] ?? '';
         try {
             $this->userService->register($name, $email, $password, $confirmPassword);
             $this->flashAndRedirect('success', 'Registration successful, you can now log in.','?pages=login');
