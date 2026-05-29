@@ -19,7 +19,7 @@ class UserController extends BaseController
         $confirmPassword = $userData['password_confirm'] ?? '';
         try {
             $this->userService->register($name, $email, $password, $confirmPassword);
-            $this->flashAndRedirect('success', 'Registration successful, you can now log in.','?pages=login');
+            $this->flashAndRedirect('success', 'Registration successful, you can now log in.', '?pages=login');
 
         } catch (ServiceException $e) {
             $this->flashAndRedirect('error', $e->getMessage(), '?pages=register');
@@ -35,10 +35,10 @@ class UserController extends BaseController
             session_regenerate_id(true);
             $_SESSION['id'] = $result['id'];
             $_SESSION['name'] = $result['name'];
-            $this->flashAndRedirect('success', 'Login successful.','?pages=home');
+            $this->flashAndRedirect('success', 'Login successful.', '?pages=home');
 
         } catch (ServiceException $e) {
-            $this->flashAndRedirect('error', $e->getMessage(),'?pages=login');
+            $this->flashAndRedirect('error', $e->getMessage(), '?pages=login');
         }
     }
 
@@ -54,18 +54,23 @@ class UserController extends BaseController
 
     public function editUserProfile(UserDTO $user): void
     {
+        $password = $user->password;
+        if (!empty($_POST['password'])) {
+            $password = $_POST['password'];
+        }
+
         $data = new UserDTO(
             name: $_POST['name'] ?? $user->name,
             email: $_POST['email'] ?? $user->email,
-            password: $user->password,
+            password: $password,
             id: $user->id
         );
         try {
-            $this->userService->update($data);
-            $_SESSION['name'] = $user->name;
+            $this->userService->update($data, !empty($_POST['password']));
+            $_SESSION['name'] = $data->name;
             $this->flashAndRedirect('success', 'Profile updated !', '?pages=manage');
         } catch (ServiceException $e) {
-            $this->flashAndRedirect('error',$e->getMessage(),'?pages=home');
+            $this->flashAndRedirect('error', $e->getMessage(), '?pages=home');
         }
     }
 }

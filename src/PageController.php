@@ -105,7 +105,7 @@ class PageController
 
     public function profile(): void
     {
-        $this->render('profile');
+        $this->guestRender('profile');
     }
 
 }

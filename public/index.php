@@ -24,7 +24,7 @@ $user = $userController->getConnectedUser($_SESSION['id']);
 }
 
 $allowedPages = ['home', 'login', 'register', 'create', 'manage', 'edit', 'post', 'logout', 'forbidden', 'profile'];
-$tokenPages = ['login', 'register', 'create', 'edit'];
+$tokenPages = ['login', 'register', 'create', 'edit', 'profile'];
 
 $page = $_GET['pages'] ?? 'home';
 

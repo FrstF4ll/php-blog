@@ -68,9 +68,34 @@ class UserService
         return $this->repository->joinUser($id);
     }
 
-    public function update(UserDTO $dto)
+    public function update(UserDTO $dto, bool $passwordChanged = false)
     {
-        $updated = new UserDTO(name: $dto->name, email: $dto->email, password: $dto->password, id: $dto->id);
+        if (empty(trim($dto->name)) || empty(trim($dto->email))) {
+            throw new ServiceException('Please fill all the required fields');
+        }
+
+        if (!filter_var($dto->email, FILTER_VALIDATE_EMAIL)) {
+            throw new ServiceException('Please provide a valid email address');
+        }
+
+        $existingUser = $this->repository->getUser($dto->email);
+        if ($existingUser && (int)$existingUser['id'] !== $dto->id) {
+            throw new ServiceException('Email already exists');
+        }
+
+        $password = $dto->password;
+        if ($passwordChanged) {
+            if (strlen($password) < 8) {
+                throw new ServiceException('Password must be at least 8 characters');
+            }
+            $pattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/';
+            if (!preg_match($pattern, $password)) {
+                throw new ServiceException('Password needs a mix of uppercase, lowercase, and numbers.');
+            }
+            $password = password_hash($password, PASSWORD_DEFAULT);
+        }
+
+        $updated = new UserDTO(name: $dto->name, email: $dto->email, password: $password, id: $dto->id);
         $this->repository->updateUser($updated);
     }
 
