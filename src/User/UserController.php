@@ -52,8 +52,13 @@ class UserController extends BaseController
         return $this->userService->getSingleUser($id);
     }
 
-    public function editUserProfile(UserDTO $user): void
+    public function editUserProfile(?UserDTO $user): void
     {
+        if (!$user) {
+            $this->flashAndRedirect('error', 'You must be logged in to edit your profile.', '?pages=login');
+            return;
+        }
+
         $password = $user->password;
         if (!empty($_POST['password'])) {
             $password = $_POST['password'];
@@ -68,9 +73,9 @@ class UserController extends BaseController
         try {
             $this->userService->update($data, !empty($_POST['password']));
             $_SESSION['name'] = $data->name;
-            $this->flashAndRedirect('success', 'Profile updated !', '?pages=manage');
+            $this->flashAndRedirect('success', 'Profile updated !', '?pages=profile');
         } catch (ServiceException $e) {
-            $this->flashAndRedirect('error', $e->getMessage(), '?pages=home');
+            $this->flashAndRedirect('error', $e->getMessage(), '?pages=profile');
         }
     }
 }

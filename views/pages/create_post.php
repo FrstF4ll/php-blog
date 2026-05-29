@@ -2,7 +2,7 @@
 
 ?>
 
-<form method="POST" enctype="multipart/form-data" class="flex flex-col p-8">
+<form action="?pages=create" method="POST" enctype="multipart/form-data" class="flex flex-col p-8">
     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>">
     <div class="space-y-12">
         <div class="border-b border-gray-900/10 pb-12">

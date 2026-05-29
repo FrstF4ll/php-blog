@@ -58,7 +58,7 @@ class UserRepository
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['id' => $userId]);
 
-        $data = $stmt->fetch();
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
         if (!$data) {
             return null;
         }

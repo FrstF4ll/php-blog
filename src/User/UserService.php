@@ -96,7 +96,9 @@ class UserService
         }
 
         $updated = new UserDTO(name: $dto->name, email: $dto->email, password: $password, id: $dto->id);
-        $this->repository->updateUser($updated);
+        if (!$this->repository->updateUser($updated)) {
+            throw new ServiceException('Failed to update profile. Please try again.');
+        }
     }
 
     public function getSingleUser(int $id): ?UserDTO

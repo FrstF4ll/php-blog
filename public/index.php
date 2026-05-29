@@ -19,8 +19,12 @@ $userController = $container['UserController'];
 
 $userId = $_SESSION['id'] ?? null;
 $user = null;
-if($userId){
-$user = $userController->getConnectedUser($_SESSION['id']);
+if ($userId) {
+    $user = $userController->getConnectedUser($userId);
+    if (!$user) {
+        unset($_SESSION['id'], $_SESSION['name']);
+        $userId = null;
+    }
 }
 
 $allowedPages = ['home', 'login', 'register', 'create', 'manage', 'edit', 'post', 'logout', 'forbidden', 'profile'];
