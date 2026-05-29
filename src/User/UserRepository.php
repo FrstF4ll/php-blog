@@ -28,7 +28,7 @@ class UserRepository
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['email' => $email]);
 
-        return (bool) $stmt->fetchColumn();
+        return (bool)$stmt->fetchColumn();
     }
 
     public function getUser(string $email): ?array
@@ -68,8 +68,9 @@ class UserRepository
             password: $data['password'],
             id: (int)$data['id']
         );
-}
-        public function updateUser(UserDTO $dto): bool
+    }
+
+    public function updateUser(UserDTO $dto): bool
     {
         $data = $dto->getFields();
 
