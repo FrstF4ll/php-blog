@@ -2,18 +2,13 @@
 
 use Frstf4ll\PhpBlog\Post\PostDTO;
 
-$container = require dirname(__DIR__, 2) . '/config/bootstrap.php';
-
-$pageController = $container['PageController'];
-$postController = $container['PostController'];
-
 if (!$post) {
-    $pageController->not_found();
+    require __DIR__ . '/not_found.php';
     return;
 }
 
-if ($post->user_id !== $_SESSION['id']){
-    $pageController->forbidden();
+if ($post->user_id !== $_SESSION['id']) {
+    require __DIR__ . '/forbidden.php';
     return;
 }
 
@@ -24,7 +19,8 @@ $placeholder = "/assets/placeholder.png";
 $postImagePath = !empty($image) ? "uploads/" . $image : $placeholder;
 ?>
 
-<form method="POST" enctype="multipart/form-data" class="flex flex-col p-8 text-gray-900 ">
+<form method="POST" action='?pages=edit&id=<?= $post->id ?>' enctype="multipart/form-data"
+      class="flex flex-col p-8 text-gray-900 ">
     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>">
 
     <div class="space-y-12">
@@ -78,5 +74,5 @@ $postImagePath = !empty($image) ? "uploads/" . $image : $placeholder;
                 </button>
             </div>
         </div>
+    </div>
 </form>
-

@@ -1,19 +1,30 @@
 <?php
 
-$allowedPages = [
-    'home', 'login', 'register',
-    'create', 'manage', 'edit',
-    'post', 'logout', 'profile',
-    'forbidden', 'not_found'
-];
-
-
-$tokenPages = [
-    'login', 'register', 'profile',
-    'create', 'edit',
-];
-
 return [
-    'token_pages' => $tokenPages,
-    'allowed_pages' => $allowedPages,
+    'GET' => [
+        'home' => ['PageController', 'home'],
+        'post' => ['PageController', 'post'],
+        'manage' => ['PageController', 'manage'],
+
+        'login' => ['PageController', 'login'],
+        'register' => ['PageController', 'register'],
+        'profile' => ['PageController', 'profile'],
+        'logout' => ['PageController', 'logout'],
+
+        'create' => ['PageController', 'create'],
+
+        'edit' => ['PageController', 'edit'],
+
+        'forbidden' => ['PageController', 'forbidden'],
+        'not_found' => ['PageController', 'not_found'],
+    ],
+    'POST' => [
+        'login' => ['UserController', 'authenticateSession'],
+        'register' => ['UserController', 'store'],
+        'profile' => ['UserController', 'editUserProfile'],
+
+        'create' => ['PostController', 'createPost'],
+        'edit' => ['PostController', 'editPost'],
+        'logout' => ['PageController', 'logout'],
+    ],
 ];
