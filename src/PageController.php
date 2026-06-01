@@ -71,6 +71,7 @@ class PageController extends BaseController
 
     public function profile(): void
     {
+        $user = $this->viewData['user'] ?? null;
         require __DIR__ . '/../views/pages/profile.php';
     }
 

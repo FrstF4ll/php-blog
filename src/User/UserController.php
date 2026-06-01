@@ -47,13 +47,23 @@ class UserController extends BaseController
         return $this->userService->findWithAuthor($id);
     }
 
-    public function getConnectedUser(int $id): ?UserDTO
+    public function getConnectedUser(): ?UserDTO
     {
-        return $this->userService->getSingleUser($id);
+        $userId = $_SESSION['id'] ?? null;
+        if (!$userId) {
+            unset($_SESSION['id'], $_SESSION['name']);
+            return null;
+        }
+        $user = $this->userService->getSingleUser($userId);
+        return $user;
     }
 
-    public function editUserProfile(?UserDTO $user): void
+
+    public
+    function editUserProfile(): void
     {
+        $user = $this->userService->getSingleUser($_SESSION['id'] ?? null);
+
         if (!$user) {
             $this->flashAndRedirect('error', 'You must be logged in to edit your profile.', '?pages=login');
             return;
