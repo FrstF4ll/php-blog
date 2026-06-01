@@ -1,5 +1,5 @@
 <?php
-use Frstf4ll\PhpBlog\Core\Router;
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 // App bootstrap
@@ -23,32 +23,13 @@ $page = $_GET['pages'] ?? 'home';
 $method = $_SERVER['REQUEST_METHOD'];
 [$controller, $action] = $router->dispatch($method, $page);
 
-error_log("ROUTER OUTPUT: " . print_r([$controller, $action], true));
-error_log("PAGE: " . $page);
-// Auth middleware
-$userId = $_SESSION['id'] ?? null;
-$user = null;
-if ($userId) {
-    $user = $userController->getConnectedUser($userId);
-    if (!$user) {
-        unset($_SESSION['id'], $_SESSION['name']);
-        $userId = null;
-    }
-}
-
-
-//Eager data fetching
-$posts = in_array($page, ['home', 'manage']) ? $postController->list() : [];
-$postId = $_GET['id'] ?? null;
-$post = null;
-if ($postId) {
-    $post = $postController->show((int)$postId);
-}
+$user = $userController->resolveCurrentUser();
+$postData = $postController->resolveCurrentPost();
 
 $pageController->setViewData([
-    'posts' => $posts,
-    'post' => $post,
-    'user' => $user,
+        'post' => $postData['post'],
+        'posts' => $postData['posts'],
+        'user' => $user,
 ]);
 
 ob_start();
@@ -89,7 +70,7 @@ $pageContent = ob_get_clean();
             <?= htmlspecialchars($flash['message']) ?>
         </div>
     <?php endif; ?>
-<?= $pageContent ?>
+    <?= $pageContent ?>
 </main>
 
 <?php include "../views/components/footer.php"; ?>

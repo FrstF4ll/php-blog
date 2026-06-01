@@ -3,6 +3,7 @@
 namespace Frstf4ll\PhpBlog\User;
 
 use Frstf4ll\PhpBlog\Core\BaseController;
+use Frstf4ll\PhpBlog\Post\PostDTO;
 use Frstf4ll\PhpBlog\ServiceException;
 
 class UserController extends BaseController
@@ -59,8 +60,7 @@ class UserController extends BaseController
     }
 
 
-    public
-    function editUserProfile(): void
+    public function editUserProfile(): void
     {
         $user = $this->userService->getSingleUser($_SESSION['id'] ?? null);
 
@@ -86,6 +86,17 @@ class UserController extends BaseController
             $this->flashAndRedirect('success', 'Profile updated !', '?pages=profile');
         } catch (ServiceException $e) {
             $this->flashAndRedirect('error', $e->getMessage(), '?pages=profile');
+        }
+    }
+
+    public function resolveCurrentUser() {
+        $userId = $_SESSION['id'] ?? null;
+        if ($userId) {
+            $user = $this->getConnectedUser($userId);
+            if (!$user) {
+                unset($_SESSION['id'], $_SESSION['name']);
+                $userId = null;
+            }
         }
     }
 }

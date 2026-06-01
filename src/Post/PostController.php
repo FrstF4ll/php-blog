@@ -37,8 +37,7 @@ class PostController extends BaseController
         $date = date('Y-m-d');
         $user_id = $_SESSION['id'] ?? null;
 
-        if(empty($user_id))
-        {
+        if (empty($user_id)) {
             $this->flashAndRedirect('error', "Error : Can't identify user", "?pages=create");
             return;
         }
@@ -46,9 +45,9 @@ class PostController extends BaseController
         try {
             $this->postService->create($title, $content, $user_id, $date);
 
-            $this->flashAndRedirect('success', 'Post created !','?pages=home');
+            $this->flashAndRedirect('success', 'Post created !', '?pages=home');
         } catch (ServiceException $e) {
-            $this->flashAndRedirect('error', $e->getMessage(),'?pages=home');
+            $this->flashAndRedirect('error', $e->getMessage(), '?pages=home');
         }
     }
 
@@ -87,5 +86,14 @@ class PostController extends BaseController
         } catch (ServiceException $e) {
             $this->flashAndRedirect('error', $e->getMessage(), '?pages=home');
         }
+    }
+
+    public function resolveCurrentPost()
+    {
+        $postId = $_GET['id'] ?? null;
+        return [
+            'post' => $postId ? $this->show((int)$postId) : null,
+            'posts' => $this->list(),
+        ];
     }
 }
