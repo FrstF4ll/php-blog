@@ -59,11 +59,13 @@ class PageController extends BaseController
 
     public function edit(): void
     {
+        $post = $this->viewData['post'] ?? null;
         require __DIR__ . '/../views/pages/edit_post.php';
     }
 
     public function post(): void
     {
+        $post = $this->viewData['post'] ?? null;
         require __DIR__ . '/../views/pages/post.php';
     }
 

@@ -45,19 +45,17 @@ if ($postId) {
     $post = $postController->show((int)$postId);
 }
 
-$home = '?pages=home';
-$actions = [
-        'login'    => fn() => $userController->authenticateSession($_POST),
-        'register' => fn() => $userController->store($_POST),
-        'logout'   => fn() => $pageService->disconnect(),
-        'create'   => fn() => $postController->createPost($_POST),
-        'edit'     => fn() => $postController->editPost($post, $_FILES['image'] ?? null),
-        'profile' => fn() => $userController->editUserProfile($user)
-];
+$pageController->setViewData([
+    'posts' => $posts,
+    'post' => $post,
+    'user' => $user,
+]);
+
+ob_start();
 $controllerInstance = $container[$controller];
+$page = $controllerInstance->$action();
+$pageContent = ob_get_clean();
 
-
-$controllerInstance->setViewData(['posts' => $posts, 'post' => $post, 'user' => $user]);
 ?>
 
 
@@ -91,7 +89,7 @@ $controllerInstance->setViewData(['posts' => $posts, 'post' => $post, 'user' => 
             <?= htmlspecialchars($flash['message']) ?>
         </div>
     <?php endif; ?>
-    <?php $controllerInstance->$action(); ?>
+<?= $pageContent ?>
 </main>
 
 <?php include "../views/components/footer.php"; ?>

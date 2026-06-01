@@ -52,8 +52,27 @@ class PostController extends BaseController
         }
     }
 
-    public function editPost(PostDTO $post, ?array $file): void
+    public function editPost(): void
     {
+        $postId = $_GET['id'] ?? null;
+        if (!$postId) {
+            $this->flashAndRedirect('error', 'Missing post id.', '?pages=manage');
+            return;
+        }
+
+        $post = $this->postService->getSingle((int)$postId);
+        if (!$post) {
+            $this->flashAndRedirect('error', 'Post not found.', '?pages=manage');
+            return;
+        }
+
+        $userId = $_SESSION['id'] ?? null;
+        if ($userId === null || (int)$post->user_id !== (int)$userId) {
+            $this->flashAndRedirect('error', 'You are not allowed to edit this post.', '?pages=home');
+            return;
+        }
+
+        $file = $_FILES['image'] ?? null;
         $data = new PostDTO(
             title: $_POST['title'] ?? $post->title,
             content: $_POST['content'] ?? $post->content,
@@ -66,7 +85,7 @@ class PostController extends BaseController
             $this->postService->update($data, $file);
             $this->flashAndRedirect('success', 'Post updated !', '?pages=manage');
         } catch (ServiceException $e) {
-            $this->flashAndRedirect('error',$e->getMessage(),'?pages=home');
+            $this->flashAndRedirect('error', $e->getMessage(), '?pages=home');
         }
     }
 }

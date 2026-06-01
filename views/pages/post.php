@@ -1,11 +1,7 @@
 <?php
 
-use Frstf4ll\PhpBlog\PageController;
-
-
-$pageController = new PageController();
 if (!$post) {
-    $pageController->not_found();
+    require __DIR__ . '/not_found.php';
     return;
 }
 $title = htmlspecialchars($post->title);

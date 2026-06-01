@@ -11,12 +11,12 @@ class UserController extends BaseController
     {
     }
 
-    public function store(array $userData): void
+    public function store(): void
     {
-        $name = $userData['name'] ?? '';
-        $email = $userData['email'] ?? '';
-        $password = $userData['password'] ?? '';
-        $confirmPassword = $userData['password_confirm'] ?? '';
+        $name = $_POST['name'] ?? '';
+        $email = $_POST['email'] ?? '';
+        $password = $_POST['password'] ?? '';
+        $confirmPassword = $_POST['password_confirm'] ?? '';
         try {
             $this->userService->register($name, $email, $password, $confirmPassword);
             $this->flashAndRedirect('success', 'Registration successful, you can now log in.', '?pages=login');
@@ -26,10 +26,10 @@ class UserController extends BaseController
         }
     }
 
-    public function authenticateSession(array $userData): void
+    public function authenticateSession(): void
     {
-        $email = $userData['email'] ?? '';
-        $password = $userData['password'] ?? '';
+        $email = $_POST['email'] ?? '';
+        $password = $_POST['password'] ?? '';
         try {
             $result = $this->userService->login($email, $password);
             session_regenerate_id(true);
