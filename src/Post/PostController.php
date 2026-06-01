@@ -2,8 +2,8 @@
 
 namespace Frstf4ll\PhpBlog\Post;
 
+use Frstf4ll\PhpBlog\Core\BaseController;
 use Frstf4ll\PhpBlog\ServiceException;
-use Frstf4ll\PhpBlog\BaseController;
 
 class PostController extends BaseController
 {
