@@ -1,111 +1,75 @@
 <?php
 
 namespace Frstf4ll\PhpBlog;
-use Frstf4ll\PhpBlog\Post\PostDTO;
-class PageController
+
+use Frstf4ll\PhpBlog\Core\BaseController;
+
+class PageController extends BaseController
 {
-    private array $pages = [
-        'home' => __DIR__ . '/../views/pages/home.php',
-        'login' => __DIR__ . '/../views/pages/login.php',
-        'logout' => __DIR__ . '/../views/pages/logout.php',
-        'register' => __DIR__ . '/../views/pages/register.php',
-        'create' => __DIR__ . '/../views/pages/create_post.php',
-        'manage' => __DIR__ . '/../views/pages/manage_posts.php',
-        'edit' => __DIR__ . '/../views/pages/edit_post.php',
-        'profile' => __DIR__ . '/../views/pages/profile.php',
-        'post' => __DIR__ . '/../views/pages/post.php',
-        'not_found' => __DIR__ . '/../views/pages/not_found.php',
-    ];
-
-    private array $viewData = [];
-
-    public function setViewData(array $data): void
+    public function __construct(private PageService $pageService)
     {
-        $this->viewData = $data;
-    }
-
-    private function render(string $page): void
-    {
-        $path = $this->pages[$page] ?? null;
-        if ($path === null) {
-            http_response_code(404);
-            echo '<h1>404 - Not found</h1>';
-            echo '<p>The page you requested does not exist.</p>';
-            return;
-        }
-
-        extract($this->viewData);
-        include $path;
     }
 
     public function not_found(): void
     {
-        $this->render('not_found');
+        require __DIR__ . '/../views/pages/not_found.php';
     }
 
     public function forbidden(): void
     {
-        $this->render('forbidden');
+        require __DIR__ . '/../views/pages/forbidden.php';
     }
-
-    private function guestRender(string $page, ?PostDTO $post = null): void
-    {
-        if (empty($_SESSION['id'])) {
-            $this->render('login');
-            return;
-        }
-        if ($post && $post->user_id !== $_SESSION['id']){
-            $this->forbidden();
-            return;
-        }
-
-        $this->render($page);
-    }
-
 
     public function home(): void
     {
-        $this->render('home');
+        $posts = $this->viewData['posts'] ?? [];
+        $user = $this->viewData['user'] ?? null;
+
+        require __DIR__ . '/../views/pages/home.php';
     }
 
     public function login(): void
     {
-        $this->render('login');
+        require __DIR__ . '/../views/pages/login.php';
     }
 
     public function logout(): void
     {
-        $this->render('logout');
+        $this->pageService->deleteSession();
+        require __DIR__ . '/../views/pages/logout.php';
     }
 
     public function register(): void
     {
-        $this->render('register');
+        require __DIR__ . '/../views/pages/register.php';
     }
 
     public function create(): void
     {
-        $this->guestRender('create');
+        require __DIR__ . '/../views/pages/create_post.php';
     }
 
     public function manage(): void
     {
-        $this->guestRender('manage');
+        $posts = $this->viewData['posts'] ?? [];
+        $user = $this->viewData['user'] ?? null;
+
+        require __DIR__ . '/../views/pages/manage_posts.php';
     }
 
-    public function edit(?PostDTO $post = null): void
+    public function edit(): void
     {
-        $this->guestRender('edit', $post);
+        require __DIR__ . '/../views/pages/edit_post.php';
     }
 
     public function post(): void
     {
-        $this->render('post');
+        require __DIR__ . '/../views/pages/post.php';
     }
 
     public function profile(): void
     {
-        $this->guestRender('profile');
+        require __DIR__ . '/../views/pages/profile.php';
     }
 
 }

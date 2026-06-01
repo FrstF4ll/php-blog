@@ -3,7 +3,7 @@
 namespace Frstf4ll\PhpBlog\Post;
 
 use Frstf4ll\PhpBlog\ServiceException;
-use Frstf4ll\PhpBlog\BaseController;
+use Frstf4ll\PhpBlog\Core\BaseController;
 
 class PostController extends BaseController
 {
@@ -30,12 +30,12 @@ class PostController extends BaseController
         }, $posts);
     }
 
-    public function createPost(array $postData): void
+    public function createPost(): void
     {
-        $title = $postData['title'] ?? '';
-        $content = $postData['content'] ?? '';
+        $title = $_POST['title'] ?? '';
+        $content = $_POST['content'] ?? '';
         $date = date('Y-m-d');
-        $user_id = $_SESSION['id'];
+        $user_id = $_SESSION['id'] ?? null;
 
         if(empty($user_id))
         {

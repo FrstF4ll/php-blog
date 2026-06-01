@@ -2,7 +2,7 @@
 
 namespace Frstf4ll\PhpBlog\User;
 
-use Frstf4ll\PhpBlog\BaseController;
+use Frstf4ll\PhpBlog\Core\BaseController;
 use Frstf4ll\PhpBlog\ServiceException;
 
 class UserController extends BaseController

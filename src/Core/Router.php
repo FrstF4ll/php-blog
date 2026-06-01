@@ -2,33 +2,47 @@
 
 namespace Frstf4ll\PhpBlog\Core;
 
+use Frstf4ll\PhpBlog\PageService;
+
 class Router
 {
-    private function routeVerification($page, $allowedPages)
+    public function __construct(private PageService $pageService)
     {
-        $page = !in_array($page, $allowedPages) ? 'not_found' : $page;
-        return $page;
     }
 
-    private function routeSetup($page, $allowedPages, $tokenPages)
+    private function routeVerification($routes, $method, $rawPage)
     {
-        $ValidRoute = $this->routeVerification($page, $allowedPages);
+        $routeRequest = isset($routes[$method][$rawPage])
+            ? [$method, $rawPage]
+            : ['GET', 'not_found'];
 
-        if ((in_array($ValidRoute, $tokenPages)) && empty($_SESSION['csrf_token'])) {
+        return $routeRequest;
+    }
+
+    private function routeSetup($routes, $method, $rawPage)
+    {
+        [$method, $page] = $this->routeVerification($routes, $method, $rawPage);
+
+        if (empty($_SESSION['csrf_token'])) {
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-            return $ValidRoute;
         }
 
-        return $ValidRoute;
+        if ($method === 'POST') {
+            if (!$this->pageService->isTokenValid()) {
+                $method = 'GET';
+                $page = 'forbidden';
+            }
+        }
+        return [$method, $page];
     }
 
-    public function getPage()
+    public function dispatch($method, $rawPage)
     {
-        $routeConfig = require __DIR__ . '/../../config/routes.php';
-        $allowedPages = $routeConfig['allowed_pages'];
-        $tokenPages = $routeConfig['token_pages'];
+        $routes = require __DIR__ . '/../../config/routes.php';
 
-        $page = $_GET['pages'] ?? 'home';
-        return $this->routeSetup($page, $allowedPages, $tokenPages);
+        [$method, $page] = $this->routeSetup($routes, $method, $rawPage);
+        [$controller, $action] = $routes[$method][$page];
+
+        return [$controller, $action];
     }
 }

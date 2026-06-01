@@ -17,10 +17,14 @@ $pageController = $container['PageController'];
 $pageService = $container['PageService'];
 $postController = $container['PostController'];
 $userController = $container['UserController'];
+$router = $container['Router'];
 
-$router = new Router();
-$page = $router->getPage();
+$page = $_GET['pages'] ?? 'home';
+$method = $_SERVER['REQUEST_METHOD'];
+[$controller, $action] = $router->dispatch($method, $page);
 
+error_log("ROUTER OUTPUT: " . print_r([$controller, $action], true));
+error_log("PAGE: " . $page);
 // Auth middleware
 $userId = $_SESSION['id'] ?? null;
 $user = null;
@@ -41,7 +45,6 @@ if ($postId) {
     $post = $postController->show((int)$postId);
 }
 
-// Action dispatcher
 $home = '?pages=home';
 $actions = [
         'login'    => fn() => $userController->authenticateSession($_POST),
@@ -51,15 +54,10 @@ $actions = [
         'edit'     => fn() => $postController->editPost($post, $_FILES['image'] ?? null),
         'profile' => fn() => $userController->editUserProfile($user)
 ];
+$controllerInstance = $container[$controller];
 
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($actions[$page])) {
-    if ($pageService->isTokenValid()) {
-        $actions[$page]();
-    }
-}
-
-$pageController->setViewData(['posts' => $posts, 'post' => $post, 'user' => $user]);
+$controllerInstance->setViewData(['posts' => $posts, 'post' => $post, 'user' => $user]);
 ?>
 
 
@@ -93,7 +91,7 @@ $pageController->setViewData(['posts' => $posts, 'post' => $post, 'user' => $use
             <?= htmlspecialchars($flash['message']) ?>
         </div>
     <?php endif; ?>
-    <?php $pageController->$page(); ?>
+    <?php $controllerInstance->$action(); ?>
 </main>
 
 <?php include "../views/components/footer.php"; ?>
