@@ -1,7 +1,8 @@
 <?php
-
+use Frstf4ll\PhpBlog\Core\Router;
 require_once __DIR__ . '/../vendor/autoload.php';
 
+// App bootstrap
 session_start([
         'cookie_lifetime' => 0,
         'cookie_secure' => true,
@@ -17,6 +18,10 @@ $pageService = $container['PageService'];
 $postController = $container['PostController'];
 $userController = $container['UserController'];
 
+$router = new Router();
+$page = $router->getPage();
+
+// Auth middleware
 $userId = $_SESSION['id'] ?? null;
 $user = null;
 if ($userId) {
@@ -27,15 +32,8 @@ if ($userId) {
     }
 }
 
-$allowedPages = ['home', 'login', 'register', 'create', 'manage', 'edit', 'post', 'logout', 'forbidden', 'profile'];
-$tokenPages = ['login', 'register', 'create', 'edit', 'profile'];
 
-$page = $_GET['pages'] ?? 'home';
-
-if ((in_array($page, $tokenPages)) && empty($_SESSION['csrf_token'])) {
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-}
-
+//Eager data fetching
 $posts = in_array($page, ['home', 'manage']) ? $postController->list() : [];
 $postId = $_GET['id'] ?? null;
 $post = null;
@@ -43,6 +41,7 @@ if ($postId) {
     $post = $postController->show((int)$postId);
 }
 
+// Action dispatcher
 $home = '?pages=home';
 $actions = [
         'login'    => fn() => $userController->authenticateSession($_POST),
@@ -94,17 +93,7 @@ $pageController->setViewData(['posts' => $posts, 'post' => $post, 'user' => $use
             <?= htmlspecialchars($flash['message']) ?>
         </div>
     <?php endif; ?>
-    <?php
-    if (in_array($page, $allowedPages) && method_exists($pageController, $page)) {
-        if ($page === 'edit') {
-            $pageController->edit($post);
-        } else {
-            $pageController->$page();
-        }
-    } else {
-        $pageController->not_found();
-    }
-    ?>
+    <?php $pageController->$page(); ?>
 </main>
 
 <?php include "../views/components/footer.php"; ?>
