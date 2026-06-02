@@ -12,11 +12,13 @@ class PageController extends BaseController
 
     public function not_found(): void
     {
+        http_response_code(403);
         require __DIR__ . '/../views/pages/not_found.php';
     }
 
     public function forbidden(): void
     {
+        http_response_code(403);
         require __DIR__ . '/../views/pages/forbidden.php';
     }
 
@@ -72,6 +74,10 @@ class PageController extends BaseController
     public function profile(): void
     {
         $user = $this->viewData['user'] ?? null;
+        if(!$user){
+            $this->flashAndRedirect('error', 'You must be logged in to access this page.', '?pages=login');
+            return;
+        }
         require __DIR__ . '/../views/pages/profile.php';
     }
 

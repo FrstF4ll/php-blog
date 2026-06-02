@@ -5,7 +5,7 @@ $email = htmlspecialchars($user->email);
 ?>
 
 <form class="flex flex-col p-14" method="POST">
-    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>">
     <h2 class="text-base/7 font-semibold text-gray-900">Profile</h2>
     <p class="mt-1 text-sm/6 text-gray-600">This information will be displayed publicly so be careful what you
         share.</p>
@@ -32,7 +32,7 @@ $email = htmlspecialchars($user->email);
     </div>
     <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
         <div class="sm:col-span-4">
-            <label for="password" class="block text-sm/6 font-medium text-gray-900">Password  <span
+            <label for="password" class="block text-sm/6 font-medium text-gray-900">Password <span
                         class="mt-1 text-sm/6 text-red-400">*At least 8 characters long with number, upper and lowercases</span></label>
             <div class="mt-2">
                 <div class="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">

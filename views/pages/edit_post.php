@@ -7,7 +7,7 @@ if (!$post) {
     return;
 }
 
-if ($post->user_id !== $_SESSION['id']) {
+if ($post->user_id !== ($_SESSION['id'] ?? null)) {
     require __DIR__ . '/forbidden.php';
     return;
 }
