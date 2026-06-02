@@ -7,8 +7,8 @@ if (!isset($post) || !$post) {
     return;
 }
 if (
-    (int)($_SESSION['id']) !== (int)$post->user_id && (int)($_SESSION['role_id'] ?? 1) !== 2
-) {
+        (int)($_SESSION['id'] ?? 0) !== (int)$post->user_id && (int)($_SESSION['role_id'] ?? 1) !== 2)
+{
     require __DIR__ . '/forbidden.php';
     return;
 }
