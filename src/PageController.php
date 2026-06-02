@@ -3,16 +3,18 @@
 namespace Frstf4ll\PhpBlog;
 
 use Frstf4ll\PhpBlog\Core\BaseController;
+use Frstf4ll\PhpBlog\Post\PostService;
+use Frstf4ll\PhpBlog\User\UserService;
 
 class PageController extends BaseController
 {
-    public function __construct(private PageService $pageService)
+    public function __construct(private PostService $postService , private UserService $userService, private PageService $pageService)
     {
     }
 
     public function not_found(): void
     {
-        http_response_code(403);
+        http_response_code(404);
         require __DIR__ . '/../views/pages/not_found.php';
     }
 
@@ -24,9 +26,7 @@ class PageController extends BaseController
 
     public function home(): void
     {
-        $posts = $this->viewData['posts'] ?? [];
-        $user = $this->viewData['user'] ?? null;
-
+        $posts = $this->postService->getAll();
         require __DIR__ . '/../views/pages/home.php';
     }
 
@@ -53,31 +53,26 @@ class PageController extends BaseController
 
     public function manage(): void
     {
-        $posts = $this->viewData['posts'] ?? [];
-        $user = $this->viewData['user'] ?? null;
-
+        $posts = $this->postService->getAll();
         require __DIR__ . '/../views/pages/manage_posts.php';
     }
 
     public function edit(): void
     {
-        if ($this->isAdmin()) {
-            $posts = $this->viewData['posts'] ?? [];
-        }
-
-        $post = $this->viewData['post'] ?? null;
+        $post = $this->postService->getSingle((int)$_GET['id']);
         require __DIR__ . '/../views/pages/edit_post.php';
     }
 
     public function post(): void
     {
-        $post = $this->viewData['post'] ?? null;
+        $post = $this->postService->getSingle((int)$_GET['id']);
         require __DIR__ . '/../views/pages/post.php';
     }
 
     public function profile(): void
     {
-        $user = $this->viewData['user'] ?? null;
+        $user = $this->userService->getSingleUser((int)$_SESSION['id']);
+
         if (!$user) {
             $this->flashAndRedirect('error', 'You must be logged in to access this page.', '?pages=login');
             return;

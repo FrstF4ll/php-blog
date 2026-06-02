@@ -11,12 +11,6 @@ session_start([
 ]);
 $container = require dirname(__DIR__, 1) . '/config/bootstrap.php';
 
-$error_message = null;
-
-$pageController = $container['PageController'];
-$pageService = $container['PageService'];
-$postController = $container['PostController'];
-$userController = $container['UserController'];
 $router = $container['Router'];
 
 $page = $_GET['pages'] ?? 'home';

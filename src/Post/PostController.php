@@ -11,13 +11,13 @@ class PostController extends BaseController
     {
     }
 
-    public function list(): array
+    public function displayAllPosts(): array
     {
         $posts = $this->postService->getAll();
         return $this->formatPosts($posts);
     }
 
-    public function show(int $id): ?PostDTO
+    public function displaySinglePost(int $id): ?PostDTO
     {
         return $this->postService->getSingle($id);
     }
@@ -38,7 +38,7 @@ class PostController extends BaseController
         $user_id = $_SESSION['id'] ?? null;
 
         if (empty($user_id)) {
-            $this->flashAndRedirect('error', "Error : Can't identify user", "?pages=create");
+            $this->flashAndRedirect('error', "Error : Can't get user id", "?pages=create");
             return;
         }
 
@@ -55,7 +55,7 @@ class PostController extends BaseController
     {
         $postId = $_GET['id'] ?? null;
         if (!$postId) {
-            $this->flashAndRedirect('error', 'Missing post id.', '?pages=manage');
+            $this->flashAndRedirect('error', "Can't get post id", '?pages=manage');
             return;
         }
 
@@ -92,8 +92,8 @@ class PostController extends BaseController
     {
         $postId = $_GET['id'] ?? null;
         return [
-            'post' => $postId ? $this->show((int)$postId) : null,
-            'posts' => $this->list(),
+            'post' => $postId ? $this->displaySinglePost((int)$postId) : null,
+            'posts' => $this->displayAllPosts(),
         ];
     }
 }

@@ -22,13 +22,15 @@ $repository = new PostRepository($pdo);
 $postService = new PostService($validator, $repository, $uploader);
 $postController = new PostController($postService);
 
-$pageService = new PageService();
-$pageController = new PageController($pageService);
+
+
 
 $userRepository = new UserRepository($pdo);
 $userService = new UserService($userRepository);
 $userController = new UserController($userService);
 
+$pageService = new PageService();
+$pageController = new PageController($postService, $userService, $pageService);
 $router = new Router($pageService);
 return [
     'PageController' => $pageController,
