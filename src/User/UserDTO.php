@@ -5,6 +5,7 @@ namespace Frstf4ll\PhpBlog\User;
 readonly class UserDTO
 {
     public function __construct(
+        public int $role_id,
         public string $name,
         public string $email,
         public string $password,

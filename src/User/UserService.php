@@ -48,9 +48,9 @@ class UserService
             throw new ServiceException('Confirmed password does not match');
         }
 
-
+        $role_id = 1;
         $password = password_hash($password, PASSWORD_DEFAULT);
-        $requestDTO = new UserDTO($name, $email, $password);
+        $requestDTO = new UserDTO($role_id, $name, $email, $password);
         $this->repository->createUser($requestDTO);
     }
 

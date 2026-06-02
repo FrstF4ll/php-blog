@@ -12,10 +12,11 @@ class UserRepository
 
     public function createUser(UserDTO $dto): void
     {
-        $query = "insert into users(name, email, password) values(:name, :email, :password)";
+        $query = "insert into users(role_id, name, email, password) values(:role_id, :name, :email, :password)";
 
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([
+            'role_id' => $dto->role_id,
             'name' => $dto->name,
             'email' => $dto->email,
             'password' => $dto->password,
@@ -63,6 +64,7 @@ class UserRepository
             return null;
         }
         return new UserDTO(
+            role_id: $data['role_id'],
             name: $data['name'],
             email: $data['email'],
             password: $data['password'],

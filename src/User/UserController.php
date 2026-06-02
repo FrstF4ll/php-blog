@@ -81,6 +81,7 @@ class UserController extends BaseController
         }
 
         $data = new UserDTO(
+            role_id: $user->role_id,
             name: $_POST['name'] ?? $user->name,
             email: $_POST['email'] ?? $user->email,
             password: $password,
