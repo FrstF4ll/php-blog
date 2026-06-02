@@ -50,7 +50,7 @@ class UserService
 
         $role_id = 1;
         $password = password_hash($password, PASSWORD_DEFAULT);
-        $requestDTO = new UserDTO($role_id, $name, $email, $password);
+        $requestDTO = new UserDTO($name, $email, $password, $role_id);
         $this->repository->createUser($requestDTO);
     }
 
