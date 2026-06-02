@@ -66,7 +66,8 @@ class PostController extends BaseController
         }
 
         $userId = $_SESSION['id'] ?? null;
-        if ($userId === null || (int)$post->user_id !== (int)$userId) {
+        $isAdmin = (int)($_SESSION['role_id'] ?? 0) === 2;
+        if ($userId === null || ((int)$post->user_id !== (int)$userId && !$isAdmin)) {
             $this->flashAndRedirect('error', 'You are not allowed to edit this post.', '?pages=home');
             return;
         }

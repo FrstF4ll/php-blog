@@ -2,12 +2,13 @@
 
 use Frstf4ll\PhpBlog\Post\PostDTO;
 
-if (!$post) {
+if (!isset($post) || !$post) {
     require __DIR__ . '/not_found.php';
     return;
 }
-
-if ($post->user_id !== ($_SESSION['id'] ?? null)) {
+if (
+    (int)($_SESSION['id']) !== (int)$post->user_id && (int)($_SESSION['role_id'] ?? 1) !== 2
+) {
     require __DIR__ . '/forbidden.php';
     return;
 }
