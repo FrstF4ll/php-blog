@@ -15,7 +15,7 @@ create table if not exists users
     name     text not null,
     email    text not null,
     password text not null,
-    foreign key (role_id) references users (id)
+    foreign key (role_id) references roles (id)
 );
 
 create table if not exists posts
