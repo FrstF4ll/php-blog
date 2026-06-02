@@ -90,7 +90,7 @@ class UserController extends BaseController
         }
     }
 
-    public function resolveCurrentUser(string $page)
+    public function resolveCurrentUser()
     {
         $userId = $_SESSION['id'] ?? null;
         if ($userId) {
@@ -100,10 +100,6 @@ class UserController extends BaseController
                 $userId = null;
             }
             return $user;
-        }
-        if ($page === 'profile') {
-            $this->flashAndRedirect('error', 'You should be logged in to access this page', '?pages=login');
-            return null;
         }
         return null;
     }
