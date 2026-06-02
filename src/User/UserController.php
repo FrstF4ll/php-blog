@@ -62,7 +62,13 @@ class UserController extends BaseController
 
     public function editUserProfile(): void
     {
-        $user = $this->userService->getSingleUser($_SESSION['id'] ?? null);
+        $userId = $_SESSION['id'] ?? null;
+        if (!$userId) {
+            $this->flashAndRedirect('error', 'You must be logged in to edit your profile.', '?pages=login');
+            return;
+        }
+
+        $user = $this->userService->getSingleUser($userId);
 
         if (!$user) {
             $this->flashAndRedirect('error', 'You must be logged in to edit your profile.', '?pages=login');
@@ -89,7 +95,8 @@ class UserController extends BaseController
         }
     }
 
-    public function resolveCurrentUser() {
+    public function resolveCurrentUser()
+    {
         $userId = $_SESSION['id'] ?? null;
         if ($userId) {
             $user = $this->getConnectedUser($userId);
@@ -97,6 +104,9 @@ class UserController extends BaseController
                 unset($_SESSION['id'], $_SESSION['name']);
                 $userId = null;
             }
+            return $user;
         }
+        $this->flashAndRedirect('error', 'There was a problem on user resolution, plus try again', '?pages=login');
+        return null;
     }
 }
