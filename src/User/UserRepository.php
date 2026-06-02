@@ -64,10 +64,10 @@ class UserRepository
             return null;
         }
         return new UserDTO(
-            role_id: $data['role_id'],
             name: $data['name'],
             email: $data['email'],
             password: $data['password'],
+            role_id: $data['role_id'],
             id: (int)$data['id']
         );
     }

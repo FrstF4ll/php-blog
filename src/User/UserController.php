@@ -81,7 +81,6 @@ class UserController extends BaseController
         }
 
         $data = new UserDTO(
-            role_id: $user->role_id,
             name: $_POST['name'] ?? $user->name,
             email: $_POST['email'] ?? $user->email,
             password: $password,
@@ -90,7 +89,7 @@ class UserController extends BaseController
         try {
             $this->userService->update($data, !empty($_POST['password']));
             $_SESSION['name'] = $data->name;
-            $this->flashAndRedirect('success', 'Profile updated !', '?pages=profile');
+            $this->flashAndRedirect('success', 'Profile updated !', '?pages=home');
         } catch (ServiceException $e) {
             $this->flashAndRedirect('error', $e->getMessage(), '?pages=profile');
         }

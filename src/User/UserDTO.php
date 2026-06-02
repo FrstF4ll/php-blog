@@ -5,10 +5,10 @@ namespace Frstf4ll\PhpBlog\User;
 readonly class UserDTO
 {
     public function __construct(
-        public int $role_id,
         public string $name,
         public string $email,
         public string $password,
+        public ?int $role_id = null,
         public ?int   $id = null,
     )
     {
