@@ -1,10 +1,17 @@
 <?php
 
-namespace Frstf4ll\PhpBlog;
+namespace Frstf4ll\PhpBlog\Core;
 
 abstract class BaseController
 
 {
+    protected array $viewData = [];
+
+    public function setViewData(array $data): void
+    {
+        $this->viewData = array_merge($this->viewData, $data);
+    }
+
     private function flash(string $type, string $message): void
     {
         if (session_status() === PHP_SESSION_NONE) {

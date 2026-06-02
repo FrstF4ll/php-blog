@@ -52,7 +52,6 @@
     --text-xl: 1.25rem;
     --text-xl--line-height: calc(1.75 / 1.25);
     --text-2xl: 1.5rem;
-    --text-2xl--line-height: calc(2 / 1.5);
     --text-3xl: 1.875rem;
     --text-3xl--line-height: calc(2.25 / 1.875);
     --text-4xl: 2.25rem;
@@ -271,6 +270,9 @@
   .-mt-12 {
     margin-top: calc(var(--spacing) * -12);
   }
+  .mt-1 {
+    margin-top: calc(var(--spacing) * 1);
+  }
   .mt-2 {
     margin-top: calc(var(--spacing) * 2);
   }
@@ -390,29 +392,17 @@
   .flex-1 {
     flex: 1;
   }
-  .flex-shrink {
-    flex-shrink: 1;
-  }
   .shrink-0 {
     flex-shrink: 0;
   }
-  .flex-grow {
-    flex-grow: 1;
-  }
   .grow {
     flex-grow: 1;
-  }
-  .border-collapse {
-    border-collapse: collapse;
   }
   .transform {
     transform: var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,);
   }
   .cursor-pointer {
     cursor: pointer;
-  }
-  .resize {
-    resize: both;
   }
   .grid-cols-1 {
     grid-template-columns: repeat(1, minmax(0, 1fr));
@@ -544,9 +534,6 @@
   .border-gray-400 {
     border-color: var(--color-gray-400);
   }
-  .border-gray-900 {
-    border-color: var(--color-gray-900);
-  }
   .border-gray-900\/10 {
     border-color: color-mix(in srgb, oklch(21% 0.034 264.665) 10%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -595,9 +582,6 @@
   .bg-red-200 {
     background-color: var(--color-red-200);
   }
-  .bg-red-400 {
-    background-color: var(--color-red-400);
-  }
   .bg-transparent {
     background-color: transparent;
   }
@@ -625,6 +609,9 @@
   .p-12 {
     padding: calc(var(--spacing) * 12);
   }
+  .p-14 {
+    padding: calc(var(--spacing) * 14);
+  }
   .px-2 {
     padding-inline: calc(var(--spacing) * 2);
   }
@@ -639,9 +626,6 @@
   }
   .px-6 {
     padding-inline: calc(var(--spacing) * 6);
-  }
-  .py-1 {
-    padding-block: calc(var(--spacing) * 1);
   }
   .py-1\.5 {
     padding-block: calc(var(--spacing) * 1.5);
@@ -684,10 +668,6 @@
   }
   .text-center {
     text-align: center;
-  }
-  .text-2xl {
-    font-size: var(--text-2xl);
-    line-height: var(--tw-leading, var(--text-2xl--line-height));
   }
   .text-2xl\/9 {
     font-size: var(--text-2xl);
@@ -767,9 +747,6 @@
   .text-pretty {
     text-wrap: pretty;
   }
-  .text-wrap {
-    text-wrap: wrap;
-  }
   .text-black {
     color: var(--color-black);
   }
@@ -791,9 +768,6 @@
   .text-green-700 {
     color: var(--color-green-700);
   }
-  .text-indigo-400 {
-    color: var(--color-indigo-400);
-  }
   .text-indigo-500 {
     color: var(--color-indigo-500);
   }
@@ -802,6 +776,9 @@
   }
   .text-indigo-800 {
     color: var(--color-indigo-800);
+  }
+  .text-red-400 {
+    color: var(--color-red-400);
   }
   .text-red-700 {
     color: var(--color-red-700);
@@ -814,9 +791,6 @@
   }
   .text-white {
     color: var(--color-white);
-  }
-  .underline {
-    text-decoration-line: underline;
   }
   .shadow {
     --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
@@ -842,18 +816,11 @@
     --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
-  .ring-gray-400 {
-    --tw-ring-color: var(--color-gray-400);
-  }
   .ring-gray-400\/10 {
     --tw-ring-color: color-mix(in srgb, oklch(70.7% 0.022 261.325) 10%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       --tw-ring-color: color-mix(in oklab, var(--color-gray-400) 10%, transparent);
     }
-  }
-  .outline {
-    outline-style: var(--tw-outline-style);
-    outline-width: 1px;
   }
   .outline-1 {
     outline-style: var(--tw-outline-style);

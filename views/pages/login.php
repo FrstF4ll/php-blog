@@ -14,7 +14,7 @@
         <h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Sign in to your account</h2>
     </div>
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form enctype="application/x-www-form-urlencoded" method="POST" class="space-y-6">
+        <form action="?pages=login" enctype="application/x-www-form-urlencoded" method="POST" class="space-y-6">
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>">
             <div>
                 <label for="email" class="block text-sm/6 font-medium text-gray-900">Email address</label>

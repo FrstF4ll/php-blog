@@ -3,7 +3,7 @@
 namespace Frstf4ll\PhpBlog\Post;
 
 use Frstf4ll\PhpBlog\ServiceException;
-use Frstf4ll\PhpBlog\BaseController;
+use Frstf4ll\PhpBlog\Core\BaseController;
 
 class PostController extends BaseController
 {
@@ -30,15 +30,14 @@ class PostController extends BaseController
         }, $posts);
     }
 
-    public function createPost(array $postData): void
+    public function createPost(): void
     {
-        $title = $postData['title'] ?? '';
-        $content = $postData['content'] ?? '';
+        $title = $_POST['title'] ?? '';
+        $content = $_POST['content'] ?? '';
         $date = date('Y-m-d');
-        $user_id = $_SESSION['id'];
+        $user_id = $_SESSION['id'] ?? null;
 
-        if(empty($user_id))
-        {
+        if (empty($user_id)) {
             $this->flashAndRedirect('error', "Error : Can't identify user", "?pages=create");
             return;
         }
@@ -46,14 +45,33 @@ class PostController extends BaseController
         try {
             $this->postService->create($title, $content, $user_id, $date);
 
-            $this->flashAndRedirect('success', 'Post created !','?pages=home');
+            $this->flashAndRedirect('success', 'Post created !', '?pages=home');
         } catch (ServiceException $e) {
-            $this->flashAndRedirect('error', $e->getMessage(),'?pages=home');
+            $this->flashAndRedirect('error', $e->getMessage(), '?pages=home');
         }
     }
 
-    public function editPost(PostDTO $post, ?array $file): void
+    public function editPost(): void
     {
+        $postId = $_GET['id'] ?? null;
+        if (!$postId) {
+            $this->flashAndRedirect('error', 'Missing post id.', '?pages=manage');
+            return;
+        }
+
+        $post = $this->postService->getSingle((int)$postId);
+        if (!$post) {
+            $this->flashAndRedirect('error', 'Post not found.', '?pages=manage');
+            return;
+        }
+
+        $userId = $_SESSION['id'] ?? null;
+        if ($userId === null || (int)$post->user_id !== (int)$userId) {
+            $this->flashAndRedirect('error', 'You are not allowed to edit this post.', '?pages=home');
+            return;
+        }
+
+        $file = $_FILES['image'] ?? null;
         $data = new PostDTO(
             title: $_POST['title'] ?? $post->title,
             content: $_POST['content'] ?? $post->content,
@@ -66,7 +84,16 @@ class PostController extends BaseController
             $this->postService->update($data, $file);
             $this->flashAndRedirect('success', 'Post updated !', '?pages=manage');
         } catch (ServiceException $e) {
-            $this->flashAndRedirect('error',$e->getMessage(),'?pages=home');
+            $this->flashAndRedirect('error', $e->getMessage(), '?pages=home');
         }
+    }
+
+    public function resolveCurrentPost()
+    {
+        $postId = $_GET['id'] ?? null;
+        return [
+            'post' => $postId ? $this->show((int)$postId) : null,
+            'posts' => $this->list(),
+        ];
     }
 }

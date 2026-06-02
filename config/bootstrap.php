@@ -1,16 +1,19 @@
 <?php
 $pdo = require __DIR__ . '/../config/db.php';
 
-use Frstf4ll\PhpBlog\PageController;
-use Frstf4ll\PhpBlog\PageService;
-use Frstf4ll\PhpBlog\Post\PostController;
-use Frstf4ll\PhpBlog\Post\PostFileUploader;
-use Frstf4ll\PhpBlog\Post\PostRepository;
-use Frstf4ll\PhpBlog\Post\PostService;
-use Frstf4ll\PhpBlog\Post\PostValidation;
-use Frstf4ll\PhpBlog\User\UserController;
-use Frstf4ll\PhpBlog\User\UserRepository;
-use Frstf4ll\PhpBlog\User\UserService;
+use Frstf4ll\PhpBlog\{
+    PageController,
+    PageService,
+    Core\Router,
+    Post\PostController,
+    Post\PostFileUploader,
+    Post\PostRepository,
+    Post\PostService,
+    Post\PostValidation,
+    User\UserController,
+    User\UserRepository,
+    User\UserService
+};
 
 $validator = new PostValidation();
 $uploader = new PostFileUploader();
@@ -20,15 +23,17 @@ $postService = new PostService($validator, $repository, $uploader);
 $postController = new PostController($postService);
 
 $pageService = new PageService();
-$pageController = new PageController();
+$pageController = new PageController($pageService);
 
 $userRepository = new UserRepository($pdo);
 $userService = new UserService($userRepository);
 $userController = new UserController($userService);
 
+$router = new Router($pageService);
 return [
     'PageController' => $pageController,
     'PostController' => $postController,
     'PageService' => $pageService,
     'UserController' => $userController,
+    'Router' => $router,
 ];

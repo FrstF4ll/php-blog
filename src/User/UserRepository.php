@@ -28,7 +28,7 @@ class UserRepository
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['email' => $email]);
 
-        return (bool) $stmt->fetchColumn();
+        return (bool)$stmt->fetchColumn();
     }
 
     public function getUser(string $email): ?array
@@ -51,4 +51,41 @@ class UserRepository
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
         return $data ?: null;
     }
+
+    public function selectSingleUser(int $userId): ?UserDTO
+    {
+        $query = "select * from users where id = :id";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['id' => $userId]);
+
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$data) {
+            return null;
+        }
+        return new UserDTO(
+            name: $data['name'],
+            email: $data['email'],
+            password: $data['password'],
+            id: (int)$data['id']
+        );
+    }
+
+    public function updateUser(UserDTO $dto): bool
+    {
+        $data = $dto->getFields();
+
+        if (empty($data)) {
+            return false;
+        }
+
+        $keys = array_keys($data);
+        $mapped = array_map(fn($key) => "$key = :$key", $keys);
+        $fields = implode(', ', $mapped);
+
+        $query = "update users set $fields where id = :id";
+        $stmt = $this->pdo->prepare($query);
+        $payload = array_merge($data, ['id' => $dto->id]);
+        return $stmt->execute($payload);
+    }
+
 }

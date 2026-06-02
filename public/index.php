@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+// App bootstrap
 session_start([
         'cookie_lifetime' => 0,
         'cookie_secure' => true,
@@ -16,40 +17,26 @@ $pageController = $container['PageController'];
 $pageService = $container['PageService'];
 $postController = $container['PostController'];
 $userController = $container['UserController'];
-
-$allowedPages = ['home', 'login', 'register', 'create', 'manage', 'edit', 'post', 'logout', 'forbidden'];
-$tokenPages = ['login', 'register', 'create', 'edit'];
+$router = $container['Router'];
 
 $page = $_GET['pages'] ?? 'home';
+$method = $_SERVER['REQUEST_METHOD'];
+[$controller, $action] = $router->dispatch($method, $page);
 
-if ((in_array($page, $tokenPages)) && empty($_SESSION['csrf_token'])) {
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-}
+$user = $userController->resolveCurrentUser();
+$postData = $postController->resolveCurrentPost();
 
-$posts = in_array($page, ['home', 'manage']) ? $postController->list() : [];
-$postId = $_GET['id'] ?? null;
-$post = null;
-if ($postId) {
-    $post = $postController->show((int)$postId);
-}
+$pageController->setViewData([
+        'post' => $postData['post'],
+        'posts' => $postData['posts'],
+        'user' => $user,
+]);
 
-$home = '?pages=home';
-$actions = [
-        'login'    => fn() => $userController->authenticateSession($_POST),
-        'register' => fn() => $userController->store($_POST),
-        'logout'   => fn() => $pageService->disconnect(),
-        'create'   => fn() => $postController->createPost($_POST),
-        'edit'     => fn() => $postController->editPost($post, $_FILES['image'] ?? null)
-];
+ob_start();
+$controllerInstance = $container[$controller];
+$page = $controllerInstance->$action();
+$pageContent = ob_get_clean();
 
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($actions[$page])) {
-    if ($pageService->isTokenValid()) {
-        $actions[$page]();
-    }
-}
-
-$pageController->setViewData(['posts' => $posts, 'post' => $post]);
 ?>
 
 
@@ -83,17 +70,7 @@ $pageController->setViewData(['posts' => $posts, 'post' => $post]);
             <?= htmlspecialchars($flash['message']) ?>
         </div>
     <?php endif; ?>
-    <?php
-    if (in_array($page, $allowedPages) && method_exists($pageController, $page)) {
-        if ($page === 'edit') {
-            $pageController->edit($post);
-        } else {
-            $pageController->$page();
-        }
-    } else {
-        $pageController->not_found();
-    }
-    ?>
+    <?= $pageContent ?>
 </main>
 
 <?php include "../views/components/footer.php"; ?>
