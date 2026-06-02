@@ -107,7 +107,7 @@ class UserController extends BaseController
             }
             return $user;
         }
-        if ($page === 'profile' && empty($user)) {
+        if ($page === 'profile') {
             $this->flashAndRedirect('error', 'You should be logged in to access this page', '?pages=login');
             return null;
         }
