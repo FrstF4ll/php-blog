@@ -30,5 +30,5 @@ create table if not exists posts
 );
 
 insert into roles(id, description)
-values (1, 'Administrator'),
-       (2, 'User');
+values       (1, 'User'),
+             (2, 'Administrator');
