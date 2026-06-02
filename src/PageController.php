@@ -61,6 +61,10 @@ class PageController extends BaseController
 
     public function edit(): void
     {
+        if ($this->isAdmin()) {
+        $posts = $this->viewData['posts'] ?? [];
+        }
+
         $post = $this->viewData['post'] ?? null;
         require __DIR__ . '/../views/pages/edit_post.php';
     }

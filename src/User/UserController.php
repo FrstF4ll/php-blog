@@ -36,6 +36,7 @@ class UserController extends BaseController
             session_regenerate_id(true);
             $_SESSION['id'] = $result['id'];
             $_SESSION['name'] = $result['name'];
+            $_SESSION['role_id'] = $result['role_id'];
             $this->flashAndRedirect('success', 'Login successful.', '?pages=home');
 
         } catch (ServiceException $e) {

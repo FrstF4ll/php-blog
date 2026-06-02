@@ -58,7 +58,7 @@ class UserService
     {
         $user = $this->repository->getUser($email);
         if ($user && password_verify($password, $user['password'])) {
-            return ['id' => $user['id'], 'name' => $user['name']];
+            return ['id' => $user['id'], 'name' => $user['name'], 'role_id' => $user['role_id']];
         }
         throw new ServiceException('Wrong credentials, register or retry.');
     }

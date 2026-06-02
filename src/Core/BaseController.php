@@ -35,4 +35,10 @@ abstract class BaseController
         $this->flash($type, $message);
         $this->redirect($url);
     }
+
+    protected function isAdmin(): bool
+    {
+        return isset($_SESSION['role_id']) && (int)$_SESSION['role_id'] === 2;
+    }
 }
+
