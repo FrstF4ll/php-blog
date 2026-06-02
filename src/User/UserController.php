@@ -96,7 +96,7 @@ class UserController extends BaseController
         }
     }
 
-    public function resolveCurrentUser()
+    public function resolveCurrentUser(string $page)
     {
         $userId = $_SESSION['id'] ?? null;
         if ($userId) {
@@ -107,7 +107,10 @@ class UserController extends BaseController
             }
             return $user;
         }
-        $this->flashAndRedirect('error', 'There was a problem on user resolution, plus try again', '?pages=login');
+        if ($page === 'profile' && empty($user)) {
+            $this->flashAndRedirect('error', 'You should be logged in to access this page', '?pages=login');
+            return null;
+        }
         return null;
     }
 }

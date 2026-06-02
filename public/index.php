@@ -23,7 +23,7 @@ $page = $_GET['pages'] ?? 'home';
 $method = $_SERVER['REQUEST_METHOD'];
 [$controller, $action] = $router->dispatch($method, $page);
 
-$user = $userController->resolveCurrentUser();
+$user = $userController->resolveCurrentUser($page);
 $postData = $postController->resolveCurrentPost();
 
 $pageController->setViewData([
