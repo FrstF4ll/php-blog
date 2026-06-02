@@ -64,7 +64,7 @@ class UserController extends BaseController
     public function editUserProfile(): void
     {
         $userId = $_SESSION['id'] ?? null;
-        $user = $this->userService->getSingleUser($userId);
+        $user = $userId ? $this->userService->getSingleUser($userId) : null;
         if (!$userId || !$user) {
             $this->flashAndRedirect('error', 'You must be logged in to edit your profile.', '?pages=login');
             return;
