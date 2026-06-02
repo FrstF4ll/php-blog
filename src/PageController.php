@@ -61,6 +61,10 @@ class PageController extends BaseController
 
     public function edit(): void
     {
+        if ($this->isAdmin()) {
+            $posts = $this->viewData['posts'] ?? [];
+        }
+
         $post = $this->viewData['post'] ?? null;
         require __DIR__ . '/../views/pages/edit_post.php';
     }
@@ -74,7 +78,7 @@ class PageController extends BaseController
     public function profile(): void
     {
         $user = $this->viewData['user'] ?? null;
-        if(!$user){
+        if (!$user) {
             $this->flashAndRedirect('error', 'You must be logged in to access this page.', '?pages=login');
             return;
         }

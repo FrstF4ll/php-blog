@@ -12,10 +12,11 @@ class UserRepository
 
     public function createUser(UserDTO $dto): void
     {
-        $query = "insert into users(name, email, password) values(:name, :email, :password)";
+        $query = "insert into users(role_id, name, email, password) values(:role_id, :name, :email, :password)";
 
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([
+            'role_id' => $dto->role_id,
             'name' => $dto->name,
             'email' => $dto->email,
             'password' => $dto->password,
@@ -33,7 +34,7 @@ class UserRepository
 
     public function getUser(string $email): ?array
     {
-        $query = "select id, name, password from users where email = :email";
+        $query = "select id, name, password, role_id from users where email = :email";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['email' => $email]);
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -66,6 +67,7 @@ class UserRepository
             name: $data['name'],
             email: $data['email'],
             password: $data['password'],
+            role_id: $data['role_id'],
             id: (int)$data['id']
         );
     }

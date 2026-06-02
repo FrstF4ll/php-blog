@@ -2,12 +2,13 @@
 
 use Frstf4ll\PhpBlog\Post\PostDTO;
 
-if (!$post) {
+if (!isset($post) || !$post) {
     require __DIR__ . '/not_found.php';
     return;
 }
-
-if ($post->user_id !== ($_SESSION['id'] ?? null)) {
+if (
+        (int)($_SESSION['id'] ?? 0) !== (int)$post->user_id && (int)($_SESSION['role_id'] ?? 1) !== 2)
+{
     require __DIR__ . '/forbidden.php';
     return;
 }
@@ -64,10 +65,10 @@ $postImagePath = !empty($image) ? "uploads/" . $image : $placeholder;
                 </div>
             </div>
             <div class="mt-6 flex items-center justify-end gap-x-6">
-                <button type="button"
+                <a href="?pages=manage"
                         class="rounded-md border border-gray-400 px-3 py-2 text-sm shadow-sm hover:bg-gray-200 font-semibold">
                     Cancel
-                </button>
+                </a>
                 <button type="submit"
                         class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                     Save

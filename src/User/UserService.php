@@ -48,9 +48,9 @@ class UserService
             throw new ServiceException('Confirmed password does not match');
         }
 
-
+        $role_id = 1;
         $password = password_hash($password, PASSWORD_DEFAULT);
-        $requestDTO = new UserDTO($name, $email, $password);
+        $requestDTO = new UserDTO($name, $email, $password, $role_id);
         $this->repository->createUser($requestDTO);
     }
 
@@ -58,7 +58,7 @@ class UserService
     {
         $user = $this->repository->getUser($email);
         if ($user && password_verify($password, $user['password'])) {
-            return ['id' => $user['id'], 'name' => $user['name']];
+            return ['id' => $user['id'], 'name' => $user['name'], 'role_id' => $user['role_id']];
         }
         throw new ServiceException('Wrong credentials, register or retry.');
     }
