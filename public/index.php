@@ -34,6 +34,7 @@ try {
     if (ob_get_level() > 0) {
         ob_end_clean();
     }
+    error_log((string)$e);
     http_response_code(500);
     require __DIR__ . '/../views/pages/server_error.php';
     exit;
