@@ -14,7 +14,7 @@ $isAdmin = isset($_SESSION['role_id']) && (int)$_SESSION['role_id'] === 2;
     <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
         <?php $show_edit_icon = true; ?>
         <?php foreach (array_reverse($posts) as $post): ?>
-            <?php if ($isAdmin || (int)$post['user_id'] === (int)($_SESSION['id'] ?? 0)): ?>
+            <?php if ($isAdmin || (int)$post->user_id === (int)($_SESSION['id'] ?? 0)): ?>
                 <?php include "../views/components/previews.php"; ?>
             <?php endif; ?>
         <?php endforeach; ?>

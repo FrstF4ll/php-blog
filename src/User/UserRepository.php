@@ -32,13 +32,24 @@ class UserRepository
         return (bool)$stmt->fetchColumn();
     }
 
-    public function selectUserByMail(string $email): ?array
+    public function selectUserByMail(string $email): ?UserDTO
     {
-        $query = "select id, name, password, role_id from users where email = :email";
+        $query = "select id, name, email, password, role_id from users where email = :email";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['email' => $email]);
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $data ?: null;
+
+        if(!$data) {
+            return null;
+        }
+
+        return new UserDTO(
+            name: $data['name'],
+            email: $data['email'],
+            password: $data['password'],
+            role_id: (int)$data['role_id'],
+            id: (int)$data['id']
+        );
     }
 
     public function selectUserById(int $userId): ?UserDTO
@@ -55,7 +66,7 @@ class UserRepository
             name: $data['name'],
             email: $data['email'],
             password: $data['password'],
-            role_id: $data['role_id'],
+            role_id: (int)$data['role_id'],
             id: (int)$data['id']
         );
     }
@@ -63,6 +74,8 @@ class UserRepository
     public function updateUser(UserDTO $dto): bool
     {
         $data = $dto->getFields();
+
+
 
         if (empty($data)) {
             return false;

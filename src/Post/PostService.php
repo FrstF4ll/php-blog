@@ -55,7 +55,7 @@ class PostService
         $this->repository->updatePost($updated);
     }
 
-    public function getAll()
+    public function getAll(): array
     {
         return $this->repository->getAllPosts();
 

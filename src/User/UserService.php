@@ -72,8 +72,8 @@ class UserService
     public function login(string $email, string $password): array
     {
         $user = $this->repository->selectUserByMail($email);
-        if ($user && password_verify($password, $user['password'])) {
-            return ['id' => $user['id'], 'name' => $user['name'], 'role_id' => $user['role_id']];
+        if ($user && password_verify($password, $user->password)) {
+            return ['id' => $user->id, 'name' => $user->name, 'role_id' => $user->role_id];
         }
         throw new ServiceException('Wrong credentials, register or retry.');
     }
@@ -81,7 +81,7 @@ class UserService
     public function update(UserDTO $dto, bool $passwordChanged = false)
     {
         $existingUser = $this->repository->selectUserByMail($dto->email);
-        if ($existingUser && (int)$existingUser['id'] !== (int)$dto->id) {
+        if ($existingUser && (int)$existingUser->id !== (int)$dto->id) {
             throw new ServiceException('Email already exists');
         }
 

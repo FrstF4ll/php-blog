@@ -32,7 +32,17 @@ values(:title, :content, :image, :date, :user_id)";
         $stmt = $this->pdo->query('select posts.*, posts.id as post_id, u.name as author_name from posts 
          left join users u on posts.user_id = u.id
           order by created_at asc');
-        return $stmt->fetchAll();
+        $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return array_map(fn(array $post) => new PostDTOWithAuthorName(
+            author_name: $post['author_name'] ?? 'Deleted User',
+            title: $post['title'],
+            content: $post['content'],
+            created_at: $post['created_at'],
+            user_id: $post['user_id'],
+            image: $post['image'],
+            id: (int)$post['id']
+        ), $posts);
     }
 
     public function selectSinglePost(int $postId): ?PostDTO
