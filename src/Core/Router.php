@@ -2,12 +2,16 @@
 
 namespace Frstf4ll\PhpBlog\Core;
 
-use Frstf4ll\PhpBlog\PageService;
-
 class Router
 {
-    public function __construct(private PageService $pageService)
+    public function isTokenValid(): bool
     {
+        if (empty($_POST['csrf_token']) || empty($_SESSION['csrf_token']) ||
+            !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+            $_SESSION['error_message'] = 'Mismatched session token, try again.';
+            return false;
+        }
+        return true;
     }
 
     private function routeVerification($routes, $method, $rawPage)
@@ -28,7 +32,7 @@ class Router
         }
 
         if ($method === 'POST') {
-            if (!$this->pageService->isTokenValid()) {
+            if (!$this->isTokenValid()) {
                 $method = 'GET';
                 $page = 'forbidden';
             }

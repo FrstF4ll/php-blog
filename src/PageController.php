@@ -8,7 +8,7 @@ use Frstf4ll\PhpBlog\User\UserService;
 
 class PageController extends BaseController
 {
-    public function __construct(private PostService $postService , private UserService $userService, private PageService $pageService)
+    public function __construct(private PostService $postService , private UserService $userService)
     {
     }
 
@@ -37,7 +37,7 @@ class PageController extends BaseController
 
     public function logout(): void
     {
-        $this->pageService->deleteSession();
+        $this->userService->deleteSession();
         require __DIR__ . '/../views/pages/logout.php';
     }
 

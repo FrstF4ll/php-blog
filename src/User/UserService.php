@@ -32,8 +32,12 @@ class UserService
         if (!preg_match($pattern, $password)) {
             throw new ServiceException('Password needs a mix of uppercase, lowercase, and numbers.');
         }
+    }
 
-
+    public function deleteSession(): void
+    {
+        $_SESSION = [];
+        session_destroy();
     }
 
     public function register(string $name, string $email, string $password, string $confirmPassword): void
