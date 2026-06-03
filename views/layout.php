@@ -15,7 +15,7 @@ $pageTitle = $_GET['pages']
 
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-    <title><?= $pageTitle ?? 'php-blog' ?></title>
+    <title><?= $pageTitle ?? 'home' ?></title>
 </head>
 <body class="grid grid-rows-[auto_1fr_auto] min-h-full">
 <?php include __DIR__ . '/components/navbar.php'; ?>
