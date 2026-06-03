@@ -61,10 +61,9 @@ class PostService
 
     }
 
-    public function getSingle($postId): PostDTO
+    public function getSingle($postId): ?PostDTO
     {
-        return $this->repository->selectSinglePost($postId);
+        $postDTO = $this->repository->selectSinglePost($postId);
+        return $postDTO;
     }
-
-
 }
