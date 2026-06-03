@@ -47,25 +47,29 @@ class UserController extends BaseController
     public function editUserProfile(): void
     {
         $userId = $_SESSION['id'] ?? null;
+        $userName = $_POST['name'] ?? '';
+        $userEmail = $_POST['email'] ?? '';
+        $password = $_POST['password'] ?? '';
+
         $user = $userId ? $this->userService->getSingleUser($userId) : null;
+
         if (!$userId || !$user) {
             $this->flashAndRedirect('error', 'You must be logged in to edit your profile.', '?pages=login');
             return;
         }
 
-        $password = $user->password;
-        if (!empty($_POST['password'])) {
-            $password = $_POST['password'];
+        if (empty($password)) {
+            $password = $user->password;
         }
 
         $data = new UserDTO(
-            name: $_POST['name'] ?? $user->name,
-            email: $_POST['email'] ?? $user->email,
+            name: $userName ?? $user->name,
+            email: $userEmail ?? $user->email,
             password: $password,
             id: $user->id
         );
         try {
-            $this->userService->update($data, !empty($_POST['password']));
+            $this->userService->update($data, !empty($password));
             $_SESSION['name'] = $data->name;
             $this->flashAndRedirect('success', 'Profile updated !', '?pages=home');
         } catch (ServiceException $e) {

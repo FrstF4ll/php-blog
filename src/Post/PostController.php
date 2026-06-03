@@ -50,16 +50,19 @@ class PostController extends BaseController
     public function editPost(): void
     {
         $postId = $_GET['id'] ?? null;
+        $title = $_POST['title'] ?? '';
+        $content = $_POST['content'] ?? '';
+        $userId = $_SESSION['id'] ?? null;
+        $file = $_FILES['image'] ?? null;
+
         $post = $this->postService->getSingle((int)$postId);
 
-        $userId = $_SESSION['id'] ?? null;
 
-        $file = $_FILES['image'] ?? null;
 
         $this->checkEditPermission($postId, $post, $userId);
         $data = new PostDTO(
-            title: $_POST['title'] ?? $post->title,
-            content: $_POST['content'] ?? $post->content,
+            title: $title ?? $post->title,
+            content: $content ?? $post->content,
             created_at: $post->created_at,
             user_id: $post->user_id,
             image: $post->image,
