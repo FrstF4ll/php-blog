@@ -9,7 +9,7 @@ use Frstf4ll\PhpBlog\Post\PostDTO;
 
 class PageController extends BaseController
 {
-    public function __construct(private PostService $postService , private UserService $userService)
+    public function __construct(private PostService $postService, private UserService $userService)
     {
     }
 
@@ -25,10 +25,11 @@ class PageController extends BaseController
         require __DIR__ . '/../views/pages/forbidden.php';
     }
 
-    public function postExists(): ?PostDTO{
-        $id = isset($_GET['id']) ? $_GET['id'] : 0;
+    public function postExists(): ?PostDTO
+    {
+        $id = (int)($_GET['id'] ?? 0);
         $post = $this->postService->getSingle($id);
-        if(!$post){
+        if (!$post) {
             $this->not_found();
             return null;
         }
@@ -71,14 +72,14 @@ class PageController extends BaseController
     public function edit(): void
     {
         $post = $this->postExists();
-        if(!$post) return;
+        if (!$post) return;
         require __DIR__ . '/../views/pages/edit_post.php';
     }
 
     public function post(): void
     {
         $post = $this->postExists();
-        if(!$post) return;
+        if (!$post) return;
         require __DIR__ . '/../views/pages/post.php';
     }
 
