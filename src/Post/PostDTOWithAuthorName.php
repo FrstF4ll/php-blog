@@ -9,7 +9,7 @@ readonly class PostDTOWithAuthorName extends PostDTO
         string $title,
         string $content,
         string $created_at,
-        string $user_id,
+        int $user_id,
         ?string $image = null,
         ?int $id = null
     )
