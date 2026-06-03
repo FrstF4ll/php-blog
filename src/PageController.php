@@ -71,7 +71,9 @@ class PageController extends BaseController
 
     public function profile(): void
     {
-        $user = $this->userService->getSingleUser((int)$_SESSION['id']);
+        $userId = $_SESSION['id'] ?? null;
+
+        $user = $this->userService->getSingleUser($userId);
 
         if (!$user) {
             $this->flashAndRedirect('error', 'You must be logged in to access this page.', '?pages=login');

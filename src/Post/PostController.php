@@ -31,15 +31,15 @@ class PostController extends BaseController
         $title = $_POST['title'] ?? '';
         $content = $_POST['content'] ?? '';
         $date = date('Y-m-d');
-        $user_id = $_SESSION['id'] ?? null;
+        $userId = $_SESSION['id'] ?? null;
 
-        if (empty($user_id)) {
+        if (empty($userId)) {
             $this->flashAndRedirect('error', "Error : Can't get user id", "?pages=create");
             return;
         }
 
         try {
-            $this->postService->create($title, $content, $user_id, $date);
+            $this->postService->create($title, $content, $userId, $date);
 
             $this->flashAndRedirect('success', 'Post created !', '?pages=home');
         } catch (ServiceException $e) {
