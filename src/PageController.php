@@ -5,6 +5,7 @@ namespace Frstf4ll\PhpBlog;
 use Frstf4ll\PhpBlog\Core\BaseController;
 use Frstf4ll\PhpBlog\Post\PostService;
 use Frstf4ll\PhpBlog\User\UserService;
+use Frstf4ll\PhpBlog\Post\PostDTO;
 
 class PageController extends BaseController
 {
@@ -22,6 +23,16 @@ class PageController extends BaseController
     {
         http_response_code(403);
         require __DIR__ . '/../views/pages/forbidden.php';
+    }
+
+    public function postExists(): ?PostDTO{
+        $id = isset($_GET['id']) ? $_GET['id'] : 0;
+        $post = $this->postService->getSingle($id);
+        if(!$post){
+            $this->not_found();
+            return null;
+        }
+        return $post;
     }
 
     public function home(): void
@@ -59,13 +70,15 @@ class PageController extends BaseController
 
     public function edit(): void
     {
-        $post = $this->postService->getSingle((int)$_GET['id']);
+        $post = $this->postExists();
+        if(!$post) return;
         require __DIR__ . '/../views/pages/edit_post.php';
     }
 
     public function post(): void
     {
-        $post = $this->postService->getSingle((int)$_GET['id']);
+        $post = $this->postExists();
+        if(!$post) return;
         require __DIR__ . '/../views/pages/post.php';
     }
 
