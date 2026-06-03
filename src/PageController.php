@@ -25,15 +25,22 @@ class PageController extends BaseController
         require __DIR__ . '/../views/pages/forbidden.php';
     }
 
-    public function postExists(): ?PostDTO
+    private function postExists(): ?PostDTO
     {
         $id = (int)($_GET['id'] ?? 0);
         $post = $this->postService->getSingle($id);
         if (!$post) {
-            $this->not_found();
-            return null;
+            $this->flashAndRedirect('error', "Can't find your post.", "?pages=not_found");
         }
         return $post;
+    }
+
+    private function isConnected(): void
+    {
+        $connectedUserId = $_SESSION['id'] ?? null;
+        if (empty($connectedUserId)) {
+            $this->flashAndRedirect('error', "You need to connect to see this page.", "?pages=login");
+        }
     }
 
     public function home(): void
@@ -60,17 +67,20 @@ class PageController extends BaseController
 
     public function create(): void
     {
+        $this->isConnected();
         require __DIR__ . '/../views/pages/create_post.php';
     }
 
     public function manage(): void
     {
+        $this->isConnected();
         $posts = $this->postService->getAll();
         require __DIR__ . '/../views/pages/manage_posts.php';
     }
 
     public function edit(): void
     {
+        $this->isConnected();
         $post = $this->postExists();
         if (!$post) return;
         require __DIR__ . '/../views/pages/edit_post.php';
@@ -85,8 +95,8 @@ class PageController extends BaseController
 
     public function profile(): void
     {
-        $userId = $_SESSION['id'] ?? null;
-
+        $this->isConnected();
+        $userId = $_SESSION['id'];
         $user = $this->userService->getSingleUser($userId);
 
         if (!$user) {
