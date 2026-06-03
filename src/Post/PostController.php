@@ -11,21 +11,24 @@ class PostController extends BaseController
     {
     }
 
-    public function checkEditPermission($postId, $post, $userId): void {
+    public function checkEditPermission($postId, $post, $userId): bool
+    {
 
         if (!$postId) {
             $this->flashAndRedirect('error', "Can't get post id", '?pages=manage');
-            return;
+            return false;
         }
 
         if (!$post) {
             $this->flashAndRedirect('error', 'Post not found.', '?pages=manage');
-            return;
+            return false;
         }
 
         if ($userId === null || ((int)$post->user_id !== (int)$userId && !$this->isAdmin())) {
             $this->flashAndRedirect('error', 'You are not allowed to edit this post.', '?pages=home');
+            return false;
         }
+        return true;
     }
 
     public function createPost(): void
@@ -61,8 +64,8 @@ class PostController extends BaseController
         $post = $this->postService->getSingle((int)$postId);
 
 
-
-        $this->checkEditPermission($postId, $post, $userId);
+        if (!$this->checkEditPermission($postId, $post, $userId)) return;
+        
         $data = new PostDTO(
             title: $title ?? $post->title,
             content: $content ?? $post->content,
