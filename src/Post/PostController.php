@@ -15,10 +15,12 @@ class PostController extends BaseController
 
         if (!$postId) {
             $this->flashAndRedirect('error', "Can't get post id", '?pages=manage');
+            return;
         }
 
         if (!$post) {
             $this->flashAndRedirect('error', 'Post not found.', '?pages=manage');
+            return;
         }
 
         if ($userId === null || ((int)$post->user_id !== (int)$userId && !$this->isAdmin())) {
