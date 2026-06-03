@@ -5,6 +5,7 @@ $postImagePath = !empty($post->image) ? "uploads/" . $post->image : $placeholder
 
 $title = htmlspecialchars($post->title);
 $content = htmlspecialchars($post->content);
+$createdAt = date('d M. Y', strtotime($post->created_at));
 ?>
 
 <article id="<?= $post->id ?>"
@@ -22,7 +23,7 @@ $content = htmlspecialchars($post->content);
 
     <div class="flex items-center justify-between w-full mt-4 p-1">
         <div class="flex items-center gap-x-4 text-xs">
-            <time datetime="<?= $post->created_at ?>" class="text-gray-500"><?= $post->created_at ?></time>
+            <time datetime="<?= $post->created_at ?>" class="text-gray-500"><?= $createdAt ?></time>
             <p class="relative z-10 rounded-full bg-gray-100 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-200 text-indigo-600 hover:text-indigo-700">
                 <?= 'Empty category' ?></p>
         </div>
