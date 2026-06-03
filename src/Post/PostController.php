@@ -11,25 +11,6 @@ class PostController extends BaseController
     {
     }
 
-    public function displayAllPosts(): array
-    {
-        $posts = $this->postService->getAll();
-        return $this->formatPosts($posts);
-    }
-
-    public function displaySinglePost(int $id): ?PostDTO
-    {
-        return $this->postService->getSingle($id);
-    }
-
-    private function formatPosts(array $posts): array
-    {
-        return array_map(function ($post) {
-            $post['created_at'] = date('d M. Y', strtotime($post['created_at']));
-            return $post;
-        }, $posts);
-    }
-
     public function createPost(): void
     {
         $title = $_POST['title'] ?? '';
@@ -88,12 +69,4 @@ class PostController extends BaseController
         }
     }
 
-    public function resolveCurrentPost()
-    {
-        $postId = $_GET['id'] ?? null;
-        return [
-            'post' => $postId ? $this->displaySinglePost((int)$postId) : null,
-            'posts' => $this->displayAllPosts(),
-        ];
-    }
 }

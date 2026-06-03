@@ -63,11 +63,6 @@ class UserService
         throw new ServiceException('Wrong credentials, register or retry.');
     }
 
-    public function findWithAuthor(int $id)
-    {
-        return $this->repository->joinUser($id);
-    }
-
     public function update(UserDTO $dto, bool $passwordChanged = false)
     {
         if (empty(trim($dto->name)) || empty(trim($dto->email))) {

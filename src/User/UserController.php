@@ -44,23 +44,6 @@ class UserController extends BaseController
         }
     }
 
-    public function renderUser(int $id)
-    {
-        return $this->userService->findWithAuthor($id);
-    }
-
-    public function getConnectedUser(): ?UserDTO
-    {
-        $userId = $_SESSION['id'] ?? null;
-        if (!$userId) {
-            unset($_SESSION['id'], $_SESSION['name']);
-            return null;
-        }
-        $user = $this->userService->getSingleUser($userId);
-        return $user;
-    }
-
-
     public function editUserProfile(): void
     {
         $userId = $_SESSION['id'] ?? null;
@@ -88,19 +71,5 @@ class UserController extends BaseController
         } catch (ServiceException $e) {
             $this->flashAndRedirect('error', $e->getMessage(), '?pages=profile');
         }
-    }
-
-    public function resolveCurrentUser()
-    {
-        $userId = $_SESSION['id'] ?? null;
-        if ($userId) {
-            $user = $this->getConnectedUser($userId);
-            if (!$user) {
-                unset($_SESSION['id'], $_SESSION['name']);
-                $userId = null;
-            }
-            return $user;
-        }
-        return null;
     }
 }
