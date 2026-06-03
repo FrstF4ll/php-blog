@@ -23,7 +23,7 @@ class UserRepository
         ]);
     }
 
-    public function emailExists(string $email): bool
+    public function selectExistingEmailS(string $email): bool
     {
         $query = "select 1 from users where email = :email limit 1";
         $stmt = $this->pdo->prepare($query);
@@ -32,7 +32,7 @@ class UserRepository
         return (bool)$stmt->fetchColumn();
     }
 
-    public function getUser(string $email): ?array
+    public function selectUserByMail(string $email): ?array
     {
         $query = "select id, name, password, role_id from users where email = :email";
         $stmt = $this->pdo->prepare($query);
@@ -41,7 +41,7 @@ class UserRepository
         return $data ?: null;
     }
 
-    public function selectSingleUser(int $userId): ?UserDTO
+    public function selectUserById(int $userId): ?UserDTO
     {
         $query = "select * from users where id = :id";
         $stmt = $this->pdo->prepare($query);

@@ -15,10 +15,6 @@ class UserService
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new ServiceException('Please provide a valid email address');
         }
-
-        if ($this->repository->emailExists($email)) {
-            throw new ServiceException('Email already exists');
-        }
     }
 
     private function validatePassword(string $password): void
@@ -38,6 +34,10 @@ class UserService
     {
         if (empty(trim($name)) || empty(trim($email)) || empty(trim($password))) {
             throw new ServiceException('Please fill all the required fields');
+        }
+
+        if ($this->repository->selectExistingEmailS($email)) {
+            throw new ServiceException('Email already exists');
         }
 
         $this->validateEmail($email);
@@ -71,7 +71,7 @@ class UserService
 
     public function login(string $email, string $password): array
     {
-        $user = $this->repository->getUser($email);
+        $user = $this->repository->selectUserByMail($email);
         if ($user && password_verify($password, $user['password'])) {
             return ['id' => $user['id'], 'name' => $user['name'], 'role_id' => $user['role_id']];
         }
@@ -80,14 +80,8 @@ class UserService
 
     public function update(UserDTO $dto, bool $passwordChanged = false)
     {
-        if (empty(trim($dto->name)) || empty(trim($dto->email))) {
-            throw new ServiceException('Please fill all the required fields');
-        }
-
-        $this->validateEmail($dto->email);
-
-        $existingUser = $this->repository->getUser($dto->email);
-        if ($existingUser && (int)$existingUser['id'] !== $dto->id) {
+        $existingUser = $this->repository->selectUserByMail($dto->email);
+        if ($existingUser && (int)$existingUser['id'] !== (int)$dto->id) {
             throw new ServiceException('Email already exists');
         }
 
@@ -105,7 +99,7 @@ class UserService
 
     public function getSingleUser(int $id): ?UserDTO
     {
-        return $this->repository->selectSingleUser($id);
+        return $this->repository->selectUserById($id);
     }
 
 }

@@ -3,7 +3,6 @@
 namespace Frstf4ll\PhpBlog\User;
 
 use Frstf4ll\PhpBlog\Core\BaseController;
-use Frstf4ll\PhpBlog\Post\PostDTO;
 use Frstf4ll\PhpBlog\ServiceException;
 
 class UserController extends BaseController
@@ -69,7 +68,7 @@ class UserController extends BaseController
             id: $user->id
         );
         try {
-            $this->userService->update($data, !empty($password));
+            $this->userService->update($data, !empty($_POST['password']));
             $_SESSION['name'] = $data->name;
             $this->flashAndRedirect('success', 'Profile updated !', '?pages=home');
         } catch (ServiceException $e) {
