@@ -53,8 +53,8 @@ class PostController extends BaseController
     public function editPost(): void
     {
         $postId = $_GET['id'] ?? null;
-        $title = $_POST['title'] ?? '';
-        $content = $_POST['content'] ?? '';
+        $title = $_POST['title'] ?? null;
+        $content = $_POST['content'] ?? null;
         $userId = $_SESSION['id'] ?? null;
         $file = $_FILES['image'] ?? null;
 

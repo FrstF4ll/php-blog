@@ -46,8 +46,8 @@ class UserController extends BaseController
     public function editUserProfile(): void
     {
         $userId = $_SESSION['id'] ?? null;
-        $userName = $_POST['name'] ?? '';
-        $userEmail = $_POST['email'] ?? '';
+        $userName = $_POST['name'] ?? null;
+        $userEmail = $_POST['email'] ?? null;
         $password = $_POST['password'] ?? '';
 
         $user = $userId ? $this->userService->getSingleUser($userId) : null;
