@@ -15,16 +15,16 @@ class PostService
     }
 
 
-    public function create($title, $content, $user_id, $date)
+    public function create($title, $content, $user_id, $date, ?array $image = null)
     {
         $fileName = null;
-        $this->validator->validation($title, $content, $user_id, $date, $_FILES['image'] ?? null);
+        $this->validator->validation($title, $content, $user_id, $date, $image);
 
 
-        if (isset($_FILES['image'])) {
-            $file = $this->fileUploader->upload($_FILES['image']);
-            if ($file) {
-                $fileName = $file;
+        if ($image && $image['error'] !== UPLOAD_ERR_NO_FILE) {
+            $image = $this->fileUploader->upload($image);
+            if ($image) {
+                $fileName = $image;
             }
         }
 
