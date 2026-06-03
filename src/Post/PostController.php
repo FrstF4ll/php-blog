@@ -11,6 +11,21 @@ class PostController extends BaseController
     {
     }
 
+    public function checkEditPermission($postId, $post, $userId): void {
+
+        if (!$postId) {
+            $this->flashAndRedirect('error', "Can't get post id", '?pages=manage');
+        }
+
+        if (!$post) {
+            $this->flashAndRedirect('error', 'Post not found.', '?pages=manage');
+        }
+
+        if ($userId === null || ((int)$post->user_id !== (int)$userId && !$this->isAdmin())) {
+            $this->flashAndRedirect('error', 'You are not allowed to edit this post.', '?pages=home');
+        }
+    }
+
     public function createPost(): void
     {
         $title = $_POST['title'] ?? '';
@@ -35,24 +50,13 @@ class PostController extends BaseController
     public function editPost(): void
     {
         $postId = $_GET['id'] ?? null;
-        if (!$postId) {
-            $this->flashAndRedirect('error', "Can't get post id", '?pages=manage');
-            return;
-        }
-
         $post = $this->postService->getSingle((int)$postId);
-        if (!$post) {
-            $this->flashAndRedirect('error', 'Post not found.', '?pages=manage');
-            return;
-        }
 
         $userId = $_SESSION['id'] ?? null;
-        if ($userId === null || ((int)$post->user_id !== (int)$userId && !$this->isAdmin())) {
-            $this->flashAndRedirect('error', 'You are not allowed to edit this post.', '?pages=home');
-            return;
-        }
 
         $file = $_FILES['image'] ?? null;
+
+        $this->checkEditPermission($postId, $post, $userId);
         $data = new PostDTO(
             title: $_POST['title'] ?? $post->title,
             content: $_POST['content'] ?? $post->content,
