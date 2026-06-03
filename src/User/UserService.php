@@ -10,12 +10,8 @@ class UserService
     {
     }
 
-    private function validation(string $name, string $email, string $password): void
+    private function validateEmail(string $email): void
     {
-        if (empty(trim($name)) || empty(trim($email)) || empty(trim($password))) {
-            throw new ServiceException('Please fill all the required fields');
-        }
-
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new ServiceException('Please provide a valid email address');
         }
@@ -23,16 +19,31 @@ class UserService
         if ($this->repository->emailExists($email)) {
             throw new ServiceException('Email already exists');
         }
+    }
+
+    private function validatePassword(string $password): void
+    {
+        $pattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/';
 
         if (strlen($password) < 8) {
             throw new ServiceException('Password must be at least 8 characters');
         }
 
-        $pattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/';
         if (!preg_match($pattern, $password)) {
             throw new ServiceException('Password needs a mix of uppercase, lowercase, and numbers.');
         }
     }
+
+    private function validation(string $name, string $email, string $password): void
+    {
+        if (empty(trim($name)) || empty(trim($email)) || empty(trim($password))) {
+            throw new ServiceException('Please fill all the required fields');
+        }
+
+        $this->validateEmail($email);
+        $this->validatePassword($password);
+    }
+
 
     public function deleteSession(): void
     {
@@ -73,9 +84,7 @@ class UserService
             throw new ServiceException('Please fill all the required fields');
         }
 
-        if (!filter_var($dto->email, FILTER_VALIDATE_EMAIL)) {
-            throw new ServiceException('Please provide a valid email address');
-        }
+        $this->validateEmail($dto->email);
 
         $existingUser = $this->repository->getUser($dto->email);
         if ($existingUser && (int)$existingUser['id'] !== $dto->id) {
@@ -84,13 +93,7 @@ class UserService
 
         $password = $dto->password;
         if ($passwordChanged) {
-            if (strlen($password) < 8) {
-                throw new ServiceException('Password must be at least 8 characters');
-            }
-            $pattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/';
-            if (!preg_match($pattern, $password)) {
-                throw new ServiceException('Password needs a mix of uppercase, lowercase, and numbers.');
-            }
+            $this->validatePassword($password);
             $password = password_hash($password, PASSWORD_DEFAULT);
         }
 
