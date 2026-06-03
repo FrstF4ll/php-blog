@@ -80,6 +80,12 @@ class UserService
 
     public function update(UserDTO $dto, bool $passwordChanged = false)
     {
+        if (empty(trim($dto->name)) || empty(trim($dto->email))) {
+            throw new ServiceException('Please fill all the required fields');
+        }
+
+        $this->validateEmail($dto->email);
+
         $existingUser = $this->repository->selectUserByMail($dto->email);
         if ($existingUser && (int)$existingUser->id !== (int)$dto->id) {
             throw new ServiceException('Email already exists');
