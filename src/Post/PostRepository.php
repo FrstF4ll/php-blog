@@ -39,7 +39,7 @@ values(:title, :content, :image, :date, :user_id)";
             title: $post['title'],
             content: $post['content'],
             created_at: $post['created_at'],
-            user_id: $post['user_id'],
+            user_id: (int)$post['user_id'],
             image: $post['image'],
             id: (int)$post['id']
         ), $posts);

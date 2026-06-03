@@ -31,7 +31,9 @@ try {
     header('Location: ?pages=home');
     exit;
 } catch (\Throwable $e) {
-    ob_end_clean();
+    if (ob_get_level() > 0) {
+        ob_end_clean();
+    }
     require __DIR__ . '/../views/pages/server_error.php';
     exit;
 }
