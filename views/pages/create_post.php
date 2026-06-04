@@ -29,7 +29,7 @@
                                     class="w-full appearance-none bg-transparent py-1.5 pr-8 text-base text-gray-900 focus:outline-none sm:text-sm/6">
                                 <?php foreach ($categories as $category): ?>
                                     <option value="<?= $category->id ?>">
-                                        <?= $category->name ?>
+                                        <?= htmlspecialchars($category->name) ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>

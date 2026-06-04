@@ -24,7 +24,8 @@ $createdAt = date('d M. Y', strtotime($post->created_at));
     <div class="flex items-center justify-between w-full mt-4 p-1">
         <div class="flex items-center gap-x-4 text-xs">
             <time datetime="<?= $post->created_at ?>" class="text-gray-500"><?= $createdAt ?></time>
-            <p class="relative z-10 rounded-full bg-gray-100 px-3 py-1.5 font-medium hover:bg-gray-200 text-indigo-600 hover:text-indigo-700" style="background-color: <?= $post->cat_color ?>; color: <?= $post->cat_text_color ?>;">
+            <p class="relative z-10 rounded-full bg-gray-100 px-3 py-1.5 font-medium hover:bg-gray-200 text-indigo-600 hover:text-indigo-700"
+               style="background-color: <?= htmlspecialchars($post->cat_color) ?>; color: <?= htmlspecialchars($post->cat_text_color) ?>;">
                 <?= htmlspecialchars($post->cat_name) ?></p>
         </div>
     </div>
