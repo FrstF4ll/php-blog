@@ -9,6 +9,13 @@ create table if not exists roles
     description text not null
 );
 
+create table if not exists categories
+(
+    id    integer primary key autoincrement,
+    name  text not null,
+    color text not null default '#f3f4f6'
+);
+
 create table if not exists users
 (
     id       integer primary key autoincrement,
@@ -27,17 +34,23 @@ create table if not exists posts
     image      text,
     created_at datetime default current_timestamp not null,
     user_id    integer                            not null,
-    foreign key (user_id) references users (id)
+    cat_id     integer,
+    foreign key (user_id) references users (id),
+    foreign key (user_id) references categories (id)
 );
 
-create table if not exists categories
-(
-    id      integer primary key autoincrement,
-    name    text not null,
-    post_id int,
-    foreign key (post_id) references posts (id)
-);
 
 insert into roles(id, description)
 values (1, 'User'),
        (2, 'Administrator');
+
+insert into categories(id, name, color)
+values (1,'Uncategorized', '#f3f4f6'),
+       (2,'Technology', '#e0e7ff'),
+       (3,'Design', '#fae8ff'),
+       (4,'Business', '#dbeafe'),
+       (5,'Lifestyle', '#ccfbf1'),
+       (6,'Science', '#d1fae5'),
+       (7,'Health', '#fef3c7'),
+       (8,'Education', '#ffe4e6');
+
