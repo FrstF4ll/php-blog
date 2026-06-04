@@ -30,7 +30,7 @@ values(:title, :content, :image, :date, :user_id, :cat_id)";
 
     public function getAllPosts(): array
     {
-        $stmt = $this->pdo->query('select posts.*, u.name as author_name, c.name as cat_name, c.color as cat_color from posts 
+        $stmt = $this->pdo->query('select posts.*, u.name as author_name, c.name as cat_name, c.color as cat_color, c.text_color as cat_text_color from posts 
         left join users u on posts.user_id = u.id
         left join categories c on c.id = posts.cat_id
         order by created_at asc');
@@ -40,6 +40,7 @@ values(:title, :content, :image, :date, :user_id, :cat_id)";
             author_name: $post['author_name'] ?? 'Deleted User',
             cat_name: $post['cat_name'] ?? 'None',
             cat_color: $post['cat_color'] ?? '#f3f4f6',
+            cat_text_color: $post['cat_text_color'] ?? '#000000',
             title: $post['title'],
             content: $post['content'],
             created_at: $post['created_at'],

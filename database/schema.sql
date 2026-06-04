@@ -13,7 +13,8 @@ create table if not exists categories
 (
     id    integer primary key autoincrement,
     name  text not null,
-    color text not null default '#f3f4f6'
+    color text not null default '#f3f4f6',
+    text_color text not null default '#374151'
 );
 
 create table if not exists users
@@ -45,12 +46,11 @@ values (1, 'User'),
        (2, 'Administrator');
 
 insert into categories(id, name, color)
-values (1,'Uncategorized', '#f3f4f6'),
-       (2,'Technology', '#e0e7ff'),
-       (3,'Design', '#fae8ff'),
-       (4,'Business', '#dbeafe'),
-       (5,'Lifestyle', '#ccfbf1'),
-       (6,'Science', '#d1fae5'),
-       (7,'Health', '#fef3c7'),
-       (8,'Education', '#ffe4e6');
-
+values (1, 'Uncategorized', '#f3f4f6'),
+       (2, 'Technology', '#e0e7ff'),
+       (3, 'Design', '#fae8ff'),
+       (4, 'Business', '#dbeafe'),
+       (5, 'Lifestyle', '#ccfbf1'),
+       (6, 'Science', '#d1fae5'),
+       (7, 'Health', '#fef3c7'),
+       (8, 'Education', '#ffe4e6');

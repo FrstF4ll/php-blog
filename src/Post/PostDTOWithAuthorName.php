@@ -8,6 +8,7 @@ readonly class PostDTOWithAuthorName extends PostDTO
         public string $author_name,
         public string $cat_name,
         public string $cat_color,
+        public string $cat_text_color,
         string $title,
         string $content,
         string $created_at,
