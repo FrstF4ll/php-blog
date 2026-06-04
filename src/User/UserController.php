@@ -3,7 +3,6 @@
 namespace Frstf4ll\PhpBlog\User;
 
 use Frstf4ll\PhpBlog\Core\BaseController;
-use Frstf4ll\PhpBlog\Post\PostDTO;
 use Frstf4ll\PhpBlog\ServiceException;
 
 class UserController extends BaseController
@@ -44,40 +43,27 @@ class UserController extends BaseController
         }
     }
 
-    public function renderUser(int $id)
-    {
-        return $this->userService->findWithAuthor($id);
-    }
-
-    public function getConnectedUser(): ?UserDTO
-    {
-        $userId = $_SESSION['id'] ?? null;
-        if (!$userId) {
-            unset($_SESSION['id'], $_SESSION['name']);
-            return null;
-        }
-        $user = $this->userService->getSingleUser($userId);
-        return $user;
-    }
-
-
     public function editUserProfile(): void
     {
         $userId = $_SESSION['id'] ?? null;
+        $userName = $_POST['name'] ?? null;
+        $userEmail = $_POST['email'] ?? null;
+        $password = $_POST['password'] ?? '';
+
         $user = $userId ? $this->userService->getSingleUser($userId) : null;
+
         if (!$userId || !$user) {
             $this->flashAndRedirect('error', 'You must be logged in to edit your profile.', '?pages=login');
             return;
         }
 
-        $password = $user->password;
-        if (!empty($_POST['password'])) {
-            $password = $_POST['password'];
+        if (empty($password)) {
+            $password = $user->password;
         }
 
         $data = new UserDTO(
-            name: $_POST['name'] ?? $user->name,
-            email: $_POST['email'] ?? $user->email,
+            name: $userName ?? $user->name,
+            email: $userEmail ?? $user->email,
             password: $password,
             id: $user->id
         );
@@ -88,19 +74,5 @@ class UserController extends BaseController
         } catch (ServiceException $e) {
             $this->flashAndRedirect('error', $e->getMessage(), '?pages=profile');
         }
-    }
-
-    public function resolveCurrentUser()
-    {
-        $userId = $_SESSION['id'] ?? null;
-        if ($userId) {
-            $user = $this->getConnectedUser($userId);
-            if (!$user) {
-                unset($_SESSION['id'], $_SESSION['name']);
-                $userId = null;
-            }
-            return $user;
-        }
-        return null;
     }
 }

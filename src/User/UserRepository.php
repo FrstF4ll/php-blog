@@ -23,7 +23,7 @@ class UserRepository
         ]);
     }
 
-    public function emailExists(string $email): bool
+    public function selectExistingEmailS(string $email): bool
     {
         $query = "select 1 from users where email = :email limit 1";
         $stmt = $this->pdo->prepare($query);
@@ -32,28 +32,27 @@ class UserRepository
         return (bool)$stmt->fetchColumn();
     }
 
-    public function getUser(string $email): ?array
+    public function selectUserByMail(string $email): ?UserDTO
     {
-        $query = "select id, name, password, role_id from users where email = :email";
+        $query = "select id, name, email, password, role_id from users where email = :email";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['email' => $email]);
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $data ?: null;
+
+        if(!$data) {
+            return null;
+        }
+
+        return new UserDTO(
+            name: $data['name'],
+            email: $data['email'],
+            password: $data['password'],
+            role_id: (int)$data['role_id'],
+            id: (int)$data['id']
+        );
     }
 
-    public function joinUser(int $id)
-    {
-        $query = "SELECT posts.id, posts.title, posts.content, users.name as author_name 
-              FROM posts
-              INNER JOIN users ON users.id = posts.user_id
-              WHERE posts.id = :id";
-        $stmt = $this->pdo->prepare($query);
-        $stmt->execute(['id' => $id]);
-        $data = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $data ?: null;
-    }
-
-    public function selectSingleUser(int $userId): ?UserDTO
+    public function selectUserById(int $userId): ?UserDTO
     {
         $query = "select * from users where id = :id";
         $stmt = $this->pdo->prepare($query);
@@ -67,7 +66,7 @@ class UserRepository
             name: $data['name'],
             email: $data['email'],
             password: $data['password'],
-            role_id: $data['role_id'],
+            role_id: (int)$data['role_id'],
             id: (int)$data['id']
         );
     }
@@ -75,6 +74,8 @@ class UserRepository
     public function updateUser(UserDTO $dto): bool
     {
         $data = $dto->getFields();
+
+
 
         if (empty($data)) {
             return false;

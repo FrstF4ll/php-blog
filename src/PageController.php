@@ -3,16 +3,19 @@
 namespace Frstf4ll\PhpBlog;
 
 use Frstf4ll\PhpBlog\Core\BaseController;
+use Frstf4ll\PhpBlog\Post\PostService;
+use Frstf4ll\PhpBlog\User\UserService;
+use Frstf4ll\PhpBlog\Post\PostDTO;
 
 class PageController extends BaseController
 {
-    public function __construct(private PageService $pageService)
+    public function __construct(private PostService $postService, private UserService $userService)
     {
     }
 
     public function not_found(): void
     {
-        http_response_code(403);
+        http_response_code(404);
         require __DIR__ . '/../views/pages/not_found.php';
     }
 
@@ -22,11 +25,27 @@ class PageController extends BaseController
         require __DIR__ . '/../views/pages/forbidden.php';
     }
 
+    private function postExists(): ?PostDTO
+    {
+        $id = (int)($_GET['id'] ?? 0);
+        $post = $this->postService->getSingle($id);
+        if (!$post) {
+            $this->flashAndRedirect('error', "Can't find your post.", "?pages=not_found");
+        }
+        return $post;
+    }
+
+    private function isConnected(): void
+    {
+        $connectedUserId = $_SESSION['id'] ?? null;
+        if (empty($connectedUserId)) {
+            $this->flashAndRedirect('error', "You need to connect to see this page.", "?pages=login");
+        }
+    }
+
     public function home(): void
     {
-        $posts = $this->viewData['posts'] ?? [];
-        $user = $this->viewData['user'] ?? null;
-
+        $posts = $this->postService->getAll();
         require __DIR__ . '/../views/pages/home.php';
     }
 
@@ -37,7 +56,7 @@ class PageController extends BaseController
 
     public function logout(): void
     {
-        $this->pageService->deleteSession();
+        $this->userService->deleteSession();
         require __DIR__ . '/../views/pages/logout.php';
     }
 
@@ -48,36 +67,38 @@ class PageController extends BaseController
 
     public function create(): void
     {
+        $this->isConnected();
         require __DIR__ . '/../views/pages/create_post.php';
     }
 
     public function manage(): void
     {
-        $posts = $this->viewData['posts'] ?? [];
-        $user = $this->viewData['user'] ?? null;
-
+        $this->isConnected();
+        $posts = $this->postService->getAll();
         require __DIR__ . '/../views/pages/manage_posts.php';
     }
 
     public function edit(): void
     {
-        if ($this->isAdmin()) {
-            $posts = $this->viewData['posts'] ?? [];
-        }
-
-        $post = $this->viewData['post'] ?? null;
+        $this->isConnected();
+        $post = $this->postExists();
+        if (!$post) return;
         require __DIR__ . '/../views/pages/edit_post.php';
     }
 
     public function post(): void
     {
-        $post = $this->viewData['post'] ?? null;
+        $post = $this->postExists();
+        if (!$post) return;
         require __DIR__ . '/../views/pages/post.php';
     }
 
     public function profile(): void
     {
-        $user = $this->viewData['user'] ?? null;
+        $this->isConnected();
+        $userId = $_SESSION['id'];
+        $user = $this->userService->getSingleUser($userId);
+
         if (!$user) {
             $this->flashAndRedirect('error', 'You must be logged in to access this page.', '?pages=login');
             return;
