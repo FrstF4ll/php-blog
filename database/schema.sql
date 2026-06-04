@@ -37,7 +37,7 @@ create table if not exists posts
     user_id    integer                            not null,
     cat_id     integer,
     foreign key (user_id) references users (id),
-    foreign key (user_id) references categories (id)
+    foreign key (cat_id) references categories (id)
 );
 
 
