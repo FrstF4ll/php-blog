@@ -9,13 +9,30 @@
             <h2 class="text-3xl font-semibold text-gray-900 text-center">Create your article</h2>
             <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
 
-                <div class="sm:col-span-4">
+                <div class="sm:col-span-3">
                     <label for="title" class="block text-sm/6 font-medium text-gray-900">Title</label>
                     <div class="mt-2">
                         <div class="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
                             <input type="text" name="title" placeholder="Your Article..."
                                    class="block min-w-0 w-full grow bg-white py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
                                    required/>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="sm:col-span-3">
+                    <label for="category" class="block text-sm/6 font-medium text-gray-900">Category</label>
+                    <div class="mt-2">
+                        <div class="relative flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
+                            <select name="category" class="w-full appearance-none bg-transparent py-1.5 pr-8 text-base text-gray-900 focus:outline-none sm:text-sm/6">
+                                <?php foreach ($categories as $category): ?>
+                                <option><?= $category->name ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <svg class="pointer-events-none absolute right-2 h-4 w-4 text-gray-500" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+                            </svg>
                         </div>
                     </div>
                 </div>

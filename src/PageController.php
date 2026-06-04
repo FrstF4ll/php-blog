@@ -2,14 +2,17 @@
 
 namespace Frstf4ll\PhpBlog;
 
-use Frstf4ll\PhpBlog\Core\BaseController;
-use Frstf4ll\PhpBlog\Post\PostService;
-use Frstf4ll\PhpBlog\User\UserService;
-use Frstf4ll\PhpBlog\Post\PostDTO;
+use Frstf4ll\PhpBlog\{
+    Core\BaseController,
+    Post\PostService,
+    User\UserService,
+    Category\CategoryService,
+    Post\PostDTO,
+};
 
 class PageController extends BaseController
 {
-    public function __construct(private PostService $postService, private UserService $userService)
+    public function __construct(private PostService $postService, private UserService $userService, private CategoryService $categoryService)
     {
     }
 
@@ -68,6 +71,7 @@ class PageController extends BaseController
     public function create(): void
     {
         $this->isConnected();
+        $categories = $this->categoryService->getAllCategories();
         require __DIR__ . '/../views/pages/create_post.php';
     }
 
