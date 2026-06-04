@@ -45,7 +45,7 @@ values(:title, :content, :image, :date, :user_id, :cat_id)";
             content: $post['content'],
             created_at: $post['created_at'],
             user_id: (int)$post['user_id'],
-            cat_id: (int)$post['cat_id'],
+            cat_id: (int)$post['cat_id'] ?? 1,
             image: $post['image'],
             id: (int)$post['id']
         ), $posts);
@@ -66,7 +66,7 @@ values(:title, :content, :image, :date, :user_id, :cat_id)";
             content: $data['content'],
             created_at: $data['created_at'],
             user_id: (int)$data['user_id'],
-            cat_id: (int)$data['cat_id'],
+            cat_id: (int)$data['cat_id'] ?? 1,
             image: $data['image'],
             id: (int)$data['id']
         );
