@@ -27,7 +27,7 @@
                         <div class="relative flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
                             <select name="category" class="w-full appearance-none bg-transparent py-1.5 pr-8 text-base text-gray-900 focus:outline-none sm:text-sm/6">
                                 <?php foreach ($categories as $category): ?>
-                                <option><?= $category->name ?></option>
+                                <option value="<?= $category->id ?>"><?= $category->name ?></option>
                                 <?php endforeach; ?>
                             </select>
                             <svg class="pointer-events-none absolute right-2 h-4 w-4 text-gray-500" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
