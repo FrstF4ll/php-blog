@@ -19,7 +19,6 @@ class CategoryRepository
         return array_map(fn (array $category) => new CategoryDTO(
             id: $category['id'],
             name: $category['name'],
-            color: $category['color'],
         ), $categories);
     }
 }
