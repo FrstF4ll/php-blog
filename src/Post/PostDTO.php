@@ -9,6 +9,7 @@ readonly class PostDTO
         public string  $content,
         public string  $created_at,
         public int     $user_id,
+        public ?int $cat_id = null,
         public ?string $image = null,
         public ?int    $id = null
     )

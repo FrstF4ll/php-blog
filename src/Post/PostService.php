@@ -15,7 +15,7 @@ class PostService
     }
 
 
-    public function create($title, $content, $user_id, $date, ?array $image = null)
+    public function create($title, $content, $date, $user_id, int $cat_id, ?array $image = null)
     {
         $fileName = null;
         $this->validator->validation($title, $content, $user_id, $date, $image);
@@ -28,7 +28,7 @@ class PostService
             }
         }
 
-        $requestDTO = new PostDTO($title, $content, $date, $user_id, $fileName);
+        $requestDTO = new PostDTO($title, $content, $date, $user_id, $cat_id, $fileName);
         $this->repository->insertPost($requestDTO);
     }
 
