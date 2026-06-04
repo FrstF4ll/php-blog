@@ -1,6 +1,7 @@
+drop table if exists categories;
+drop table if exists posts;
 drop table if exists users;
 drop table if exists roles;
-drop table if exists posts;
 
 create table if not exists roles
 (
@@ -29,6 +30,14 @@ create table if not exists posts
     foreign key (user_id) references users (id)
 );
 
+create table if not exists categories
+(
+    id      integer primary key autoincrement,
+    name    text not null,
+    post_id int,
+    foreign key (post_id) references posts (id)
+);
+
 insert into roles(id, description)
-values       (1, 'User'),
-             (2, 'Administrator');
+values (1, 'User'),
+       (2, 'Administrator');
