@@ -83,8 +83,4 @@ class PostController extends BaseController
         }
     }
 
-    public function deletePostFromClient($postId)
-    {
-    }
-
 }
