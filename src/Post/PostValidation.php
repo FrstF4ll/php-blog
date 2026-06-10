@@ -37,6 +37,10 @@ class PostValidation
         if (!in_array($detectedMime, $allowedMimes)) {
             throw new ServiceException("Unsupported file type : " . $detectedMime);
         }
+
+        if ($file['size'] > 5 * 1024 * 1024) {
+            throw new ServiceException("File too large. Max 5MB allowed.");
+        }
     }
 
     public function validation($title, $content, $user_id, $date, $file): void
