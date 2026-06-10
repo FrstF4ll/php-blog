@@ -11,12 +11,25 @@ $createdAt = date('d M. Y', strtotime($post->created_at));
 <article id="<?= $post->id ?>"
          class="flex max-w-xl flex-col items-start justify-between relative shadow-lg rounded-2xl p-4 bg-white">
     <?php if (isset($show_edit_icon) && $show_edit_icon === true): ?>
-        <div class="w-full flex justify-end mb-2">
-            <a href="?pages=edit&id=<?= $post->id ?>" class="relative z-10">
-                <span class="sr-only">Edit post</span>
-                <img src="assets/pen.svg" alt="pen"
-                     class="h-7 w-7 transition-colors p-1 bg-gray-100 hover:bg-gray-200 rounded-full">
-            </a>
+        <div class="flex flex-row justify-between w-full">
+            <form method="POST" class="flex justify-start mb-2"
+                  onsubmit="return confirm('Are you sure you want to permanently delete this post?');">
+                <input type="hidden" name="id" value="<?= $post->id ?>">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>">
+                <button type="submit" name="action_delete" class="relative z-10">
+                    <span class="sr-only">Delete post</span>
+                    <img src="assets/trashcan.svg" alt="trash"
+                         class="h-7 w-7 transition-colors p-1 bg-gray-100 hover:bg-gray-200 rounded-full">
+                </button>
+            </form>
+
+            <div class="flex justify-end mb-2">
+                <a href="?pages=edit&id=<?= $post->id ?>" class="relative z-10">
+                    <span class="sr-only">Edit post</span>
+                    <img src="assets/pen.svg" alt="pen"
+                         class="h-7 w-7 transition-colors p-1 bg-gray-100 hover:bg-gray-200 rounded-full">
+                </a>
+            </div>
         </div>
     <?php endif; ?>
     <img class="rounded-lg w-full object-cover" src="<?= $postImagePath ?>" alt="workflow">

@@ -61,9 +61,13 @@ class PostService
 
     }
 
-    public function getSingle($postId): ?PostDTO
+    public function getSingle(int $postId): ?PostDTO
     {
         $postDTO = $this->repository->selectSinglePost($postId);
         return $postDTO;
+    }
+
+    public function removeSinglePost(int $postId): void{
+        $this->repository->deletePost($postId);
     }
 }

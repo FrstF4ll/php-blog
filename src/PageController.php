@@ -78,6 +78,27 @@ class PageController extends BaseController
     public function manage(): void
     {
         $this->isConnected();
+
+        if (isset($_POST['action_delete'])) {
+            if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== ($_SESSION['csrf_token'] ?? '')) {
+                $this->flashAndRedirect('error', 'Invalid CSRF token.', '?pages=manage');
+            }
+            try {
+                $postId = (int) $_POST['id'];
+                $post = $this->postService->getSingle($postId);
+                if (!$post) {
+                    $this->flashAndRedirect('error', 'Post not found.', '?pages=manage');
+                }
+                if ((int)$post->user_id !== (int)$_SESSION['id'] && !$this->isAdmin()) {
+                    $this->flashAndRedirect('error', 'You are not allowed to delete this post.', '?pages=manage');
+                }
+                $this->postService->removeSinglePost($postId);
+                $this->flashAndRedirect('success', 'Post deleted!', '?pages=manage');
+            } catch (ServiceException $e) {
+                $this->flashAndRedirect('error', $e->getMessage(), '?pages=manage');
+            }
+        }
+
         $posts = $this->postService->getAll();
         require __DIR__ . '/../views/pages/manage_posts.php';
     }

@@ -66,7 +66,7 @@ class PostController extends BaseController
 
 
         if (!$this->checkEditPermission($postId, $post, $userId)) return;
-        
+
         $data = new PostDTO(
             title: $title ?? $post->title,
             content: $content ?? $post->content,

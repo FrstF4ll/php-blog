@@ -25,6 +25,7 @@ return [
 
         'create' => ['PostController', 'createPost'],
         'edit' => ['PostController', 'editPost'],
+        'manage' => ['PageController', 'manage'],
         'logout' => ['PageController', 'logout'],
     ],
 ];
