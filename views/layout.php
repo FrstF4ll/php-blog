@@ -1,6 +1,6 @@
 <?php
 
-$pageTitle = $_GET['pages'];
+$pageTitle = isset($_GET['pages']) && is_string($_GET['pages']) ? $_GET['pages'] : 'home';
 ?>
 
 <!doctype html>

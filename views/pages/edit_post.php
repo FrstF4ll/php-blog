@@ -1,7 +1,5 @@
 <?php
 
-use Frstf4ll\PhpBlog\Post\PostDTO;
-
 if (!isset($post) || !$post) {
     require __DIR__ . '/not_found.php';
     return;
@@ -15,12 +13,11 @@ if (
 
 $title = htmlspecialchars($post->title);
 $content = htmlspecialchars($post->content);
-$image = $post->image;
 $placeholder = "/assets/placeholder.png";
-$postImagePath = !empty($image) ? "uploads/" . $image : $placeholder;
+$escapedPostImagePath = !empty($post->image) ? htmlspecialchars("uploads/" . $post->image) : $placeholder;
 ?>
 
-<form method="POST" action='?pages=edit&id=<?= $post->id ?>' enctype="multipart/form-data"
+<form method="POST" action="?pages=edit&id=<?= htmlspecialchars((string) $post->id) ?>" enctype="multipart/form-data"
       class="flex flex-col p-8 text-gray-900 ">
     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>">
 
@@ -47,6 +44,11 @@ $postImagePath = !empty($image) ? "uploads/" . $image : $placeholder;
                 </div>
                 <div class="col-span-full">
                     <label for="cover-photo" class="block text-sm/6 font-medium text-gray-900">Cover photo</label>
+                    <?php if (!empty($post->image)): ?>
+                        <div class="mt-2 mb-4">
+                            <img src="<?= $escapedPostImagePath ?>" alt="Current cover" class="rounded-lg max-h-48 object-cover">
+                        </div>
+                    <?php endif; ?>
                     <div class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
                         <div class="text-center">
                             <img src="/assets/layout.svg" class="mx-auto size-12 text-gray-300" alt="Layout icon">

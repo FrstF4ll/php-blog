@@ -6,10 +6,7 @@ A blog built using Tailwind CSS V4, plain PHP and SQLite3 for the database.
 
 * Pages style with navigation
 * Blog posts creation
-
-## Coming soon
-
-* Posts edition
+* Posts managment (delete + edit)
 * Full authentication method
 * Categories for the articles
 
