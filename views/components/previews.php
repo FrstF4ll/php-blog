@@ -2,13 +2,14 @@
 
 $placeholder = "/assets/placeholder.png";
 $postImagePath = !empty($post->image) ? "uploads/" . $post->image : $placeholder;
+$escapedPostImagePath = htmlspecialchars($postImagePath);
 
 $title = htmlspecialchars($post->title);
 $content = htmlspecialchars($post->content);
 $createdAt = date('d M. Y', strtotime($post->created_at));
 ?>
 
-<article id="<?= $post->id ?>"
+<article id="<?= htmlspecialchars((string) $post->id) ?>"
          class="flex max-w-xl flex-col items-start justify-between relative shadow-lg rounded-2xl p-4 bg-white">
     <?php if (isset($show_edit_icon) && $show_edit_icon === true): ?>
         <div class="flex flex-row justify-between w-full">
@@ -24,7 +25,7 @@ $createdAt = date('d M. Y', strtotime($post->created_at));
             </form>
 
             <div class="flex justify-end mb-2">
-                <a href="?pages=edit&id=<?= $post->id ?>" class="relative z-10">
+                <a href="?pages=edit&id=<?= htmlspecialchars((string) $post->id) ?>" class="relative z-10">
                     <span class="sr-only">Edit post</span>
                     <img src="assets/pen.svg" alt="pen"
                          class="h-7 w-7 transition-colors p-1 bg-gray-100 hover:bg-gray-200 rounded-full">
@@ -32,11 +33,11 @@ $createdAt = date('d M. Y', strtotime($post->created_at));
             </div>
         </div>
     <?php endif; ?>
-    <img class="rounded-lg w-full object-cover" src="<?= $postImagePath ?>" alt="workflow">
+    <img class="rounded-lg w-full object-cover" src="<?= $escapedPostImagePath ?>" alt="workflow">
 
     <div class="flex items-center justify-between w-full mt-4 p-1">
         <div class="flex items-center gap-x-4 text-xs">
-            <time datetime="<?= $post->created_at ?>" class="text-gray-500"><?= $createdAt ?></time>
+            <time datetime="<?= htmlspecialchars($post->created_at) ?>" class="text-gray-500"><?= $createdAt ?></time>
             <p class="relative z-10 rounded-full bg-gray-100 px-3 py-1.5 font-medium hover:bg-gray-200 text-indigo-600 hover:text-indigo-700"
                style="background-color: <?= htmlspecialchars($post->cat_color) ?>; color: <?= htmlspecialchars($post->cat_text_color) ?>;">
                 <?= htmlspecialchars($post->cat_name) ?></p>
@@ -44,7 +45,7 @@ $createdAt = date('d M. Y', strtotime($post->created_at));
     </div>
     <div class="group relative grow p-2">
         <h3 class="mt-3 text-lg/6 font-semibold text-gray-900 group-hover:text-gray-600">
-            <a href="?pages=post&id=<?= $post->id ?>">
+            <a href="?pages=post&id=<?= htmlspecialchars((string) $post->id) ?>">
                 <?= $title ?>
             </a>
         </h3>
@@ -56,7 +57,7 @@ $createdAt = date('d M. Y', strtotime($post->created_at));
             <p class="font-semibold text-gray-900">
                 <a href="#">
                     <span class="absolute inset-0"></span>
-                    <?= $post->author_name ?? 'Deleted user' ?>
+                    <?= htmlspecialchars($post->author_name ?? 'Deleted user') ?>
                 </a>
             </p>
         </div>

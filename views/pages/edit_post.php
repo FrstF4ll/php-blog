@@ -18,9 +18,10 @@ $content = htmlspecialchars($post->content);
 $image = $post->image;
 $placeholder = "/assets/placeholder.png";
 $postImagePath = !empty($image) ? "uploads/" . $image : $placeholder;
+$escapedPostImagePath = htmlspecialchars($postImagePath);
 ?>
 
-<form method="POST" action='?pages=edit&id=<?= $post->id ?>' enctype="multipart/form-data"
+<form method="POST" action="?pages=edit&id=<?= htmlspecialchars((string) $post->id) ?>" enctype="multipart/form-data"
       class="flex flex-col p-8 text-gray-900 ">
     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>">
 
