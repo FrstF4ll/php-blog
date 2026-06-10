@@ -37,6 +37,7 @@ class PostController extends BaseController
         $content = $_POST['content'] ?? '';
         $date = date('Y-m-d');
         $userId = $_SESSION['id'] ?? null;
+        $catId = $_POST['category'] ?? 1;
         $image = $_FILES['image'] ?? null;
 
         if (empty($userId)) {
@@ -45,7 +46,7 @@ class PostController extends BaseController
         }
 
         try {
-            $this->postService->create($title, $content, $userId, $date, $image);
+            $this->postService->create($title, $content, $date, $userId, $catId, $image);
 
             $this->flashAndRedirect('success', 'Post created !', '?pages=home');
         } catch (ServiceException $e) {

@@ -4,6 +4,8 @@ $pdo = require __DIR__ . '/../config/db.php';
 use Frstf4ll\PhpBlog\{
     PageController,
     Core\Router,
+    Category\CategoryRepository,
+    Category\CategoryService,
     Post\PostController,
     Post\PostFileUploader,
     Post\PostRepository,
@@ -22,13 +24,13 @@ $postService = new PostService($postValidator, $postRepository, $postFileUploade
 $postController = new PostController($postService);
 
 
-
-
 $userRepository = new UserRepository($pdo);
 $userService = new UserService($userRepository);
 $userController = new UserController($userService);
 
-$pageController = new PageController($postService, $userService);
+$categoryRepository = new CategoryRepository($pdo);
+$categoryService = new CategoryService($categoryRepository);
+$pageController = new PageController($postService, $userService, $categoryService);
 $router = new Router();
 return [
     'PageController' => $pageController,
