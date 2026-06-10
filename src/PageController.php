@@ -82,6 +82,13 @@ class PageController extends BaseController
         if (isset($_POST['action_delete'])) {
             try {
                 $postId = (int) $_POST['id'];
+                $post = $this->postService->getSingle($postId);
+                if (!$post) {
+                    $this->flashAndRedirect('error', 'Post not found.', '?pages=manage');
+                }
+                if ((int)$post->user_id !== (int)$_SESSION['id'] && !$this->isAdmin()) {
+                    $this->flashAndRedirect('error', 'You are not allowed to delete this post.', '?pages=manage');
+                }
                 $this->postService->removeSinglePost($postId);
                 $this->flashAndRedirect('success', 'Post deleted!', '?pages=manage');
             } catch (ServiceException $e) {
