@@ -80,6 +80,9 @@ class PageController extends BaseController
         $this->isConnected();
 
         if (isset($_POST['action_delete'])) {
+            if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== ($_SESSION['csrf_token'] ?? '')) {
+                $this->flashAndRedirect('error', 'Invalid CSRF token.', '?pages=manage');
+            }
             try {
                 $postId = (int) $_POST['id'];
                 $post = $this->postService->getSingle($postId);
