@@ -90,5 +90,10 @@ values(:title, :content, :image, :date, :user_id, :cat_id)";
         return $stmt->execute($payload);
     }
 
-
+    public function deletePost(int $postId): void
+    {
+        $query = "delete from posts where id = :id";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['id' => $postId]);
+    }
 }

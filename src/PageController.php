@@ -78,6 +78,17 @@ class PageController extends BaseController
     public function manage(): void
     {
         $this->isConnected();
+
+        if (isset($_POST['action_delete'])) {
+            try {
+                $postId = (int) $_POST['id'];
+                $this->postService->removeSinglePost($postId);
+                $this->flashAndRedirect('success', 'Post deleted!', '?pages=manage');
+            } catch (ServiceException $e) {
+                $this->flashAndRedirect('error', $e->getMessage(), '?pages=manage');
+            }
+        }
+
         $posts = $this->postService->getAll();
         require __DIR__ . '/../views/pages/manage_posts.php';
     }

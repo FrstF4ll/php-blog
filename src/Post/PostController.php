@@ -66,7 +66,7 @@ class PostController extends BaseController
 
 
         if (!$this->checkEditPermission($postId, $post, $userId)) return;
-        
+
         $data = new PostDTO(
             title: $title ?? $post->title,
             content: $content ?? $post->content,
@@ -81,6 +81,10 @@ class PostController extends BaseController
         } catch (ServiceException $e) {
             $this->flashAndRedirect('error', $e->getMessage(), '?pages=home');
         }
+    }
+
+    public function deletePostFromClient($postId)
+    {
     }
 
 }
