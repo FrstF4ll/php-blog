@@ -1,6 +1,6 @@
 <?php
 
-$pageTitle = $_GET['pages'];
+$pageTitle = $_GET['pages'] ?? 'home';
 ?>
 
 <!doctype html>
